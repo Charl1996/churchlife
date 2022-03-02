@@ -1,4 +1,4 @@
-from handlers import RespondIO
+from app.messenger.handlers import RespondIO
 from configs import DEFAULT_MESSENGER_HANDLER
 
 HANDLERS = {

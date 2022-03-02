@@ -1,1 +1,1 @@
-from webhooks import router as webhook_router
+from app.routers.webhooks import router as webhook_router

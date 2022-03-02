@@ -1,1 +1,1 @@
-from service import MessengerService
+from app.messenger.service import MessengerService

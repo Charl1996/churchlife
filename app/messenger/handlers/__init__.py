@@ -1,1 +1,1 @@
-from respondio import RespondIO
+from app.messenger.handlers.respondio import RespondIO
