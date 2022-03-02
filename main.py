@@ -1,24 +1,14 @@
 import uvicorn
 from fastapi import FastAPI
-
 from configs import (
     APPLICATION_HOST,
     APPLICATION_PORT,
 )
-from app.messenger import MessengerService
+from app.routers import webhook_router
+
 
 app = FastAPI()
-
-
-@app.post('/wix/incoming')
-def wix_incoming(data):
-    mobile_number = data.get('mobile_number')
-
-    service = MessengerService()
-    service.send_message(
-        mobile_number=mobile_number,
-        message='Thank you for this!',
-    )
+app.include_router(webhook_router)
 
 
 if __name__ == '__main__':

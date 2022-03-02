@@ -4,3 +4,4 @@ secrets.py
 /lib
 /bin
 pyvenv.cfg
+.idea/
