@@ -1,4 +1,4 @@
-from app.messenger.handlers.base_handler import BaseMessengerHandler
+from app.messaging.handlers.base_handler import BaseMessengerHandler
 from app.requests import (
     post_request
 )

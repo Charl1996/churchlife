@@ -1,4 +1,5 @@
 import uvicorn
+
 from fastapi import FastAPI
 from configs import (
     APPLICATION_HOST,
