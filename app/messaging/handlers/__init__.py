@@ -1,1 +1,1 @@
-from app.messaging.handlers.respondio import RespondIO
+from app.messaging.handlers.respondio import RespondIOHandler

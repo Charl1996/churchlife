@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="" />
+    <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/messaging/handlers/exceptions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/messaging/handlers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/messaging/handlers/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/messaging/handlers/respondio.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/messaging/handlers/respondio.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/messaging/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/messaging/service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/messaging/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/messaging/tasks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/requests.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/requests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/webhooks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/webhooks.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/configs.py" beforeDir="false" afterPath="$PROJECT_DIR$/configs.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -36,6 +46,7 @@
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app" />
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/app/messenger/handlers" />
     </key>
   </component>
@@ -49,5 +60,16 @@
       <updated>1646215665373</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

@@ -1,27 +1,50 @@
+import re
+
 from app.messaging.handlers.base_handler import BaseMessengerHandler
 from app.requests import (
-    post_request
+    get_request,
+    post_request,
 )
 from configs import (
     RESPONDIO_BASE_URL,
     RESPONDIO_API_KEY,
 )
+from app.messaging.handlers.exceptions import (
+    RespondIOInvalidPhoneNumberError,
+    RespondIOFailedToRetrieveContactError,
+    RespondIOFailedToSendMessageError,
+)
 
-class RespondIOContact:
-    id: str
 
-    def __init__(self, **kwargs):
-        self.id = kwargs['id']
-
-
-class RespondIOEndpoint:
+class RespondIOUtils:
 
     @classmethod
-    def send_message(cls, contact_id):
+    def valid_respondio_number(cls, number):
+        return number.startswith('27') and len(number) == 11
+
+    @classmethod
+    def sanitize_mobile_number(cls, number):
+        stripped_number = re.sub(r'[ +()-]', '', number)
+
+        if cls.valid_respondio_number(stripped_number):
+            return stripped_number
+        if stripped_number.startswith('0') and len(stripped_number) == 10:
+            return f'27{stripped_number[1:]}'
+        raise RespondIOInvalidPhoneNumberError(f'{number} is not a valid respond.io phone number')
+
+
+class RespondIOEndpoints:
+
+    @classmethod
+    def send_text_message_endpoint(cls, contact_id):
         return f"/message/sendContent/{contact_id}"
 
+    @classmethod
+    def get_contact_endpoint(cls, phone_number):
+        return f"/contact/by_custom_field?name=phone&value={phone_number}"
 
-class RespondIO(BaseMessengerHandler):
+
+class RespondIOHandler(BaseMessengerHandler):
 
     def __init__(self):
         super().__init__(
@@ -29,34 +52,54 @@ class RespondIO(BaseMessengerHandler):
             api_key=RESPONDIO_API_KEY,
         )
 
-    def send_message(self, mobile_number, message):
+    def send_text_message(self, mobile_number, message, **kwargs):
+        if not RespondIOUtils.valid_respondio_number(mobile_number):
+            mobile_number = RespondIOUtils.sanitize_mobile_number(mobile_number)
+
         data = {
-            'type': 'text',
-            'text': message
+            'body': [{
+                'type': 'text',
+                'text': message,
+            }]
         }
 
-        result = post_request(
-            RespondIOEndpoint.send_message(mobile_number),
+        status_code, content = post_request(
+            RespondIOEndpoints.send_text_message_endpoint(mobile_number),
             data,
             self.request_headers(),
         )
 
-        if result.status_code != 200:
-            # Check for the error for when the contact is not found
-            # i.e. create the contact and try again
-            contact = self.create_contact(mobile_number)
-            if not contact:
-                self.send_message(mobile_number, message)
+        if status_code != 200:
+            if self._contact_does_not_exist_error(status_code, content):
+                _contact = self.create_contact(mobile_number, **kwargs)
+                self.send_text_message(mobile_number, message)
+            else:
+                raise RespondIOFailedToSendMessageError
 
-    def create_contact(self, mobile_number) -> RespondIOContact:
+    def get_contact(self, mobile_number):
+        if not RespondIOUtils.valid_respondio_number(mobile_number):
+            mobile_number = RespondIOUtils.sanitize_mobile_number(mobile_number)
+
+        status_code, content = get_request(
+            RespondIOEndpoints.get_contact_endpoint(mobile_number),
+            self.request_headers(),
+        )
+
+        if status_code != 200:
+            raise RespondIOFailedToRetrieveContactError
+
+        # Need to parse to format
+        return content
+
+    def create_contact(self, mobile_number, **kwargs):
+        # Need to parse to format
         return {}
-
-    def get_contact(self, mobile_number) -> RespondIOContact:
-        # If not contact exists, return None
-        return False
 
     def request_headers(self):
         return {
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {self.get_api_key()}'
         }
+
+    def _contact_does_not_exist_error(self, status_code, content):
+        return status_code == 403 and 'no such contact' in content.get('message')

@@ -1,10 +1,10 @@
-from app.messaging.handlers import RespondIO
-from configs import DEFAULT_MESSENGER_HANDLER
+from app.messaging.handlers import RespondIOHandler
+from configs import DEFAULT_MESSAGING_HANDLER
 from app.messaging.tasks import send_text_message_with_handler
 
 
 HANDLERS = {
-    'respondio': RespondIO,
+    'respondio': RespondIOHandler,
 }
 
 
@@ -15,14 +15,14 @@ class MessagingService:
     """
     handler: object
 
-    def __init__(self, handler: str):
+    def __init__(self, handler=DEFAULT_MESSAGING_HANDLER):
         self.handler = self.get_handler(handler)
 
-    def get_handler(self, handler=DEFAULT_MESSENGER_HANDLER):
+    def get_handler(self, handler):
         return HANDLERS[handler]()
 
-    def send_async_text_message(self, mobile_number, message):
-        send_text_message_with_handler.delay(self.handler, mobile_number, message)
+    def send_async_text_message(self, mobile_number, message, **kwargs):
+        send_text_message_with_handler.delay(self.handler, mobile_number, message, **kwargs)
 
-    def send_text_message(self, mobile_number, message):
-        send_text_message_with_handler(self.handler, mobile_number, message)
+    def send_text_message(self, mobile_number, message, **kwargs):
+        send_text_message_with_handler(self.handler, mobile_number, message, **kwargs)
