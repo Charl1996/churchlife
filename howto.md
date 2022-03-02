@@ -3,11 +3,15 @@
 
 ## Celery
 
-### Start celery worker
+### Start celery worker (for executing async functions)
 > celery -A <celery-file> worker
 
 In this case this becomes
 > celery -A celery_service worker
+
+### Start celery beat (for periodic tasks)
+Celery `beat` is the candidate to be started when you want to execute periodic tasks.
+> celery -A celery_service beat
 
 
 ### Kill all celery processes

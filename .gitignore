@@ -7,3 +7,4 @@ pyvenv.cfg
 .idea/
 
 **__pycache__/
+celerybeat-schedule
