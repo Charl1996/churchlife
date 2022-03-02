@@ -5,3 +5,5 @@ secrets.py
 /bin
 pyvenv.cfg
 .idea/
+
+**__pycache__/
