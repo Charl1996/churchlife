@@ -14,7 +14,7 @@ DEFAULT_MESSAGING_HANDLER = 'respondio'
 
 """ ======== SERVICES ======== """
 # RabbitMQ
-RABBIT_PORT = 5672
+RABBIT_PORT = 5673
 BROKER_URL = f'amqp://{RABBIT_USER}:{RABBIT_PASS}@localhost:{RABBIT_PORT}//'
 
 

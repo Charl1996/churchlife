@@ -9,3 +9,7 @@ class RespondIOInvalidPhoneNumberError(Exception):
 
 class RespondIOFailedToRetrieveContactError(Exception):
     pass
+
+
+class RespondIOFailedToUpdateError(Exception):
+    pass
