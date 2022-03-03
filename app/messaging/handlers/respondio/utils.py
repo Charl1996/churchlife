@@ -5,11 +5,11 @@ from app.messaging.handlers.respondio.exceptions import (
 )
 
 
-def valid_respondio_number(cls, number):
+def valid_respondio_number(number):
     return number.startswith('27') and len(number) == 11
 
 
-def sanitize_mobile_number(cls, number):
+def sanitize_mobile_number(number):
     stripped_number = re.sub(r'[ +()-]', '', number)
 
     if cls.valid_respondio_number(stripped_number):

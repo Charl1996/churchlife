@@ -13,3 +13,7 @@ class RespondIOFailedToRetrieveContactError(Exception):
 
 class RespondIOFailedToUpdateError(Exception):
     pass
+
+
+class RespondIOContactDoesNotExistError(Exception):
+    pass

@@ -1,6 +1,8 @@
+from configs import RESPONDIO_BASE_URL
+
 
 WIX_PURCHASE_TEMPLATE = 'wix_purchase'
-WIX_PURCHASE_TAGS = ['bybelstudie.co.za']
+WIX_PURCHASE_TAGS = ['Origin - Bybelstudie']
 
 TEMPLATES = {
     WIX_PURCHASE_TEMPLATE: {
@@ -17,21 +19,23 @@ def get_template_info(template):
 
 class RespondIOEndpoints:
 
+    base_url = RESPONDIO_BASE_URL
+
     @classmethod
     def send_message_endpoint(cls, contact_id):
-        return f"/message/sendContent/{contact_id}"
+        return f"{cls.base_url}/message/sendContent/{contact_id}"
 
     @classmethod
     def get_contact_endpoint(cls, phone_number):
-        return f"/contact/by_custom_field?name=phone&value={phone_number}"
+        return f"{cls.base_url}/contact/by_custom_field?name=phone&value={phone_number}"
 
     @classmethod
     def add_tags_endpoint(cls, contact_id):
-        return f"/contact/{contact_id}/tags"
+        return f"{cls.base_url}/contact/{contact_id}/tags"
 
     @classmethod
     def create_contact_endpoint(cls):
-        return "/contact/"
+        return f"{cls.base_url}/contact/"
 
 
 class PayloadParser:

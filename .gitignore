@@ -3,6 +3,8 @@ secrets.py
 
 /lib
 /bin
+
+logs/*
 pyvenv.cfg
 .idea/
 

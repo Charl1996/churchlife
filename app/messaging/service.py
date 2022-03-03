@@ -13,13 +13,14 @@ class MessagingService:
     This is the 'public' facing class that should be used to send
     any messages.
     """
-    handler: object
+    handler_slug: str
 
     def __init__(self, handler=DEFAULT_MESSAGING_HANDLER):
-        self.handler = self.get_handler(handler)
+        self.handler_slug = handler
 
-    def get_handler(self, handler):
+    @classmethod
+    def get_handler_class(cls, handler):
         return HANDLERS[handler]()
 
     def send_wix_purchase_message(self, mobile_number, **kwargs):
-        send_wix_purchase_message_with_handler.delay(self.handler, mobile_number, **kwargs)
+        send_wix_purchase_message_with_handler.delay(self.handler_slug, mobile_number, **kwargs)
