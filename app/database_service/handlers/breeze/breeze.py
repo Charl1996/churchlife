@@ -2,7 +2,7 @@ import json
 
 from app.requests import *
 from configs import BREEZE_API_KEY
-from app.database_management.handlers.breeze.helper import (
+from app.database_service.handlers.breeze.helper import (
     BreezeEndpoints,
     PayloadParser
 )

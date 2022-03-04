@@ -1,4 +1,4 @@
-from app.database_management.handlers.breeze import Breeze
+from app.database_service.handlers.breeze import Breeze
 from configs import DEFAULT_DATABASE_HANDLER
 
 HANDLERS = {

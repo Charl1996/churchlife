@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="" />
+    <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/routers/decorators.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routers/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/layout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database_management/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database_service/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database_management/handlers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database_service/handlers/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database_management/handlers/breeze/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database_service/handlers/breeze/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database_management/handlers/breeze/breeze.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database_service/handlers/breeze/breeze.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database_management/handlers/breeze/helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database_service/handlers/breeze/helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database_management/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database_service/service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
