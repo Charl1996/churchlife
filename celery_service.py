@@ -1,12 +1,11 @@
 import pytz
-
 from celery import Celery
-from configs import BROKER_URL
+from configs import RABBITMQ_URL
 
 
 celery_app = Celery(
     'tasks',
-    broker=BROKER_URL,
+    broker=RABBITMQ_URL,
     include=[
         'app.periodic_tasks',
         'app.messaging.tasks',

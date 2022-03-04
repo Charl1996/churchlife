@@ -1,28 +1,35 @@
 from pathlib import Path
-from secrets import *
+import configparser
+
+
+configs = configparser.ConfigParser()
+configs.read('secrets.ini')
+
 
 APPLICATION_ROOT_PATH = Path().resolve(__file__)
 
 """ ======== FastAPI Web ======== """
-APPLICATION_HOST = '127.0.0.1'
-APPLICATION_PORT = 8082
+APPLICATION_HOST = configs['application']['host']
+APPLICATION_PORT = configs['application']['post']
 
 
 """ ======== DATABASE MANAGER ======== """
 DEFAULT_DATABASE_HANDLER = 'breeze'
+BREEZE_BASE_URL = configs['breeze']['base_url']
+BREEZE_API_KEY = configs['breeze']['api_key']
 
 
 """ ======== MESSAGING ======== """
 DEFAULT_MESSAGING_HANDLER = 'respondio'
-
-
-""" ======== SERVICES ======== """
-# RabbitMQ
-RABBIT_PORT = 5673
-BROKER_URL = f'amqp://{RABBIT_USER}:{RABBIT_PASS}@localhost:{RABBIT_PORT}//'
+RESPONDIO_BASE_URL = configs['respond.io']['base_url']
+RESPONDIO_API_KEY = configs['respond.io']['api_key']
 
 
 """ ======== LOGGING ======== """
 LOGGING_PATH = f'{APPLICATION_ROOT_PATH}/logs/'
 LOG_FILE = f'{LOGGING_PATH}/web.log'
 CELERY_LOG_FILE = f'{LOGGING_PATH}/celery.log'
+
+
+""" ======== SERVICES ======== """
+RABBITMQ_URL = configs['rabbitmq']['url']
