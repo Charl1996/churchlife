@@ -37,6 +37,10 @@ class RespondIOEndpoints:
     def create_contact_endpoint(cls):
         return f"{cls.base_url}/contact/"
 
+    @classmethod
+    def get_contacts_endpoint(cls, page):
+        return f"{cls.base_url}/contact/by_custom_field?name=active&value=true&page={page}"
+
 
 class PayloadParser:
 

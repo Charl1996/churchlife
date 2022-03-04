@@ -8,6 +8,10 @@ APPLICATION_HOST = '127.0.0.1'
 APPLICATION_PORT = 8082
 
 
+""" ======== DATABASE MANAGER ======== """
+DEFAULT_DATABASE_HANDLER = 'breeze'
+
+
 """ ======== MESSAGING ======== """
 DEFAULT_MESSAGING_HANDLER = 'respondio'
 

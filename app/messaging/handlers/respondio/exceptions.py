@@ -11,6 +11,10 @@ class RespondIOFailedToRetrieveContactError(Exception):
     pass
 
 
+class RespondIOFailedToRetrieveContactsError(Exception):
+    pass
+
+
 class RespondIOFailedToUpdateError(Exception):
     pass
 

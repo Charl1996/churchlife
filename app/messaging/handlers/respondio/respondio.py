@@ -1,7 +1,4 @@
-from app.requests import (
-    get_request,
-    post_request,
-)
+from app.requests import *
 from configs import RESPONDIO_API_KEY
 from app.messaging.handlers.respondio.exceptions import *
 from app.messaging.handlers.respondio.helper import (
@@ -19,7 +16,8 @@ from logger import logger
 
 class RespondIORequest(RespondIOEndpoints, PayloadParser):
 
-    def request_headers(self):
+    @classmethod
+    def request_headers(cls):
         return {
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {RESPONDIO_API_KEY}'
@@ -135,3 +133,24 @@ class RespondIOHandler(ContactsAPI, MessagesAPI):
     def send_message(self, *args, **kwargs):
         if 'template' in kwargs:
             self.send_template_message(*args, **kwargs)
+
+    def get_contacts(self):
+        current_page = 1
+        contacts = []
+
+        while True:
+            status_code, content = get_request(
+                self.get_contacts_endpoint(page=current_page),
+                headers=self.request_headers(),
+            )
+
+            if status_code != 200:
+                raise RespondIOFailedToRetrieveContactsError
+
+            if not any(content['data']):
+                break
+            else:
+                contacts.extend(content['data'])
+                current_page += 1
+
+        return contacts
