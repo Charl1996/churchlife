@@ -1,8 +1,8 @@
 from functools import wraps
 from fastapi.templating import Jinja2Templates
 
-
-view_templates = Jinja2Templates(directory="templates")
+# Configure templates
+view_templates = Jinja2Templates(directory="app/templates")
 
 
 def request_decorator(view_function):

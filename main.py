@@ -9,9 +9,9 @@ from configs import (
 from app.routers import views_router
 from app.routers import webhooks_router
 
-
 app = FastAPI()
 
+# Configure application
 app.include_router(views_router)
 app.include_router(webhooks_router)
 
