@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block layout %}
+    <div style="padding: 50px">
+        <div class="ui container center aligned">
+            <h2 style="padding: 1em; font-size: 4em">Sign up</h2>
+            <div>
+                <form id="signup_form" class="ui form">
+                  <div class="ui container center aligned" style="width: 30%; padding-bottom: 2em">
+                    <div class="field">
+                          <label class="ui container left aligned">First Name</label>
+                          <input type="text" name="first-name" placeholder="First Name" required>
+                    </div>
+                  </div>
+                  <div class="ui container center aligned" style="width: 30%; padding-bottom: 2em">
+                    <div class="field">
+                          <label class="ui container left aligned">Last Name</label>
+                          <input type="text" name="last-name" placeholder="Last Name" required>
+                    </div>
+                  </div>
+                  <div class="ui container center aligned" style="width: 30%; padding-bottom: 2em">
+                    <div class="field">
+                          <label class="ui container left aligned">Email</label>
+                          <input type="text" name="email" placeholder="Email Address" required>
+                    </div>
+                  </div>
+                  <div class="ui container center aligned" style="width: 30%; padding-bottom: 2em">
+                    <div class="field">
+                          <label class="ui container left aligned">Organisation</label>
+                          <input type="text" name="organisation" placeholder="Organisation Name" required>
+                    </div>
+                  </div>
+                  <div class="ui container center aligned" style="width: 30%; padding-bottom: 2em">
+                    <div class="field">
+                          <label class="ui container left aligned">Password</label>
+                          <input type="password" name="password" placeholder="Password" required>
+                    </div>
+                  </div>
+                  <div class="ui container center aligned" style="width: 30%; padding-bottom: 2em">
+                    <div class="field">
+                          <label class="ui container left aligned">Confirm Password</label>
+                          <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                    </div>
+                  </div>
+                  <button class="ui button blue big" type="submit">Sign up</button>
+                </form>
+                <button class="ui basic button">Sign in</button>
+            </div>
+        </div>
+    </div>
+
+    {% block javascript %}
+        <script src="{{ url_for('static', path='js/sign_up.js') }}"></script>
+    {% endblock %}
+{% endblock %}

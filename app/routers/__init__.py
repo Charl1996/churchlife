@@ -1,2 +1,2 @@
-from app.routers.views import router as views_router
-from app.routers.webhooks import router as webhooks_router
+from app.routers.account.router import router as account_router
+from app.routers.webhook.router import router as webhooks_router

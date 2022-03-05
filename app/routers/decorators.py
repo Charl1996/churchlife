@@ -2,7 +2,7 @@ from functools import wraps
 from fastapi.templating import Jinja2Templates
 
 # Configure templates
-view_templates = Jinja2Templates(directory="app/templates")
+view_templates = Jinja2Templates(directory="templates")
 
 
 def request_decorator(view_function):
@@ -15,8 +15,7 @@ def request_decorator(view_function):
             template,
             context={
                 'request': request,
-                'organization_name': 'Gesinskerk',
                 **data,
-            }
+            },
         )
     return wrapper
