@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/static/js/sign_in.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/layout_content/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/layout_content/service_integrations.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/account/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/account/router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/decorators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/sign_up.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/sign_up.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/sign_in.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sign_in.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/sign_up.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/sign_up.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -17,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -53,11 +55,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates/dashboard" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/app/static/js" />
       <recent name="$PROJECT_DIR$/app/routers/webhook" />
       <recent name="$PROJECT_DIR$/app" />
-      <recent name="$PROJECT_DIR$/app/automation" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

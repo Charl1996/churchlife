@@ -16,7 +16,7 @@ $('#signup_form').submit(function(e){
             'first_name': formData.get('first-name'),
             'last_name': formData.get('last-name'),
             'email': formData.get('email'),
-            'organisation': formData.get('organisation'),
+            'domain': formData.get('domain'),
             'password': password,
         }
 

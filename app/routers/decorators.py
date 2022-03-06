@@ -19,3 +19,11 @@ def view_request(view_function):
             },
         )
     return wrapper
+
+
+def session_request(view_function):
+    @wraps
+    def wrapper(*args, **kwargs):
+        # Get the session token and check if user is logged in
+        return True
+    return wrapper

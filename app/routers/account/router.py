@@ -1,6 +1,5 @@
 from app.routers.decorators import view_request
 from fastapi import APIRouter, Request
-from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
@@ -28,5 +27,16 @@ def sign_in(request: Request):
 async def sign_in(request: Request):
     data = await request.json()
     # Validate email and password
-    # and return dashboard view with JWT or something
+    # and return dashboard view with session token or something
     return "sign_in.html", {}
+
+
+@router.get('/domain')
+@view_request
+def dashboard(request: Request):
+    return "/layout_content/home.html", {}
+
+#
+# @router.get('/{domain}/dashboard')
+# def dashboard(request: Request):
+#     return "dashboard.html", {}

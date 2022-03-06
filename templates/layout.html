@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block layout %}
+
+  <div style="height: 5%; padding-left: 1em;">
+    <img class="ui middle aligned tiny circular image" src="/static/tgk.jpeg">
+    <span style="display: inline-block; padding: 1em; padding-top: 1.5em">
+      <h1>Gesinskerk</h1>
+    </span>
+  </div>
+
+  <div class="ui secondary pointing menu">
+
+    <div class="right menu">
+      <a class="ui item">
+        Logout
+      </a>
+    </div>
+  </div>
+
+  <div class="ui secondary vertical menu">
+    <a class="active item">
+      Home
+    </a>
+    <a class="item disabled">
+      Attendance
+    </a>
+    <a class="item">
+      Service Integrations
+    </a>
+    <a class="item">
+      Users
+    </a>
+  </div>
+
+  {% block content %}
+  {% endblock %}
+
+
+{% endblock %}
