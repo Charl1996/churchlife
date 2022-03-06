@@ -18,6 +18,7 @@ app = FastAPI()
 # Configure CORS
 allowed_origins = [
     "http://127.0.0.1:8082",
+    "http://localhost:8082",
 ]
 
 app.add_middleware(
@@ -38,7 +39,7 @@ app.include_router(webhooks_router)
 
 @app.get('/')
 def root():
-    return RedirectResponse('/account/sign-in')
+    return RedirectResponse(url='/account/sign-in')
 
 
 if __name__ == '__main__':

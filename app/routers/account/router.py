@@ -1,29 +1,25 @@
-from app.routers.decorators import request_decorator
+from app.routers.decorators import view_request
 from fastapi import APIRouter, Request
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
 
 @router.get('/account/sign-up')
-@request_decorator
-def sign_up_page(request: Request):
+@view_request
+def sign_up(request: Request):
     return "sign_up.html", {}
 
 
-@router.post('/account/sign-up')
-@request_decorator
-async def sign_up(request: Request):
-    breakpoint()
-    return "sign_up.html", {}
+@router.post('/account/create')
+async def create_account(request: Request):
+    data = await request.json()
+    # Create an organisation account
+    return {"redirect_url": "/account/sign-in"}
 
 
 @router.get('/account/sign-in')
-@request_decorator
-def sign_up(request: Request):
+@view_request
+def sign_in(request: Request):
     return "sign_in.html", {}
 
-
-@router.post('/account/sign-in')
-@request_decorator
-async def sign_up(request: Request):
-    return "sign_in.html", {}

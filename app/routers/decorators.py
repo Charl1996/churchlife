@@ -5,7 +5,7 @@ from fastapi.templating import Jinja2Templates
 view_templates = Jinja2Templates(directory="templates")
 
 
-def request_decorator(view_function):
+def view_request(view_function):
     @wraps(view_function)
     def wrapper(*args, **kwargs):
         request = kwargs['request']
