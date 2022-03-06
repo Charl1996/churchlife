@@ -36,3 +36,7 @@ $('#signup_form').submit(function(e){
     }
     return false;
 });
+
+$('#sign_in_button').click(function () {
+    window.location.href = '/account/sign-in';
+});

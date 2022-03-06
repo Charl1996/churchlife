@@ -5,11 +5,11 @@
         <div class="ui container center aligned">
             <h2 style="padding: 1em; font-size: 4em">Sign in</h2>
             <div>
-                <form class="ui form">
+                <form id="signin_form" class="ui form">
                   <div class="ui container center aligned" style="width: 30%; padding-bottom: 2em">
                     <div class="field">
                           <label class="ui container left aligned">Email</label>
-                          <input type="text" name="email" placeholder="Email Address">
+                          <input type="email" name="email" placeholder="Email Address">
                     </div>
                   </div>
                   <div class="ui container center aligned" style="width: 30%; padding-bottom: 2em">
@@ -22,8 +22,12 @@
                   </div>
                   <button class="ui button blue" type="submit">Sign in</button>
                 </form>
-                <button class="ui basic button">Sign up</button>
+                <button id="sign_up_button" class="ui basic button">Sign up</button>
             </div>
         </div>
     </div>
+
+    {% block javascript %}
+        <script src="{{ url_for('static', path='js/sign_in.js') }}"></script>
+    {% endblock %}
 {% endblock %}

@@ -23,3 +23,10 @@ async def create_account(request: Request):
 def sign_in(request: Request):
     return "sign_in.html", {}
 
+
+@router.post('/account/sign-in')
+async def sign_in(request: Request):
+    data = await request.json()
+    # Validate email and password
+    # and return dashboard view with JWT or something
+    return "sign_in.html", {}
