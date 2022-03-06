@@ -1,3 +1,4 @@
+aiofiles==0.8.0
 amqp==5.0.9
 anyio==3.5.0
 asgiref==3.5.0
