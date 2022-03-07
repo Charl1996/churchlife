@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/routers/services/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/account/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/account/router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/webhook/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/webhook/router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout_content/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout_content/service_integrations.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/integrations.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/organisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

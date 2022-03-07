@@ -15,45 +15,32 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
+# Configure CORS
+allowed_origins = [
+    "http://127.0.0.1:8082",
+    "http://localhost:8082",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+app.include_router(account_router)
+app.include_router(webhooks_router)
+
 
 @app.get('/')
 def root():
     return RedirectResponse(url='/account/sign-in')
 
 
-def configure_cors(application):
-    allowed_origins = [
-        "http://127.0.0.1:8082",
-        "http://localhost:8082",
-    ]
-
-    application.add_middleware(
-        CORSMiddleware,
-        allow_origins=allowed_origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-
-
-def configure_application_static_files(application):
-    application.mount("/static", StaticFiles(directory="static"), name="static")
-
-
-def configure_application_routers(application):
-    application.include_router(account_router)
-    application.include_router(webhooks_router)
-
-
-def init_db():
-    from postgresql import Base, engine
-    Base.metadata.create_all(engine)
-
-
 if __name__ == '__main__':
-    configure_application_routers(app)
-    init_db()
-
     uvicorn.run(
         'main:app',
         host=APPLICATION_HOST,
