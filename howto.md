@@ -22,3 +22,8 @@ Celery `beat` is the candidate to be started when you want to execute periodic t
 
 Start container with name, username and password
 > docker run --name <container-name> -e RABBITMQ_DEFAULT_USER=<username> -e RABBITMQ_DEFAULT_PASS=<user-pass> -p <port>:5672 rabbitmq
+
+
+## PostgreSQL
+Start container with name, password and volume to mount to
+> docker run -d --name <container-name> -e POSTGRES_PASSWORD=<pass> -v <your-data-volume-dir>:/var/lib/postgresql/data -p <host-port>:5432 postgres
