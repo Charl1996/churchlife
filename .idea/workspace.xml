@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/crud/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/crud/organisation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/crud/user.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/database_models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/schemas/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/schemas/organisation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/models/schemas/user.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/organisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,11 +58,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/models" />
+      <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/static" />
       <recent name="$PROJECT_DIR$/static/js" />
       <recent name="$PROJECT_DIR$/templates/layout_content" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/templates" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

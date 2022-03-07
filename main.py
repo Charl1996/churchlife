@@ -35,12 +35,19 @@ app.include_router(account_router)
 app.include_router(webhooks_router)
 
 
+def initialize_database():
+    from postgresql import Base, engine
+    Base.metadata.create_all(bind=engine)
+
+
 @app.get('/')
 def root():
     return RedirectResponse(url='/account/sign-in')
 
 
 if __name__ == '__main__':
+    initialize_database()
+
     uvicorn.run(
         'main:app',
         host=APPLICATION_HOST,
