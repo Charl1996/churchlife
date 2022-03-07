@@ -2,15 +2,13 @@
 
 {% block layout %}
 
-  <div style="height: 5%; padding-left: 1em;">
-    <img class="ui middle aligned tiny circular image" src="/static/tgk.jpeg">
-    <span style="display: inline-block; padding: 1em; padding-top: 1.5em">
-      <h1>Gesinskerk</h1>
-    </span>
-  </div>
-
   <div class="ui secondary pointing menu">
-
+    <div style="height: 5%; padding-bottom: 1em; padding-left: 1em;">
+      <img class="ui middle aligned tiny circular image" src="/static/churchlife.png">
+      <span style="display: inline-block; padding: 1em; padding-top: 1.5em">
+        <h1> {{ organisation }} </h1>
+      </span>
+    </div>
     <div class="right menu">
       <a class="ui item">
         Logout
@@ -20,21 +18,21 @@
 
   <div class="ui secondary vertical menu">
     <a class="active item">
-      Home
+      Dashboard
+    </a>
+    <div class="ui divider"></div>
+    <a class="item">
+      Account
     </a>
     <a class="item disabled">
-      Attendance
+      Facial Recognition
     </a>
     <a class="item">
-      Service Integrations
-    </a>
-    <a class="item">
-      Users
+      Integrations
     </a>
   </div>
 
   {% block content %}
   {% endblock %}
-
 
 {% endblock %}

@@ -34,7 +34,9 @@ async def sign_in(request: Request):
 @router.get('/domain')
 @view_request
 def dashboard(request: Request):
-    return "/layout_content/home.html", {}
+    return "/layout_content/dashboard.html", {
+        'organisation': 'Gesinskerk',
+    }
 
 #
 # @router.get('/{domain}/dashboard')
