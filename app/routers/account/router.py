@@ -14,7 +14,7 @@ def create_account(request: Request):
 async def create_account(request: Request):
     data = await request.json()
     # Create an organisation account
-    return {"redirect_url": "/account/create"}
+    return {"redirect_url": "/account/sign-in"}
 
 
 @router.get('/account/sign-in')
