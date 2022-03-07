@@ -1,5 +1,5 @@
 
-$('#signup_form').submit(function(e){
+$('#account_create_form').submit(function(e){
     e.preventDefault();
     var formData = new FormData(document.querySelector('form'))
 
@@ -13,12 +13,17 @@ $('#signup_form').submit(function(e){
     }
     else {
         var postData = {
-            'first_name': formData.get('first-name'),
-            'last_name': formData.get('last-name'),
-            'email': formData.get('email'),
-            'organisation': formData.get('organisation'),
-            'domain': formData.get('domain'),
-            'password': password,
+            'user': {
+                'first_name': formData.get('first-name'),
+                'last_name': formData.get('last-name'),
+                'email': formData.get('email'),
+                'password': password
+            },
+            'organisation': {
+                'name': formData.get('organisation'),
+                'domain': formData.get('domain'),
+                'logo': formData.get('logo')
+            }
         }
 
         $.ajax({

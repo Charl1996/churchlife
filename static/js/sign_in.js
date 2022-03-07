@@ -26,5 +26,5 @@ $('#signin_form').submit(function(e){
 });
 
 $('#sign_up_button').click(function () {
-    window.location.href = '/account/sign-up';
+    window.location.href = '/account/create';
 });

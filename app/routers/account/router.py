@@ -4,17 +4,17 @@ from fastapi import APIRouter, Request
 router = APIRouter()
 
 
-@router.get('/account/sign-up')
+@router.get('/account/create')
 @view_request
-def sign_up(request: Request):
-    return "sign_up.html", {}
+def create_account(request: Request):
+    return "create_account.html", {}
 
 
 @router.post('/account/create')
 async def create_account(request: Request):
     data = await request.json()
     # Create an organisation account
-    return {"redirect_url": "/account/sign-in"}
+    return {"redirect_url": "/account/create"}
 
 
 @router.get('/account/sign-in')
