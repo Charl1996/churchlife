@@ -33,3 +33,8 @@ CELERY_LOG_FILE = f'{LOGGING_PATH}/celery.log'
 
 """ ======== SERVICES ======== """
 RABBITMQ_URL = configs['rabbitmq']['Url']
+
+POSTGRES_USER = configs['postgres']['Username']
+POSTGRES_PASSWORD = configs['postgres']['Password']
+POSTGRES_PORT = configs['postgres']['Port']
+POSTGRES_DATABASE = configs['postgres']['Database']
