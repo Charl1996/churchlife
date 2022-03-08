@@ -3,7 +3,7 @@ from fastapi import APIRouter, Request, Depends
 from sqlalchemy.orm import Session
 
 from postgresql import get_db
-from app.organisations import OrganisationCreate, create_organisation
+from app.organisations import OrganisationCreate, create_organisation, add_user_to_organisation
 from app.users import UserCreate, create_user
 
 
@@ -30,12 +30,11 @@ async def create_account(request: Request, db: Session = Depends(get_db)):
         first_name=data['user']['first_name'],
         last_name=data['user']['last_name'],
         email=data['user']['email'],
-        password=data['user']['password'],
-        organisation_id=org.id,
+        password=data['user']['password']
     )
-
     user = create_user(db=db, user=user)
-    # send email
+
+    add_user_to_organisation(organisation=org, user=user, db=db)
 
     return {"redirect_url": "/account/sign-in"}
 

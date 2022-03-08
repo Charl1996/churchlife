@@ -11,7 +11,6 @@ def create_user(db: Session, user: UserCreate) -> User:
         first_name=user.first_name,
         last_name=user.last_name,
         email=user.email,
-        organisation_id=user.organisation_id,
         password=user.password,
     )
     result = insert(db, data_model)

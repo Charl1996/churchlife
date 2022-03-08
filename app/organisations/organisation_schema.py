@@ -13,7 +13,6 @@ class OrganisationCreate(OrganisationBase):
 
 class Organisation(OrganisationBase):
     id: int
-    users: List[object]
 
     class Config:
         orm_mode = True

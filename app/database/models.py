@@ -1,7 +1,15 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
 from postgresql import Base
+
+
+organisation_user_table = Table(
+    'organisations_users',
+    Base.metadata,
+    Column('users_id', ForeignKey('users.id')),
+    Column('organisations_id', ForeignKey('organisations.id')),
+)
 
 
 class Organisation(Base):
@@ -11,7 +19,11 @@ class Organisation(Base):
     domain = name = Column(String, unique=True, index=True)
     name = Column(String)
 
-    users = relationship('User', back_populates='organisation')
+    users = relationship(
+        'User',
+        secondary=organisation_user_table,
+        back_populates='organisations'
+    )
 
 
 class User(Base):
@@ -24,4 +36,8 @@ class User(Base):
     password = Column(String)
     organisation_id = Column(Integer, ForeignKey('organisations.id'))
 
-    organisation = relationship('Organisation', back_populates='users')
+    organisations = relationship(
+        'Organisation',
+        secondary=organisation_user_table,
+        back_populates='users'
+    )

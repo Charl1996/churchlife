@@ -7,3 +7,6 @@ def insert(db: Session, data_model):
     db.refresh(data_model)
     return data_model
 
+
+def update(db: Session):
+    db.commit()

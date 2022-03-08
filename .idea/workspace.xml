@@ -2,37 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/database/operations.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/organisations/organisation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database_service/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/database_service/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database_service/handlers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database_service/handlers/breeze/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/database_service/handlers/breeze/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database_service/handlers/breeze/breeze.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/database_service/handlers/breeze/breeze.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database_service/handlers/breeze/helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/database_service/handlers/breeze/helper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database_service/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/database_service/service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/messaging/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/messaging/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/messaging/handlers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/messaging/handlers/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/messaging/handlers/respondio/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/database_service/handlers/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/messaging/handlers/respondio/exceptions.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/messaging/handlers/respondio/exceptions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/messaging/handlers/respondio/helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/messaging/handlers/respondio/helper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/messaging/handlers/respondio/respondio.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/messaging/handlers/respondio/respondio.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/messaging/handlers/respondio/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/messaging/handlers/respondio/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/messaging/service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/messaging/service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/messaging/tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/messaging/tasks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/crud/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/integrations/messaging/handlers/respondio/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/crud/decorators.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/crud/organisation.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/crud/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/users/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/database_models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/schemas/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/organisations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/schemas/organisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/organisations/organisation_schema.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models/schemas/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/users/user_schema.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/account/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/account/router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/webhook/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/webhook/router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/services/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/users/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/postgresql.py" beforeDir="false" afterPath="$PROJECT_DIR$/postgresql.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

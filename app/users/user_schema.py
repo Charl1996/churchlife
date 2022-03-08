@@ -6,7 +6,6 @@ class UserBase(BaseModel):
     first_name: str
     last_name: str
     email: str
-    organisation_id: int
 
 
 class UserCreate(UserBase):
@@ -15,7 +14,6 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    organisation: object
 
     class Config:
         orm_mode = True
