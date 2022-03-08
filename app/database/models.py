@@ -4,12 +4,18 @@ from sqlalchemy.orm import relationship
 from postgresql import Base
 
 
-organisation_user_table = Table(
-    'organisations_users',
-    Base.metadata,
-    Column('users_id', ForeignKey('users.id')),
-    Column('organisations_id', ForeignKey('organisations.id')),
-)
+class OrganisationsUsers(Base):
+    __tablename__ = 'organisations_users'
+
+    organisation_id = Column(
+        Integer,
+        ForeignKey('organisations.id'),
+        primary_key=True)
+
+    user_id = Column(
+        Integer,
+        ForeignKey('users.id'),
+        primary_key=True)
 
 
 class Organisation(Base):
@@ -21,7 +27,7 @@ class Organisation(Base):
 
     users = relationship(
         'User',
-        secondary=organisation_user_table,
+        secondary='organisations_users',
         back_populates='organisations'
     )
 
@@ -38,6 +44,6 @@ class User(Base):
 
     organisations = relationship(
         'Organisation',
-        secondary=organisation_user_table,
+        secondary='organisations_users',
         back_populates='users'
     )

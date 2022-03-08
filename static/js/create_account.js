@@ -33,7 +33,12 @@ $('#account_create_form').submit(function(e){
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function(res) {
-                window.location.href = res.redirect_url;
+                // Probably best to check status code explicitly
+                if (res.redirect_url) {
+                    window.location.href = res.redirect_url;
+                } else {
+                    alert(res.detail)
+                }
             },
             error: function(res) {
                 alert('Error occurred!');

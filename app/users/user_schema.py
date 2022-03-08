@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 
 
@@ -12,8 +12,15 @@ class UserCreate(UserBase):
     password: str
 
 
+class UserUpdate(BaseModel):
+    last_name: Optional[str] = None
+    email: Optional[str] = None
+    organisations: Optional[List[object]] = []
+
+
 class User(UserBase):
     id: int
+    organisations: List[object]
 
     class Config:
         orm_mode = True

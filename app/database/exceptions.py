@@ -1,0 +1,3 @@
+
+class DuplicateResourceError(Exception):
+    pass
