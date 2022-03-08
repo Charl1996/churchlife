@@ -1,18 +1,22 @@
 from sqlalchemy.orm import Session
-from app.models import User
-from app.models.crud.decorators import insert
-from app.models.schemas.user import UserCreate
+from app.database.operations import (
+    insert,
+)
+from app.database import User as DBUser
+from app.users.user_schema import UserCreate, User
 
 
-@insert
-def create_organisation(user: UserCreate):
-    return User(
+def create_user(db: Session, user: UserCreate) -> User:
+    data_model = DBUser(
         first_name=user.first_name,
         last_name=user.last_name,
         email=user.email,
         organisation_id=user.organisation_id,
         password=user.password,
     )
+    result = insert(db, data_model)
+    # Send back schema user?
+    return result
 
 
 # def get_user_by_id(db: Session, user_id: int):
@@ -25,3 +29,4 @@ def create_organisation(user: UserCreate):
 #
 # def get_all_users(db: Session):
 #     pass
+

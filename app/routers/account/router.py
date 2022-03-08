@@ -1,5 +1,11 @@
 from app.routers.decorators import view_request
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
+from sqlalchemy.orm import Session
+
+from postgresql import get_db
+from app.organisations import OrganisationCreate, create_organisation
+from app.users import UserCreate, create_user
+
 
 router = APIRouter()
 
@@ -11,9 +17,26 @@ def create_account(request: Request):
 
 
 @router.post('/account/create')
-async def create_account(request: Request):
+async def create_account(request: Request, db: Session = Depends(get_db)):
     data = await request.json()
-    # Create an organisation account
+
+    org_model = OrganisationCreate(
+        name=data['organisation']['name'],
+        domain=data['organisation']['domain']
+    )
+    org = create_organisation(db=db, organisation=org_model)
+
+    user = UserCreate(
+        first_name=data['user']['first_name'],
+        last_name=data['user']['last_name'],
+        email=data['user']['email'],
+        password=data['user']['password'],
+        organisation_id=org.id,
+    )
+
+    user = create_user(db=db, user=user)
+    # send email
+
     return {"redirect_url": "/account/sign-in"}
 
 

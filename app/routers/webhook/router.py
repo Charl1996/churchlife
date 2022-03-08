@@ -1,6 +1,4 @@
 from fastapi import APIRouter, Request
-from app.messaging import MessagingService
-from logger import logger
 
 router = APIRouter()
 

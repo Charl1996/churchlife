@@ -1,6 +1,6 @@
-from app.messaging.handlers import RespondIOHandler
+from app.integrations.messaging.handlers import RespondIOHandler
 from configs import DEFAULT_MESSAGING_HANDLER
-from app.messaging.tasks import send_wix_purchase_message_with_handler
+from app.integrations.messaging.tasks import send_wix_purchase_message_with_handler
 
 
 HANDLERS = {

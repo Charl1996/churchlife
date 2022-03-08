@@ -1,6 +1,6 @@
 import re
 
-from app.messaging.handlers.respondio.exceptions import (
+from app.integrations.messaging.handlers.respondio.exceptions import (
     RespondIOInvalidPhoneNumberError,
 )
 

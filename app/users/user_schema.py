@@ -1,8 +1,6 @@
 from typing import List
 from pydantic import BaseModel
 
-from app.models.schemas import organisation
-
 
 class UserBase(BaseModel):
     first_name: str
@@ -17,7 +15,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    organisations: List[organisation.Organisation]
+    organisation: object
 
     class Config:
         orm_mode = True

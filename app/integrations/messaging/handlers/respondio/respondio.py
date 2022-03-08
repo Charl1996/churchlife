@@ -1,13 +1,12 @@
 from app.requests import *
 from configs import RESPONDIO_API_KEY
-from app.messaging.handlers.respondio.exceptions import *
-from app.messaging.handlers.respondio.helper import (
+from app.integrations.messaging.handlers.respondio.helper import (
     RespondIOEndpoints,
     PayloadParser,
     WIX_PURCHASE_TEMPLATE,
     WIX_PURCHASE_TAGS,
 )
-from app.messaging.handlers.respondio.utils import (
+from app.integrations.messaging.handlers.respondio.utils import (
     valid_respondio_number,
     sanitize_mobile_number,
 )

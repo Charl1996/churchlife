@@ -1,8 +1,6 @@
 from typing import List
 from pydantic import BaseModel
 
-from app.models.schemas import user
-
 
 class OrganisationBase(BaseModel):
     domain: str
@@ -15,7 +13,7 @@ class OrganisationCreate(OrganisationBase):
 
 class Organisation(OrganisationBase):
     id: int
-    users: List[user.User]
+    users: List[object]
 
     class Config:
         orm_mode = True
