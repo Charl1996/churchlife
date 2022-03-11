@@ -19,9 +19,12 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+class DBSession:
+    def __init__(self):
+        self.session = SessionLocal()
+
+    def __enter__(self, *args, **kwargs):
+        return self.session
+
+    def __exit__(self, *args, **kwargs):
+        self.session.close()

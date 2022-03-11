@@ -7,15 +7,16 @@ from postgresql import Base
 class OrganisationsUsers(Base):
     __tablename__ = 'organisations_users'
 
+    id = Column(Integer, primary_key=True, index=True)
     organisation_id = Column(
         Integer,
         ForeignKey('organisations.id'),
-        primary_key=True)
+    )
 
     user_id = Column(
         Integer,
         ForeignKey('users.id'),
-        primary_key=True)
+    )
 
 
 class Organisation(Base):

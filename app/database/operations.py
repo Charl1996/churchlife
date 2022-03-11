@@ -6,30 +6,36 @@ from app.database.exceptions import *
 class DBOperations:
 
     @classmethod
-    def commit_to_db(cls, db: Session, model: any):
+    def commit_to_db(cls, db_session: Session, model: any):
         try:
-            db.add(model)
-            db.commit()
-            db.refresh(model)
+            db_session.add(model)
+            db_session.commit()
+            db_session.refresh(model)
             return model
         except IntegrityError:
-            db.rollback()
+            db_session.rollback()
             raise DuplicateResourceError
         except PendingRollbackError:
-            db.rollback()
-            cls.commit_to_db(db, model)
+            db_session.rollback()
+            cls.commit_to_db(db_session, model)
+        except Exception:
+            db_session.rollback()
 
 
 class CRUDOperations(DBOperations):
 
     @classmethod
-    def create(cls, *args, **kwargs):
-        raise NotImplemented
+    def create(cls, db_session: Session, model: any):
+        return cls.commit_to_db(db_session=db_session, model=model)
 
     @classmethod
-    def update_by_id(cls, db_session: Session, model_id: int,
+    def get(cls, db_session: Session, model: any, model_id: int):
+        return db_session.get(model, model_id)
+
+    @classmethod
+    def update_by_id(cls, db_session: Session, model: any, model_id: int,
                      model_changes: any):
-        db_model = db_session.get(cls.get_database_model(), model_id)
+        db_model = db_session.get(model, model_id)
         if not db_model:
             pass
 
@@ -37,21 +43,8 @@ class CRUDOperations(DBOperations):
         for key, value in data_to_update.items():
             setattr(db_model, key, value)
 
-        db_model = cls.commit_to_db(db=db_session, model=db_model)
-        return cls.get_schema_model().from_orm(db_model)
+        return cls.commit_to_db(db_session=db_session, model=db_model)
 
     @classmethod
-    def delete(cls, db_session: Session, model: any):
+    def delete(cls, db_session: Session, model_id: int):
         pass
-
-    @classmethod
-    def get_database_model(cls, *args, **kwargs):
-        raise NotImplemented
-
-    @classmethod
-    def get_schema_model(cls, *args, **kwargs):
-        raise NotImplemented
-
-    @classmethod
-    def _parse_to_return_model(cls, db_model):
-        return cls.get_schema_model().parse_obj(db_model)

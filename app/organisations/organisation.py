@@ -4,47 +4,79 @@ from app.database import (
     Organisation as OrganisationModel,
     OrganisationsUsers as OrganisationsUsersModel,
 )
-from app.database.operations import CRUDOperations
+from app.database.interface import DatabaseInterface
 from app.organisations.organisation_schema import (
     OrganisationCreate as OrganisationCreate,
-    Organisation,
+    Organisation as OrganisationSchema,
     OrganisationUpdate,
 )
-from app.users.user_schema import User
+from app.users import User
 from app.utils import (
     send_invite_email
 )
 
 
-class OrganisationHandler(CRUDOperations):
+class Organisation(DatabaseInterface):
+
+    # Make sure all these db_session's are closed after each request
+    db_session: Session
+    organisation: OrganisationSchema
 
     @classmethod
-    def get_database_model(cls):
+    def database_model(cls):
         return OrganisationModel
 
     @classmethod
-    def get_schema_model(cls):
-        return Organisation
+    def schema_model(cls):
+        return OrganisationSchema
 
     @classmethod
-    def create(cls, db: Session, organisation: OrganisationCreate):
+    def create(cls, db_session: Session, data: dict):
+        organisation_create = OrganisationCreate(**data)
+
         org_model = OrganisationModel(
-            name=organisation.name,
-            domain=organisation.domain,
+            name=organisation_create.name,
+            domain=organisation_create.domain,
         )
-        org_model = cls.commit_to_db(db=db, model=org_model)
-        return cls.get_schema_model().from_orm(org_model)
+        org_schema = super().create(db_session=db_session, model_data=org_model)
+        return cls(db_session=db_session, org=org_schema)
 
     @classmethod
-    def add_user_to_organisation(cls, db: Session, user: User, organisation: Organisation):
+    def get(cls, db_session: Session, org_id: int):
+        org_schema = super().get(db_session=db_session, model_id=org_id)
+        return cls(db_session=db_session, org=org_schema)
+
+    @classmethod
+    def delete(cls, db_session: Session, org_id: int):
+        # Do user specific stuff here
+        # - Remove OrganisationUser
+        super().delete(db_session=db_session, model_id=org_id)
+
+    def __init__(self, db_session: Session, org: OrganisationSchema):
+        self.db_session = db_session
+        self.organisation = org
+
+    @property
+    def fields(self) -> OrganisationSchema:
+        return self.organisation
+
+    def add_user(self, user: User) -> bool:
         org_user_model = OrganisationsUsersModel(
-            organisation_id=organisation.id,
-            user_id=user.id,
+            organisation_id=self.fields.id,
+            user_id=user.fields.id,
         )
+        db_model = self.commit_to_db(db_session=self.db_session, model=org_user_model)
 
-        cls.commit_to_db(db=db, model=org_user_model)
+        if not db_model.id:
+            return False
+        return True
 
-    @classmethod
-    def invite_new_user_to_organisation(cls, db: Session, user: User, organisation: Organisation):
-        cls.add_user_to_organisation(db=db, user=user, organisation=organisation)
-        send_invite_email(user.first_name, user.email)
+    def invite_new_user(self, user: User) -> bool:
+        if self.add_user(user=user):
+            send_invite_email(
+                user_name=user.fields.first_name,
+                user_email=user.fields.email
+            )
+        else:
+            return False
+        return True
