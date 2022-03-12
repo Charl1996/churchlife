@@ -7,7 +7,7 @@ $('#account_create_form').submit(function(e){
     var confirmPassword = formData.get('confirm-password');
 
     if (password != confirmPassword) {
-        alert("Password don't match!");
+        show_toast('error', "Passwords don't match");
         $("#password-confirm").val('');
         $("#password").val('');
     }
@@ -22,7 +22,7 @@ $('#account_create_form').submit(function(e){
             'organisation': {
                 'name': formData.get('organisation'),
                 'domain': formData.get('domain'),
-                'logo': formData.get('logo')
+                'logo': formData.get('logo'),  // This needs to be figured out
             }
         }
 
@@ -51,3 +51,16 @@ $('#account_create_form').submit(function(e){
 $('#sign_in_button').click(function () {
     window.location.href = '/account/sign-in';
 });
+
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    $('#logo_image').show();
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      $('#logo_image').attr('src', e.target.result).width(150).height(150);
+    };
+
+    reader.readAsDataURL(input.files[0]);
+  }
+}

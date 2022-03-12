@@ -69,7 +69,8 @@
                             <div class="ui container center aligned" style="padding-bottom: 2em">
                                 <div class="field">
                                     <label class="ui container left aligned">Logo</label>
-                                    <input type="file" accept="image/*" >
+                                    <input type="file" accept="image/*" onchange="readURL(this);">
+                                    <img id="logo_image" class="ui container center aligned small circular image hidden" style="padding: 1em; padding-top: 2em;" src="#" alt="" />
                                 </div>
                             </div>
                           </div>
