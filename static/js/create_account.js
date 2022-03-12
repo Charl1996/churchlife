@@ -32,16 +32,16 @@ $('#account_create_form').submit(function(e){
             data: JSON.stringify(postData),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success: function(res) {
-                // Probably best to check status code explicitly
-                if (res.redirect_url) {
-                    window.location.href = res.redirect_url;
-                } else {
-                    alert(res.detail)
+        })
+        .done(function(response) {
+            if (response.status_code != 200) {
+                message = 'Something went wrong!';
+
+                if (response.detail) {
+                    message = response.detail;
                 }
-            },
-            error: function(res) {
-                alert('Error occurred!');
+
+                show_toast('error', response.detail);
             }
         });
     }
