@@ -1,3 +1,5 @@
+{% include "components/toast.html" %}
+
 <html>
     <head>
         <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -17,5 +19,6 @@
             {% block layout %}
             {% endblock %}
         </div>
+        <script src="{{ url_for('static', path='js/utilities.js') }}"></script>
     </body>
 </html>

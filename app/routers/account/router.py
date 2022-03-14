@@ -1,6 +1,6 @@
 from app.routers.decorators import view_request
-from fastapi import APIRouter, Request, HTTPException
-from fastapi.responses import JSONResponse
+from fastapi import Request, HTTPException, Depends
+from fastapi.responses import JSONResponse, RedirectResponse
 
 from postgresql import DBSession
 from app.database.exceptions import DuplicateResourceError
@@ -8,70 +8,91 @@ from app.organisations import Organisation
 from app.users import User
 
 from pydantic.error_wrappers import ValidationError
+from app.routers.helper import get_current_user
+from configs import JWT_COOKIE
+from fastapi import APIRouter
 
-router = APIRouter()
+
+router = APIRouter(
+    dependencies=[],
+)
 
 
 @router.get('/account/create')
 @view_request
 def create_account(request: Request):
-    return "create_account.html", {}
+    return {'template': "create_account.html"}
 
 
 @router.post('/account/create')
 async def create_account(request: Request):
     data = await request.json()
+
     with DBSession() as db_session:
         try:
             user = User.create(db_session=db_session, data=data['user'])
         except ValidationError as _error:
-            return HTTPException(status_code=422, detail='Missing user data')
+            raise HTTPException(status_code=422, detail='Missing user data')
         except DuplicateResourceError:
-            return HTTPException(
+            raise HTTPException(
                 status_code=422,
-                detail='Duplicate resource detected! The email probably already exists!'
+                detail='Email already exists!'
             )
 
         try:
             organisation = Organisation.create(db_session=db_session, data=data['organisation'])
         except ValidationError as _error:
-            return HTTPException(status_code=422, detail='Missing organisation data')
+            raise HTTPException(status_code=422, detail='Missing organisation data')
         except DuplicateResourceError:
-            # Need to implement
             User.delete(db_session=db_session, user_id=user.fields.id)
-
-            return HTTPException(
+            raise HTTPException(
                 status_code=422,
-                detail='Duplicate resource detected! The domain probably already exists!'
+                detail='Domain already exists!'
             )
-
         organisation.add_user(user)
 
-    return JSONResponse(status_code=200, content={"redirect_url": "/account/sign-in"})
+        return JSONResponse(status_code=200)
 
 
 @router.get('/account/sign-in')
 @view_request
 def sign_in(request: Request):
-    return "sign_in.html", {}
+    return {'template': "sign_in.html"}
 
 
 @router.post('/account/sign-in')
 async def sign_in(request: Request):
     data = await request.json()
-    # Validate email and password
-    # and return dashboard view with session token or something
-    return "sign_in.html", {}
+
+    with DBSession() as db_session:
+        jwt = User.log_in(db_session, data['email'], data['password'])
+        if jwt is None:
+            raise HTTPException(status_code=403, detail='Invalid credentials')
+
+    response = JSONResponse(status_code=200)
+    response.set_cookie(key=JWT_COOKIE, value=jwt)
+    return response
 
 
-@router.get('/domain')
+@router.post('/account/sign-out')
+def sign_out(request: Request):
+    response = JSONResponse(status_code=200)
+    response.set_cookie(key=JWT_COOKIE, value=None)
+    return response
+
+
+@router.get('/account/organisations')
 @view_request
-def dashboard(request: Request):
-    return "/layout_content/dashboard.html", {
-        'organisation': 'Gesinskerk',
-    }
+def show_organisations(request: Request, user: User = Depends(get_current_user)):
+    organisations = user.organisations
 
-#
-# @router.get('/{domain}/dashboard')
-# def dashboard(request: Request):
-#     return "dashboard.html", {}
+    if len(organisations) == 1:
+        org = organisations[0]
+        return RedirectResponse(url='/{domain}/dashboard'.format(domain=org.domain))
+
+    return {
+        'template': "organisations.html",
+        'data': {
+            'organisations': organisations,
+        }
+    }

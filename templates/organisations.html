@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block layout %}
+    <div style="height: 10%"></div>
+    <div class="ui container center aligned">
+        <div class="ui very padded segment">
+            <h1>
+                <i class="world icon"></i>
+                Your organisations</h1>
+            <div style="padding-bottom: 2em;"></div>
+            <div class="ui middle aligned divided list">
+            {% for organisation in organisations %}
+                <div class="item">
+                    <div class="right floated content">
+                        <div class="ui button primary" name="{{ organisation.domain }}" onclick="selectOrganisation(name)">Select</div>
+                    </div>
+                    <div class="left floated content">
+                        <img class="ui avatar image left floated content" src="">
+                        <div class="content right floated content"><h2> {{ organisation.name }} </h2></div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            <div class="ui divider" style="padding: 1em;"></div>
+            <div class="ui button">
+                <i class="add icon"></i>
+                Add organisation
+            </div>
+        </div>
+    </div>
+    {% block javascript %}
+        <script src="{{ url_for('static', path='js/organisations.js') }}"></script>
+    {% endblock %}
+{% endblock %}

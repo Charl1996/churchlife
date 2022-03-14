@@ -32,16 +32,17 @@ $('#account_create_form').submit(function(e){
             data: JSON.stringify(postData),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-        })
-        .done(function(response) {
-            if (response.status_code != 200) {
-                message = 'Something went wrong!';
-
-                if (response.detail) {
-                    message = response.detail;
+            fail: function() {
+                show_toast('error', "Something went wrong");
+            },
+            statusCode: {
+                200: function(response) {
+                    window.location.href = '/account/sign-in?create_success=1';
+                },
+                422: function(response) {
+                    message = response.responseJSON.detail;
+                    show_toast('error', message);
                 }
-
-                show_toast('error', response.detail);
             }
         });
     }

@@ -6,9 +6,12 @@ from app.database.exceptions import *
 class DBOperations:
 
     @classmethod
-    def commit_to_db(cls, db_session: Session, model: any):
+    def commit_to_db(cls, db_session: Session, model=None):
         try:
-            db_session.add(model)
+            if model is None:
+                db_session.commit()
+            else:
+                db_session.add(model)
             db_session.commit()
             db_session.refresh(model)
             return model
@@ -29,8 +32,17 @@ class CRUDOperations(DBOperations):
         return cls.commit_to_db(db_session=db_session, model=model)
 
     @classmethod
-    def get(cls, db_session: Session, model: any, model_id: int):
-        return db_session.get(model, model_id)
+    def get(cls, db_session: Session, model: any, model_id=None, field=None, value=None):
+        if model_id:
+            return db_session.get(model, model_id)
+        else:
+            if not field:
+                raise Exception(f'No field provided to query {model} by')
+            if not value:
+                raise Exception(f'No value provided to query {model} by')
+
+            # I don't like this...
+            return eval(f"db_session.query(model).filter(model.{field} == '{value}').first()")
 
     @classmethod
     def update_by_id(cls, db_session: Session, model: any, model_id: int,
@@ -46,5 +58,7 @@ class CRUDOperations(DBOperations):
         return cls.commit_to_db(db_session=db_session, model=db_model)
 
     @classmethod
-    def delete(cls, db_session: Session, model_id: int):
-        pass
+    def delete(cls, db_session: Session, model: any, model_id: int):
+        instance = db_session.get(model, model_id)
+        db_session.delete(instance)
+        return cls.commit_to_db(db_session=db_session)

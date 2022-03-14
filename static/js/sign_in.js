@@ -1,4 +1,33 @@
 
+// This code shows the "success" toast when a new account has been created
+// and the user is redirected to this page again.
+var urlParams = new URLSearchParams(location.search);
+created_account_successfully_redirect = urlParams.get('create_success');
+
+if (created_account_successfully_redirect) {
+    show_toast('success', 'Account created successfully');
+}
+
+
+function signIn(postData) {
+    resultHandlers = {
+        200: function(response) {
+            goToOrganisationsPage();
+        },
+        403: function(response) {
+            message = response.responseJSON.detail;
+            show_toast('error', message);
+        }
+    }
+
+    request("POST", "/account/sign-in", postData, resultHandlers);
+};
+
+function goToOrganisationsPage() {
+    window.location.href = '/account/organisations';
+};
+
+
 $('#signin_form').submit(function(e){
     e.preventDefault();
     var formData = new FormData(document.querySelector('form'))
@@ -8,20 +37,7 @@ $('#signin_form').submit(function(e){
         'password': formData.get('password'),
     }
 
-    $.ajax({
-        url: '/account/sign-in',
-        type: "POST",
-        data: JSON.stringify(postData),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        success: function(res) {
-            window.location.href = res.redirect_url;
-        },
-        error: function(res) {
-            // Check for status codes
-            alert('Error occurred!');
-        }
-    });
+    signIn(postData);
     return false;
 });
 

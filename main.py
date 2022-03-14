@@ -6,8 +6,11 @@ from configs import (
     APPLICATION_PORT,
 )
 
-from app.routers import account_router
-from app.routers import webhooks_router
+from app.routers import (
+    account_router,
+    organisation_router,
+)
+
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
@@ -30,9 +33,8 @@ app.add_middleware(
 )
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
-
 app.include_router(account_router)
-app.include_router(webhooks_router)
+app.include_router(organisation_router)
 
 
 def initialize_database():

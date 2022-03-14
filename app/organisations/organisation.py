@@ -52,6 +52,11 @@ class Organisation(DatabaseInterface):
         # - Remove OrganisationUser
         super().delete(db_session=db_session, model_id=org_id)
 
+    @classmethod
+    def get_by_domain(cls, db_session: Session, domain: str):
+        org_schema = super().get_by(db_session=db_session, field="domain", value=domain)
+        return cls(db_session=db_session, org=org_schema)
+
     def __init__(self, db_session: Session, org: OrganisationSchema):
         self.db_session = db_session
         self.organisation = org
@@ -70,6 +75,9 @@ class Organisation(DatabaseInterface):
         if not db_model.id:
             return False
         return True
+
+    def remove_user(self, user: User) -> bool:
+        raise NotImplemented
 
     def invite_new_user(self, user: User) -> bool:
         if self.add_user(user=user):

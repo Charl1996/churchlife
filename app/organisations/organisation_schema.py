@@ -22,3 +22,11 @@ class Organisation(OrganisationBase):
 
     class Config:
         orm_mode = True
+
+
+# class OrganisationView(OrganisationBase):
+#     logo: any
+#     events: List[object]
+#
+#     class Config:
+#         orm_mode = True

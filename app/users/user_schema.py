@@ -24,3 +24,12 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
+
+
+class UserOrganisationView(BaseModel):
+    domain: str
+    name: str
+    # logo: any
+
+    class Config:
+        orm_mode = True

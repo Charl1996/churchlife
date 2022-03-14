@@ -2,8 +2,6 @@
 function show_toast(toast_type, message) {
     var toast_id;
 
-    console.log(toast_type);
-
     if (toast_type == 'success') {
         toast_id = '#success_toast';
     }
@@ -18,6 +16,6 @@ function show_toast(toast_type, message) {
 
     setTimeout(function() {
         $(toast_id).fadeOut('fast');
-    }, 5000);
+    }, 3000);
 }
 

@@ -1,29 +1,23 @@
 from functools import wraps
-from fastapi.templating import Jinja2Templates
-
-# Configure templates
-view_templates = Jinja2Templates(directory="templates")
+from app.routers.helper import render_template
+from fastapi.responses import RedirectResponse
 
 
 def view_request(view_function):
     @wraps(view_function)
     def wrapper(*args, **kwargs):
         request = kwargs['request']
-        template, data = view_function(*args, **kwargs)
 
-        return view_templates.TemplateResponse(
-            template,
-            context={
-                'request': request,
-                **data,
-            },
-        )
-    return wrapper
+        response = view_function(*args, **kwargs)
 
+        if type(response) == RedirectResponse:
+            return response
 
-def session_request(view_function):
-    @wraps
-    def wrapper(*args, **kwargs):
-        # Get the session token and check if user is logged in
-        return True
+        template = response.get('template')
+        data = response.get('data', {})
+        if template:
+            return render_template(request, template, data)
+        else:
+            return response
+
     return wrapper

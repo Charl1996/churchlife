@@ -38,3 +38,9 @@ POSTGRES_USER = configs['postgres']['Username']
 POSTGRES_PASSWORD = configs['postgres']['Password']
 POSTGRES_PORT = configs['postgres']['Port']
 POSTGRES_DATABASE = configs['postgres']['Database']
+
+
+JWT_SECRET = configs['JWT']['Secret']
+JWT_ALGORITHM = configs['JWT']['Algorithm']
+
+JWT_COOKIE = 'churchlife_user_jwt'

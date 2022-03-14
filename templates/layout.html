@@ -6,33 +6,61 @@
     <div style="height: 5%; padding-bottom: 1em; padding-left: 1em;">
       <img class="ui middle aligned tiny circular image" src="/static/churchlife.png">
       <span style="display: inline-block; padding: 1em; padding-top: 1.5em">
-        <h1> {{ organisation }} </h1>
+        <h1> {{ organisation.name }} </h1>
       </span>
     </div>
-    <div class="right menu">
-      <a class="ui item">
-        Logout
-      </a>
+  </div>
+
+  <div class="ui grid">
+    <div class="two wide column">
+      <div class="ui secondary vertical menu">
+        <a class="item">
+          <div class="ui">
+            <i class="dashboard icon"></i>
+            Dashboard
+          </div>
+        </a>
+        <a class="item">
+          <div class="ui">
+            <i class="calendar alternate outline icon"></i>
+            Events
+          </div>
+        </a>
+        <a class="item">
+          <div class="ui">
+            <i class="bell icon"></i>
+            Notifications
+          </div>
+        </a>
+        <div class="ui divider"></div>
+        <a class="active item">
+          <div class="ui">
+            <i class="setting icon"></i>
+            Settings
+          </div>
+        </a>
+        <a class="item">
+          <div class="ui">
+            <i class="user icon"></i>
+            Your Profile
+          </div>
+        </a>
+        <a class="ui item">
+          <div class="ui" onclick="logOut()">
+            <i class="logout icon"></i>
+            Logout
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="six wide column">
+        {% block content %}
+        {% endblock %}
     </div>
   </div>
 
-  <div class="ui secondary vertical menu">
-    <a class="active item">
-      Dashboard
-    </a>
-    <div class="ui divider"></div>
-    <a class="item">
-      Account
-    </a>
-    <a class="item disabled">
-      Facial Recognition
-    </a>
-    <a class="item">
-      Integrations
-    </a>
-  </div>
-
-  {% block content %}
-  {% endblock %}
+    {% block javascript %}
+        <script src="{{ url_for('static', path='js/layout.js') }}"></script>
+    {% endblock %}
 
 {% endblock %}

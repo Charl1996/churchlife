@@ -19,6 +19,16 @@ class DatabaseInterface(CRUDOperations):
         return cls.as_schema_model(db_model)
 
     @classmethod
+    def get_by(cls, db_session: Session, field: str, value: any):
+        db_model = super().get(
+            db_session=db_session,
+            model=cls.database_model(),
+            field=field,
+            value=value,
+        )
+        return cls.as_schema_model(db_model)
+
+    @classmethod
     def update_by_id(cls, db_session: Session, model_id: int, model_changes: any):
         db_model = super().update_by_id(
             db_session=db_session,
@@ -27,6 +37,15 @@ class DatabaseInterface(CRUDOperations):
             model_changes=model_changes,
         )
         return cls.as_schema_model(db_model)
+
+    @classmethod
+    def delete(cls, db_session: Session, model_id: int):
+        result = super().delete(
+            db_session=db_session,
+            model=cls.database_model(),
+            model_id=model_id
+        )
+        return result
 
     @classmethod
     def database_model(cls, *args, **kwargs):
@@ -39,3 +58,13 @@ class DatabaseInterface(CRUDOperations):
     @classmethod
     def as_schema_model(cls, database_model: any):
         return cls.schema_model().from_orm(database_model)
+
+    @classmethod
+    def get_email_password(cls, db_session: Session, email: str):
+        db_model = super().get(
+            db_session=db_session,
+            model=cls.database_model(),
+            field='email',
+            value=email,
+        )
+        return db_model.password

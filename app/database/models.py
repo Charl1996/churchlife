@@ -23,7 +23,7 @@ class Organisation(Base):
     __tablename__ = 'organisations'
 
     id = Column(Integer, primary_key=True, index=True)
-    domain = name = Column(String, unique=True, index=True)
+    domain = Column(String, unique=True, index=True)
     name = Column(String)
 
     users = relationship(
