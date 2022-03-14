@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <div class="ui container center aligned">
+        <div class="ui menu">
+          <a class="header item">
+            Details
+          </a>
+        </div>
+
+        <div class="ui center aligned">
+<!--            <form id="organisationSettings" class="ui form container center aligned" style="width: 50%;">-->
+<!--                <div class="ui container center aligned">-->
+<!--                  <div class="field">-->
+<!--                    <label class="ui container left aligned">Domain</label>-->
+<!--                    <input type="text" name="domain" placeholder="Domain" readonly="">-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div style="padding-top: 2em;">-->
+<!--                    <div class="ui container center aligned" style="width: 13%">-->
+<!--                        <button class="ui button primary" type="submit">Update</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </form>-->
+        </div>
+    </div>
+
+    {% block javascript %}
+        <script src="{{ url_for('static', path='js/layout_content/settings.js') }}"></script>
+    {% endblock %}
+{% endblock %}

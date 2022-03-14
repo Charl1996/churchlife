@@ -2,39 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/routers/organisation/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routers/organisation/router.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/layout.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/organisations.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/utilities.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/organisations.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/layout_content/database.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/layout_content/messaging.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/layout_content/settings.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/layout_content/users.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database/interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/interface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database/operations.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/operations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/organisations/organisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/organisations/organisation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/organisations/organisation_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/organisations/organisation_schema.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/account/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/account/router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/decorators.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/webhook/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/helper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/webhook/router.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/security/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/security/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/users/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/users/user.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/users/user_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/users/user_schema.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs.py" beforeDir="false" afterPath="$PROJECT_DIR$/configs.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/churchlife.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/components/toast.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/components/toast.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/create_account.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/create_account.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/sign_in.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/sign_in.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/helper.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/organisation/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/organisation/router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/services/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout_content/settings.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/utilities.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/utilities.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/components/toast.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/components/toast.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/create_account.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/create_account.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/layout_content/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout_content/integrations.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,11 +55,12 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/routers/organisation" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/layout_content" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates/layout_content" />
       <recent name="$PROJECT_DIR$/app/routers/organisation" />
     </key>
     <key name="MoveFile.RECENT_KEYS">

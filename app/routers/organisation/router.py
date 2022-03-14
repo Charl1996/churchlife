@@ -23,3 +23,71 @@ def dashboard(request: Request, domain: str, user: User = Depends(get_current_us
             },
         }
     }
+
+
+@router.get('/{domain}/settings')
+@view_request
+def settings(request: Request, domain: str, user: User = Depends(get_current_user)):
+    with DBSession() as db_session:
+        org = Organisation.get_by_domain(db_session=db_session, domain=domain)
+
+    return {
+        'template': '/layout_content/settings.html',
+        'data': {
+            'organisation': {
+                'name': org.fields.name,
+                # 'logo': org.fields.logo,
+            }
+        }
+    }
+
+
+@router.get('/{domain}/users')
+@view_request
+def users(request: Request, domain: str, user: User = Depends(get_current_user)):
+    with DBSession() as db_session:
+        org = Organisation.get_by_domain(db_session=db_session, domain=domain)
+
+    return {
+        'template': '/layout_content/users.html',
+        'data': {
+            'organisation': {
+                'name': org.fields.name,
+                # 'logo': org.fields.logo,
+            }
+        }
+    }
+
+
+@router.get('/{domain}/database')
+@view_request
+def database(request: Request, domain: str, user: User = Depends(get_current_user)):
+    with DBSession() as db_session:
+        org = Organisation.get_by_domain(db_session=db_session, domain=domain)
+
+    return {
+        'template': '/layout_content/database.html',
+        'data': {
+            'organisation': {
+                'name': org.fields.name,
+                # 'logo': org.fields.logo,
+            }
+        }
+    }
+
+
+@router.get('/{domain}/messaging')
+@view_request
+def messaging(request: Request, domain: str, user: User = Depends(get_current_user)):
+    with DBSession() as db_session:
+        org = Organisation.get_by_domain(db_session=db_session, domain=domain)
+
+    return {
+        'template': '/layout_content/messaging.html',
+        'data': {
+            'organisation': {
+                'name': org.fields.name,
+                # 'logo': org.fields.logo,
+            }
+        }
+    }

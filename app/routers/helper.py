@@ -24,6 +24,3 @@ async def get_current_user(jwtoken: str = Depends(JWTCookieAuth())):
         # This is currently email; change to uuid
         user = User.get_by_email(db_session=session, email=payload['user_email'])
         return user
-
-
-

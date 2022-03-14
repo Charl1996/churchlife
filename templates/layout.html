@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block layout %}
+  <script src="{{ url_for('static', path='js/layout.js') }}"></script>
 
-  <div class="ui secondary pointing menu">
+  <div class="ui secondary pointing menu" style="height: 10%;">
     <div style="height: 5%; padding-bottom: 1em; padding-left: 1em;">
       <img class="ui middle aligned tiny circular image" src="/static/churchlife.png">
       <span style="display: inline-block; padding: 1em; padding-top: 1.5em">
@@ -11,37 +12,68 @@
     </div>
   </div>
 
-  <div class="ui grid">
+  <div class="ui grid" style="height: 90%;">
+
     <div class="two wide column">
       <div class="ui secondary vertical menu">
         <a class="item">
-          <div class="ui">
-            <i class="dashboard icon"></i>
-            Dashboard
+        <div class="ui header">
+          Dashboard
+        </div>
+        </a>
+        <a class="item">
+          <div id="summaryItemId" class="ui">
+            <i class="clipboard list icon"></i>
+            Summary
           </div>
         </a>
         <a class="item">
-          <div class="ui">
+          <div id="eventsItemId" class="ui" onclick="eventsPage()">
             <i class="calendar alternate outline icon"></i>
             Events
           </div>
         </a>
         <a class="item">
-          <div class="ui">
-            <i class="bell icon"></i>
-            Notifications
+          <div id="trackingItemId" class="ui" onclick="notificationsPage()">
+            <i class="eye icon"></i>
+            Tracking
           </div>
         </a>
         <div class="ui divider"></div>
-        <a class="active item">
-          <div class="ui">
+        <a class="item">
+          <div class="ui header">
+            Organisation
+          </div>
+        </a>
+        <a class="item">
+          <div id="settingsItemId" class="ui" onclick="settingsPage()">
             <i class="setting icon"></i>
             Settings
           </div>
         </a>
         <a class="item">
-          <div class="ui">
-            <i class="user icon"></i>
+          <div id="usersItemId" class="ui" onclick="usersPage()">
+            <i class="users icon"></i>
+            Users
+          </div>
+        </a>
+        <a class="item">
+          <div id="databaseItemId" class="ui" onclick="databasePage()">
+            <i class="database icon"></i>
+            Database
+          </div>
+        </a>
+        <a class="item">
+          <div id="messagingItemId" class="ui" onclick="messagingPage()">
+            <i class="comments icon"></i>
+            Messaging
+          </div>
+        </a>
+        <div class="ui divider"></div>
+        <div style="position: absolute; bottom: 1em;">
+          <a class="item">
+          <div  class="ui" onclick="profilePage()">
+            <i class="user circle icon"></i>
             Your Profile
           </div>
         </a>
@@ -51,16 +83,13 @@
             Logout
           </div>
         </a>
+        </div>
       </div>
     </div>
-    <div class="six wide column">
+    <div class="thirteen wide column">
         {% block content %}
         {% endblock %}
     </div>
   </div>
-
-    {% block javascript %}
-        <script src="{{ url_for('static', path='js/layout.js') }}"></script>
-    {% endblock %}
 
 {% endblock %}

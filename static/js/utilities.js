@@ -15,6 +15,14 @@ function getCookie(name) {
     }
 };
 
+function currentDomain() {
+    return localStorage.getItem('domain');
+}
+
+function setCurrentDomain(domain) {
+    localStorage.setItem('domain', domain);
+}
+
 
 function request(method, url, data = null, resultHandlers = {}, headers = null) {
     if (data != null) {
