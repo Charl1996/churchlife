@@ -42,7 +42,10 @@ class CRUDOperations(DBOperations):
                 raise Exception(f'No value provided to query {model} by')
 
             # I don't like this...
-            return eval(f"db_session.query(model).filter(model.{field} == '{value}').first()")
+            result = eval(f"db_session.query(model).filter(model.{field} == '{value}').first()")
+            if not result:
+                return None
+            return result
 
     @classmethod
     def update_by_id(cls, db_session: Session, model: any, model_id: int,

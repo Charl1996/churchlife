@@ -3,7 +3,7 @@ from fastapi import Request, HTTPException, Depends
 from fastapi.responses import JSONResponse, RedirectResponse
 
 from postgresql import DBSession
-from app.database.exceptions import DuplicateResourceError
+from app.database.exceptions import DuplicateResourceError, ResourceNotFound
 from app.organisations import Organisation
 from app.users import User
 
@@ -65,7 +65,12 @@ async def sign_in(request: Request):
     data = await request.json()
 
     with DBSession() as db_session:
-        jwt = User.log_in(db_session, data['email'], data['password'])
+
+        try:
+            jwt = User.log_in(db_session, data['email'], data['password'])
+        except ResourceNotFound:
+            jwt = None
+
         if jwt is None:
             raise HTTPException(status_code=403, detail='Invalid credentials')
 

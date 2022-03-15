@@ -44,6 +44,8 @@ class Organisation(DatabaseInterface):
     @classmethod
     def get(cls, db_session: Session, org_id: int):
         org_schema = super().get(db_session=db_session, model_id=org_id)
+        if not org_schema:
+            return None
         return cls(db_session=db_session, org=org_schema)
 
     @classmethod
@@ -55,6 +57,8 @@ class Organisation(DatabaseInterface):
     @classmethod
     def get_by_domain(cls, db_session: Session, domain: str):
         org_schema = super().get_by(db_session=db_session, field="domain", value=domain)
+        if not org_schema:
+            return None
         return cls(db_session=db_session, org=org_schema)
 
     def __init__(self, db_session: Session, org: OrganisationSchema):

@@ -1,4 +1,4 @@
-from app.routers.decorators import view_request
+from app.routers.decorators import view_request, domain_request
 from fastapi import Request, Depends
 from app.organisations import Organisation
 from app.users import User
@@ -11,6 +11,7 @@ router = APIRouter()
 
 @router.get('/{domain}/dashboard')
 @view_request
+@domain_request
 def dashboard(request: Request, domain: str, user: User = Depends(get_current_user)):
     with DBSession() as db_session:
         org = Organisation.get_by_domain(db_session=db_session, domain=domain)
@@ -27,6 +28,7 @@ def dashboard(request: Request, domain: str, user: User = Depends(get_current_us
 
 @router.get('/{domain}/settings')
 @view_request
+@domain_request
 def settings(request: Request, domain: str, user: User = Depends(get_current_user)):
     with DBSession() as db_session:
         org = Organisation.get_by_domain(db_session=db_session, domain=domain)
@@ -44,6 +46,7 @@ def settings(request: Request, domain: str, user: User = Depends(get_current_use
 
 @router.get('/{domain}/users')
 @view_request
+@domain_request
 def users(request: Request, domain: str, user: User = Depends(get_current_user)):
     with DBSession() as db_session:
         org = Organisation.get_by_domain(db_session=db_session, domain=domain)
@@ -61,6 +64,7 @@ def users(request: Request, domain: str, user: User = Depends(get_current_user))
 
 @router.get('/{domain}/database')
 @view_request
+@domain_request
 def database(request: Request, domain: str, user: User = Depends(get_current_user)):
     with DBSession() as db_session:
         org = Organisation.get_by_domain(db_session=db_session, domain=domain)
@@ -78,6 +82,7 @@ def database(request: Request, domain: str, user: User = Depends(get_current_use
 
 @router.get('/{domain}/messaging')
 @view_request
+@domain_request
 def messaging(request: Request, domain: str, user: User = Depends(get_current_user)):
     with DBSession() as db_session:
         org = Organisation.get_by_domain(db_session=db_session, domain=domain)

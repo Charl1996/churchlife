@@ -12,6 +12,13 @@ class UserCreate(UserBase):
     password: str
 
 
+class UserLogin(BaseModel):
+    password: str
+
+    class Config:
+        orm_mode = True
+
+
 class UserUpdate(BaseModel):
     last_name: Optional[str] = None
     email: Optional[str] = None

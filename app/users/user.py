@@ -2,11 +2,14 @@ from sqlalchemy.orm import Session
 from app.database.interface import DatabaseInterface
 
 from app.database import User as UserModel
+from app.database import OrganisationsUsers
 from app.users.user_schema import (
     UserCreate,
+    UserLogin,
     User as UserSchema,
     UserOrganisationView,
 )
+from app.organisations import Organisation
 from app.security.utils import (
     hash_string,
     check_password
@@ -59,8 +62,8 @@ class User(DatabaseInterface):
 
     @classmethod
     def check_credentials(cls, db_session: Session, email: str, password: str) -> bool:
-        db_password = super().get_email_password(db_session=db_session, email=email)
-        return check_password(password=password, hashed_password=db_password)
+        user = super().get_by(db_session=db_session, field='email', value=email, schema=UserLogin, raise_error=True)
+        return check_password(password=password, hashed_password=user.password)
 
     @classmethod
     def log_in(cls, db_session: Session, email: str, password: str):
@@ -84,3 +87,13 @@ class User(DatabaseInterface):
     @property
     def organisations(self):
         return [UserOrganisationView.from_orm(org) for org in self.fields.organisations]
+
+    def belongs_to_domain(self, domain: str) -> bool:
+        org = Organisation.get_by_domain(db_session=self.db_session, domain=domain)
+        if not org:
+            return False
+
+        organisation_user = self.db_session.query(OrganisationsUsers)\
+            .filter(OrganisationsUsers.user_id == self.fields.id and OrganisationsUsers.organisation_id == org.id)
+
+        return True if organisation_user else False

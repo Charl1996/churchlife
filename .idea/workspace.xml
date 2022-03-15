@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/layout_content/database.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/layout_content/messaging.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/layout_content/settings.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/layout_content/users.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/helper.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/helper.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/organisation/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/organisation/router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routers/services/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout_content/settings.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/utilities.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/utilities.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout_content/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/dashboard.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

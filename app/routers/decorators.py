@@ -1,6 +1,7 @@
 from functools import wraps
 from app.routers.helper import render_template
 from fastapi.responses import RedirectResponse
+from fastapi.exceptions import HTTPException
 
 
 def view_request(view_function):
@@ -20,4 +21,17 @@ def view_request(view_function):
         else:
             return response
 
+    return wrapper
+
+
+def domain_request(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        domain = kwargs.get('domain')
+        user = kwargs.get('user')
+
+        if not user.belongs_to_domain(domain):
+            raise HTTPException(status_code=403, detail='User does not have access to domain')
+
+        return func(*args, **kwargs)
     return wrapper

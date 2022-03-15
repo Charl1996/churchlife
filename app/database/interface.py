@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 from app.database.operations import CRUDOperations
+from app.database.exceptions import ResourceNotFound
 
 
 class DatabaseInterface(CRUDOperations):
@@ -10,22 +11,32 @@ class DatabaseInterface(CRUDOperations):
         return cls.as_schema_model(db_model)
 
     @classmethod
-    def get(cls, db_session: Session, model_id: int):
+    def get(cls, db_session: Session, model_id: int, raise_error=False):
         db_model = super().get(
             db_session=db_session,
             model=cls.database_model(),
             model_id=model_id,
         )
+
+        if raise_error and db_model is None:
+            raise ResourceNotFound
+
         return cls.as_schema_model(db_model)
 
     @classmethod
-    def get_by(cls, db_session: Session, field: str, value: any):
+    def get_by(cls, db_session: Session, field: str, value: any, schema=None, raise_error=False):
         db_model = super().get(
             db_session=db_session,
             model=cls.database_model(),
             field=field,
             value=value,
         )
+
+        if raise_error and db_model is None:
+            raise ResourceNotFound
+
+        if schema:
+            return cls.as_schema_model(db_model, schema=schema)
         return cls.as_schema_model(db_model)
 
     @classmethod
@@ -56,15 +67,10 @@ class DatabaseInterface(CRUDOperations):
         raise NotImplemented
 
     @classmethod
-    def as_schema_model(cls, database_model: any):
-        return cls.schema_model().from_orm(database_model)
+    def as_schema_model(cls, database_model: any, schema=None):
+        if not database_model:
+            return None
 
-    @classmethod
-    def get_email_password(cls, db_session: Session, email: str):
-        db_model = super().get(
-            db_session=db_session,
-            model=cls.database_model(),
-            field='email',
-            value=email,
-        )
-        return db_model.password
+        if schema is not None:
+            return schema.from_orm(database_model)
+        return cls.schema_model().from_orm(database_model)

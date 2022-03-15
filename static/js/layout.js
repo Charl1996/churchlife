@@ -2,6 +2,9 @@
 domain = window.location.pathname.split('/')[1];
 setCurrentDomain(domain);
 
+// Instead of redirecting, look into just making GET calls for data
+// and storing it in browser?
+
 function settingsPage() {
     window.location.href = "/" + currentDomain() + "/settings";
 };
