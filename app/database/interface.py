@@ -11,7 +11,12 @@ class DatabaseInterface(CRUDOperations):
         return cls.as_schema_model(db_model)
 
     @classmethod
-    def get(cls, db_session: Session, model_id: int, raise_error=False):
+    def get(
+            cls,
+            db_session: Session,
+            model_id: int,
+            raise_error=False,
+    ):
         db_model = super().get(
             db_session=db_session,
             model=cls.database_model(),
@@ -24,12 +29,21 @@ class DatabaseInterface(CRUDOperations):
         return cls.as_schema_model(db_model)
 
     @classmethod
-    def get_by(cls, db_session: Session, field: str, value: any, schema=None, raise_error=False):
+    def get_by(
+            cls,
+            db_session: Session,
+            field=None,
+            value=None,
+            schema=None,
+            raise_error=False,
+            criteria=None,
+    ):
         db_model = super().get(
             db_session=db_session,
             model=cls.database_model(),
             field=field,
             value=value,
+            criteria=criteria,
         )
 
         if raise_error and db_model is None:
@@ -38,6 +52,26 @@ class DatabaseInterface(CRUDOperations):
         if schema:
             return cls.as_schema_model(db_model, schema=schema)
         return cls.as_schema_model(db_model)
+
+    @classmethod
+    def get_count(
+            cls,
+            db_session: Session,
+            field=None,
+            value=None,
+            model=None,
+            criteria=None,
+    ):
+        db_count = super().get(
+            db_session=db_session,
+            model=model or cls.database_model(),
+            field=field,
+            value=value,
+            criteria=criteria,
+            count=True,
+        )
+
+        return db_count
 
     @classmethod
     def update_by_id(cls, db_session: Session, model_id: int, model_changes: any):

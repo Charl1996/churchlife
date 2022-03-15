@@ -2,27 +2,97 @@
 domain = window.location.pathname.split('/')[1];
 setCurrentDomain(domain);
 
-// Instead of redirecting, look into just making GET calls for data
-// and storing it in browser?
+function summaryPage() {
+    var url = "/" + currentDomain() + "/summary";
+
+    var requestHandlers = {
+        200: function(data) {
+            $("#content").html(data);
+        }
+    };
+
+    request("GET", url, null, requestHandlers)
+};
+
+
+function eventsPage() {
+    var url = "/" + currentDomain() + "/events";
+
+    var requestHandlers = {
+        200: function(data) {
+            $("#content").html(data);
+        }
+    };
+
+    request("GET", url, null, requestHandlers)
+};
+
+
+function trackingPage() {
+    var url = "/" + currentDomain() + "/tracking";
+
+    var requestHandlers = {
+        200: function(data) {
+            $("#content").html(data);
+        }
+    };
+
+    request("GET", url, null, requestHandlers)
+};
+
 
 function settingsPage() {
-    window.location.href = "/" + currentDomain() + "/settings";
+    var url = "/" + currentDomain() + "/settings";
+
+    var requestHandlers = {
+        200: function(data) {
+            $("#content").html(data);
+        }
+    };
+
+    request("GET", url, null, requestHandlers)
 };
 
 function usersPage() {
-    window.location.href = "/" + currentDomain() + "/users";
+    var url = "/" + currentDomain() + "/users";
+
+    var requestHandlers = {
+        200: function(data) {
+            $("#content").html(data);
+        }
+    };
+
+    request("GET", url, null, requestHandlers)
 };
 
 function databasePage() {
-    window.location.href = "/" + currentDomain() + "/database";
+    var url = "/" + currentDomain() + "/database";
+
+    var requestHandlers = {
+        200: function(data) {
+            $("#content").html(data);
+        }
+    };
+
+    request("GET", url, null, requestHandlers)
+
 };
 
 function messagingPage() {
-    window.location.href = "/" + currentDomain() + "/messaging";
+    var url = "/" + currentDomain() + "/messaging";
+
+    var requestHandlers = {
+        200: function(data) {
+            $("#content").html(data);
+        }
+    };
+
+    request("GET", url, null, requestHandlers)
 };
 
 function profilePage() {
-    window.location.href = '/user/account/';
+    showToast('warning', 'Not implemented yet!');
+//    window.location.href = '/user/account/';
 };
 
 function logOut() {
@@ -30,7 +100,7 @@ function logOut() {
 
     requestHandlers = {
         200: function() {
-            window.location.href = '/account/sign-in';
+            navigateToLogin();
         }
     };
     request("POST", "/account/sign-out", null, requestHandlers)

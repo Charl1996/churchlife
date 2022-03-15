@@ -32,9 +32,17 @@ class CRUDOperations(DBOperations):
         return cls.commit_to_db(db_session=db_session, model=model)
 
     @classmethod
-    def get(cls, db_session: Session, model: any, model_id=None, field=None, value=None):
+    def get(cls, db_session: Session, model: any, model_id=None, field=None, value=None, criteria=None, count=False):
         if model_id:
-            return db_session.get(model, model_id)
+            result = db_session.get(model, model_id)
+        elif criteria:
+            criteria_string = cls._get_criteria_string(criteria)
+
+            # I don't like this...
+            action = 'first'
+            if count:
+                action = 'count'
+            result = eval(f"db_session.query(model).filter({criteria_string}).{action}()")
         else:
             if not field:
                 raise Exception(f'No field provided to query {model} by')
@@ -42,10 +50,14 @@ class CRUDOperations(DBOperations):
                 raise Exception(f'No value provided to query {model} by')
 
             # I don't like this...
-            result = eval(f"db_session.query(model).filter(model.{field} == '{value}').first()")
-            if not result:
-                return None
-            return result
+            action = 'first'
+            if count:
+                action = 'count'
+            result = eval(f"db_session.query(model).filter(model.{field} == '{value}').{action}()")
+
+        if not result:
+            return 0 if count else None
+        return result
 
     @classmethod
     def update_by_id(cls, db_session: Session, model: any, model_id: int,
@@ -65,3 +77,16 @@ class CRUDOperations(DBOperations):
         instance = db_session.get(model, model_id)
         db_session.delete(instance)
         return cls.commit_to_db(db_session=db_session)
+
+    @classmethod
+    def _get_criteria_string(cls, criteria: dict) -> str:
+        def criterion_string(field_, value_):
+            return f"model.{field_} == '{value_}'"
+
+        criteria_string = ''
+        for field, value in criteria.items():
+            if criteria_string == '':
+                criteria_string = criterion_string(field, value)
+            else:
+                criteria_string = f'{criteria_string}, {criterion_string(field, value)}'
+        return criteria_string

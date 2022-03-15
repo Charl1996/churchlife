@@ -36,11 +36,21 @@ function request(method, url, data = null, resultHandlers = {}, headers = null) 
         contentType: 'application/json; charset=utf-8',
         headers: headers,
         fail: function() {
-            show_toast('error', "Something went wrong");
+            showToast('error', "Request failed");
         },
-        error: function() {
-            show_toast('error', "Something went wrong");
+        error: function(response, _, requestMessage) {
+            if (response.status == 403) {
+                navigateToLogin();
+            }
+            else {
+                showToast('error', requestMessage);
+            }
         },
         statusCode: resultHandlers
     });
+}
+
+
+function navigateToLogin() {
+    window.location.href = '/account/sign-in';
 }

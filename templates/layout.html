@@ -22,7 +22,7 @@
         </div>
         </a>
         <a class="item">
-          <div id="summaryItemId" class="ui">
+          <div id="summaryItemId" class="ui" onclick="summaryPage()">
             <i class="clipboard list icon"></i>
             Summary
           </div>
@@ -34,7 +34,7 @@
           </div>
         </a>
         <a class="item">
-          <div id="trackingItemId" class="ui" onclick="notificationsPage()">
+          <div id="trackingItemId" class="ui" onclick="trackingPage()">
             <i class="eye icon"></i>
             Tracking
           </div>
@@ -87,8 +87,9 @@
       </div>
     </div>
     <div class="thirteen wide column">
-        {% block content %}
-        {% endblock %}
+      <div id="content">
+        {% set path = 'layout_content/%s' % initial_page %}{% include path %}
+      </div>
     </div>
   </div>
 

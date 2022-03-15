@@ -86,6 +86,21 @@ def sign_out(request: Request):
     return response
 
 
+@router.get('/account/user')
+@view_request
+def user_profile(request: Request, user: User = Depends(get_current_user)):
+    return {
+        'template': "user_profile.html",
+        'data': {
+            'user': {
+                'first_name': user.fields.first_name,
+                'last_name': user.fields.last_name,
+                'email': user.fields.email,
+            },
+        }
+    }
+
+
 @router.get('/account/organisations')
 @view_request
 def show_organisations(request: Request, user: User = Depends(get_current_user)):

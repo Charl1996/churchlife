@@ -93,7 +93,13 @@ class User(DatabaseInterface):
         if not org:
             return False
 
-        organisation_user = self.db_session.query(OrganisationsUsers)\
-            .filter(OrganisationsUsers.user_id == self.fields.id and OrganisationsUsers.organisation_id == org.id)
+        organisation_user_count = super().get_count(
+            db_session=self.db_session,
+            criteria={
+                'user_id': self.fields.id,
+                'organisation_id': org.fields.id,
+            },
+            model=OrganisationsUsers,
+        )
 
-        return True if organisation_user else False
+        return True if organisation_user_count == 1 else False

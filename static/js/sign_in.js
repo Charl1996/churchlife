@@ -5,7 +5,7 @@ var urlParams = new URLSearchParams(location.search);
 created_account_successfully_redirect = urlParams.get('create_success');
 
 if (created_account_successfully_redirect) {
-    show_toast('success', 'Account created successfully');
+    showToast('success', 'Account created successfully');
 }
 
 
@@ -16,7 +16,7 @@ function signIn(postData) {
         },
         403: function(response) {
             message = response.responseJSON.detail;
-            show_toast('error', message);
+            showToast('error', message);
         }
     }
 

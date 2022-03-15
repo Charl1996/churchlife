@@ -1,5 +1,5 @@
 
-function show_toast(toast_type, message) {
+function showToast(toast_type, message) {
     var toast_id;
 
     if (toast_type == 'success') {

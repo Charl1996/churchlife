@@ -7,11 +7,12 @@ $('#account_create_form').submit(function(e){
     var confirmPassword = formData.get('confirm-password');
 
     if (password != confirmPassword) {
-        show_toast('error', "Passwords don't match");
+        showToast('error', "Passwords don't match");
         $("#password-confirm").val('');
         $("#password").val('');
     }
     else {
+        debugger;
         var postData = {
             'user': {
                 'first_name': formData.get('first-name'),
@@ -33,7 +34,7 @@ $('#account_create_form').submit(function(e){
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             fail: function() {
-                show_toast('error', "Something went wrong");
+                showToast('error', "Something went wrong");
             },
             statusCode: {
                 200: function(response) {
@@ -41,7 +42,7 @@ $('#account_create_form').submit(function(e){
                 },
                 422: function(response) {
                     message = response.responseJSON.detail;
-                    show_toast('error', message);
+                    showToast('error', message);
                 }
             }
         });
@@ -50,7 +51,7 @@ $('#account_create_form').submit(function(e){
 });
 
 $('#sign_in_button').click(function () {
-    window.location.href = '/account/sign-in';
+    navigateToLogin();
 });
 
 function readURL(input) {
