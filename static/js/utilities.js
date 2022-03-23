@@ -40,7 +40,7 @@ function request(method, url, data = null, resultHandlers = {}, headers = null) 
         },
         error: function(response, _, requestMessage) {
             if (response.status == 403) {
-                navigateToLogin();
+                showToast('error', response.responseJSON.detail);
             }
             else {
                 showToast('error', requestMessage);

@@ -5,10 +5,25 @@ from app.users import User
 from app.routers.helper import get_current_user
 from postgresql import DBSession
 from fastapi import APIRouter
+from fastapi.responses import JSONResponse
 from app.routers.helper import render_template
 
 
 router = APIRouter()
+
+
+@router.post('/{domain}/upload-logo')
+# @domain_request
+async def dashboard(request: Request, domain: str):
+    data = await request.form()
+    image_file = data['file']
+    image_bytes = await image_file.read()
+
+    with DBSession() as db_session:
+        organisation = Organisation.get_by_domain(db_session=db_session, domain=domain)
+        organisation.set_logo(image_bytes)
+
+    return JSONResponse(status_code=200)
 
 
 @router.get('/{domain}/dashboard')

@@ -1,5 +1,5 @@
 
-$('#account_create_form').submit(function(e){
+$('#account_create_form').submit(function(e) {
     e.preventDefault();
     var formData = new FormData(document.querySelector('form'))
 
@@ -12,7 +12,13 @@ $('#account_create_form').submit(function(e){
         $("#password").val('');
     }
     else {
-        debugger;
+        var uploadedFile = $('#logoImageInput')[0].files;
+        var logo;
+
+        if (uploadedFile.length > 0) {
+            logo = uploadedFile[0];
+        }
+
         var postData = {
             'user': {
                 'first_name': formData.get('first-name'),
@@ -23,31 +29,44 @@ $('#account_create_form').submit(function(e){
             'organisation': {
                 'name': formData.get('organisation'),
                 'domain': formData.get('domain'),
-                'logo': formData.get('logo'),  // This needs to be figured out
+                'logo': logo
             }
         }
 
-        $.ajax({
-            url: '/account/create',
-            type: "POST",
-            data: JSON.stringify(postData),
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            fail: function() {
-                showToast('error', "Something went wrong");
-            },
-            statusCode: {
-                200: function(response) {
-                    window.location.href = '/account/sign-in?create_success=1';
-                },
-                422: function(response) {
-                    message = response.responseJSON.detail;
-                    showToast('error', message);
+        var resultHandlers = {
+            200: function(response) {
+                if (logo) {
+                    var fd = new FormData();
+                    fd.append('file', logo);
+
+                    //  Upload organisation logo
+                    $.ajax({
+                        url: '/' + formData.get('domain') + '/upload-logo',
+                        type: "POST",
+                        data: fd,
+                        processData: false,
+                        contentType: false,
+                        statusCode: {
+                            200: function () {
+                                window.location.href = '/account/sign-in?create_success=1';
+                            }
+                        }
+                    });
                 }
+                else {
+                    window.location.href = '/account/sign-in?create_success=1';
+                }
+            },
+            422: function(response) {
+                message = response.responseJSON.detail;
+                showToast('error', message);
             }
-        });
+        };
+
+        request('POST', '/account/create', postData, resultHandlers);
+
+        return false;
     }
-    return false;
 });
 
 $('#sign_in_button').click(function () {

@@ -92,3 +92,6 @@ class Organisation(DatabaseInterface):
         else:
             return False
         return True
+
+    def set_logo(self, image_bytes):
+        pass
