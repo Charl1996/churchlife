@@ -1,10 +1,10 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Time, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Time, Boolean, JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
 
-SET_NULL = "SET NULL"
+SET_NULL = "SET NULL"  # will this delete the row instance or only set the key to null?
 
 
 class OrganisationsUsers(Base):
@@ -93,4 +93,34 @@ class EventSession(Base):
     event = relationship(
         'Event',
         back_populates='event_sessions'
+    )
+
+
+class ScheduleTrigger(Base):
+    __tablename__ = 'schedule_triggers'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, primary_key=True, index=True)
+    execute_date = Column(DateTime, nullable=False)
+
+    actions = relationship(
+        'Action',
+        back_populates='schedule_trigger'
+    )
+
+
+class Action(Base):
+    __tablename__ = 'actions'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, primary_key=True, index=True)
+    model_name = Column(String)
+    model_id = Column(Integer)
+    model_method = Column(String)
+    model_method_kwargs = Column(JSON)  # will contain the kwargs to the action_method
+    schedule_trigger_id = Column(Integer, ForeignKey('schedule_triggers.id', ondelete=SET_NULL), index=True)
+
+    schedule_trigger = relationship(
+        'ScheduleTrigger',
+        back_populates='actions'
     )
