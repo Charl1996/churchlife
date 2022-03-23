@@ -1,7 +1,8 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.declarative import declarative_base
 
-from postgresql import Base
+Base = declarative_base()
 
 
 class OrganisationsUsers(Base):

@@ -2,7 +2,7 @@ from app.routers.decorators import view_request
 from fastapi import Request, HTTPException, Depends
 from fastapi.responses import JSONResponse, RedirectResponse
 
-from postgresql import DBSession
+from fastapi_sqlalchemy import db
 from app.database.exceptions import DuplicateResourceError, ResourceNotFound
 from app.organisations import Organisation
 from app.users import User
@@ -27,31 +27,31 @@ def create_account(request: Request):
 @router.post('/account/create')
 async def create_account(request: Request):
     data = await request.json()
+    db_session = db.session
 
-    with DBSession() as db_session:
-        try:
-            user = User.create(db_session=db_session, data=data['user'])
-        except ValidationError as _error:
-            raise HTTPException(status_code=422, detail='Missing user data')
-        except DuplicateResourceError:
-            raise HTTPException(
-                status_code=422,
-                detail='Email already exists!'
-            )
+    try:
+        user = User.create(db_session=db_session, data=data['user'])
+    except ValidationError as _error:
+        raise HTTPException(status_code=422, detail='Missing user data')
+    except DuplicateResourceError:
+        raise HTTPException(
+            status_code=422,
+            detail='Email already exists!'
+        )
 
-        try:
-            organisation = Organisation.create(db_session=db_session, data=data['organisation'])
-        except ValidationError as _error:
-            raise HTTPException(status_code=422, detail='Missing organisation data')
-        except DuplicateResourceError:
-            User.delete(db_session=db_session, user_id=user.fields.id)
-            raise HTTPException(
-                status_code=422,
-                detail='Domain already exists!'
-            )
-        organisation.add_user(user)
+    try:
+        organisation = Organisation.create(db_session=db_session, data=data['organisation'])
+    except ValidationError as _error:
+        raise HTTPException(status_code=422, detail='Missing organisation data')
+    except DuplicateResourceError:
+        User.delete(db_session=db_session, user_id=user.fields.id)
+        raise HTTPException(
+            status_code=422,
+            detail='Domain already exists!'
+        )
+    organisation.add_user(user)
 
-        return JSONResponse(status_code=200)
+    return JSONResponse(status_code=200)
 
 
 @router.get('/account/sign-in')
@@ -63,16 +63,15 @@ def sign_in(request: Request):
 @router.post('/account/sign-in')
 async def sign_in(request: Request):
     data = await request.json()
+    db_session = db.session
 
-    with DBSession() as db_session:
+    try:
+        jwt = User.log_in(db_session, data['email'], data['password'])
+    except ResourceNotFound:
+        jwt = None
 
-        try:
-            jwt = User.log_in(db_session, data['email'], data['password'])
-        except ResourceNotFound:
-            jwt = None
-
-        if jwt is None:
-            raise HTTPException(status_code=403, detail='Invalid credentials')
+    if jwt is None:
+        raise HTTPException(status_code=403, detail='Invalid credentials')
 
     response = JSONResponse(status_code=200)
     response.set_cookie(key=JWT_COOKIE, value=jwt)

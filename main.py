@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from configs import (
     APPLICATION_HOST,
     APPLICATION_PORT,
+    SQLALCHEMY_DATABASE_URL,
 )
 
 from app.routers import (
@@ -15,6 +16,8 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
+from fastapi_sqlalchemy import DBSessionMiddleware
+
 
 app = FastAPI()
 
@@ -24,6 +27,7 @@ allowed_origins = [
     "http://localhost:8082",
 ]
 
+app.add_middleware(DBSessionMiddleware, db_url=SQLALCHEMY_DATABASE_URL)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
@@ -37,19 +41,12 @@ app.include_router(account_router)
 app.include_router(organisation_router)
 
 
-def initialize_database():
-    from postgresql import Base, engine
-    Base.metadata.create_all(bind=engine)
-
-
 @app.get('/')
 def root():
     return RedirectResponse(url='/account/sign-in')
 
 
 if __name__ == '__main__':
-    initialize_database()
-
     uvicorn.run(
         'main:app',
         host=APPLICATION_HOST,

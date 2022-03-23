@@ -39,6 +39,8 @@ POSTGRES_PASSWORD = configs['postgres']['Password']
 POSTGRES_PORT = configs['postgres']['Port']
 POSTGRES_DATABASE = configs['postgres']['Database']
 
+SQLALCHEMY_DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:{POSTGRES_PORT}/{POSTGRES_DATABASE}"
+
 
 JWT_SECRET = configs['JWT']['Secret']
 JWT_ALGORITHM = configs['JWT']['Algorithm']
