@@ -1,40 +1,41 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import PendingRollbackError, IntegrityError
 from app.database.exceptions import *
+from fastapi_sqlalchemy import db
 
 
 class DBOperations:
 
     @classmethod
-    def commit_to_db(cls, db_session: Session, model=None):
+    def commit_to_db(cls, model=None):
         try:
             if model is None:
-                db_session.commit()
+                db.session.commit()
             else:
-                db_session.add(model)
-            db_session.commit()
-            db_session.refresh(model)
+                db.session.add(model)
+            db.session.commit()
+            db.session.refresh(model)
             return model
         except IntegrityError:
-            db_session.rollback()
+            db.session.rollback()
             raise DuplicateResourceError
         except PendingRollbackError:
-            db_session.rollback()
-            cls.commit_to_db(db_session, model)
+            db.session.rollback()
+            cls.commit_to_db(db.session, model)
         except Exception:
-            db_session.rollback()
+            db.session.rollback()
 
 
 class CRUDOperations(DBOperations):
 
     @classmethod
-    def create(cls, db_session: Session, model: any):
-        return cls.commit_to_db(db_session=db_session, model=model)
+    def create(cls, model: any):
+        return cls.commit_to_db(model=model)
 
     @classmethod
-    def get(cls, db_session: Session, model: any, model_id=None, field=None, value=None, criteria=None, count=False):
+    def get(cls, model: any, model_id=None, field=None, value=None, criteria=None, count=False):
         if model_id:
-            result = db_session.get(model, model_id)
+            result = db.session.get(model, model_id)
         elif criteria:
             criteria_string = cls._get_criteria_string(criteria)
 
@@ -42,7 +43,7 @@ class CRUDOperations(DBOperations):
             action = 'first'
             if count:
                 action = 'count'
-            result = eval(f"db_session.query(model).filter({criteria_string}).{action}()")
+            result = eval(f"db.session.query(model).filter({criteria_string}).{action}()")
         else:
             if not field:
                 raise Exception(f'No field provided to query {model} by')
@@ -53,16 +54,16 @@ class CRUDOperations(DBOperations):
             action = 'first'
             if count:
                 action = 'count'
-            result = eval(f"db_session.query(model).filter(model.{field} == '{value}').{action}()")
+            result = eval(f"db.session.query(model).filter(model.{field} == '{value}').{action}()")
 
         if not result:
             return 0 if count else None
         return result
 
     @classmethod
-    def update_by_id(cls, db_session: Session, model: any, model_id: int,
+    def update_by_id(cls, model: any, model_id: int,
                      model_changes: any):
-        db_model = db_session.get(model, model_id)
+        db_model = db.session.get(model, model_id)
         if not db_model:
             pass
 
@@ -70,13 +71,13 @@ class CRUDOperations(DBOperations):
         for key, value in data_to_update.items():
             setattr(db_model, key, value)
 
-        return cls.commit_to_db(db_session=db_session, model=db_model)
+        return cls.commit_to_db(model=db_model)
 
     @classmethod
-    def delete(cls, db_session: Session, model: any, model_id: int):
-        instance = db_session.get(model, model_id)
-        db_session.delete(instance)
-        return cls.commit_to_db(db_session=db_session)
+    def delete(cls, model: any, model_id: int):
+        instance = db.session.get(model, model_id)
+        db.session.delete(instance)
+        return cls.commit_to_db()
 
     @classmethod
     def _get_criteria_string(cls, criteria: dict) -> str:

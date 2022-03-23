@@ -6,19 +6,17 @@ from app.database.exceptions import ResourceNotFound
 class DatabaseInterface(CRUDOperations):
 
     @classmethod
-    def create(cls, db_session: Session, model_data: any):
-        db_model = super().create(db_session=db_session, model=model_data)
+    def create(cls, model_data: any):
+        db_model = super().create(model=model_data)
         return cls.as_schema_model(db_model)
 
     @classmethod
     def get(
             cls,
-            db_session: Session,
             model_id: int,
             raise_error=False,
     ):
         db_model = super().get(
-            db_session=db_session,
             model=cls.database_model(),
             model_id=model_id,
         )
@@ -31,7 +29,6 @@ class DatabaseInterface(CRUDOperations):
     @classmethod
     def get_by(
             cls,
-            db_session: Session,
             field=None,
             value=None,
             schema=None,
@@ -39,7 +36,6 @@ class DatabaseInterface(CRUDOperations):
             criteria=None,
     ):
         db_model = super().get(
-            db_session=db_session,
             model=cls.database_model(),
             field=field,
             value=value,
@@ -56,14 +52,12 @@ class DatabaseInterface(CRUDOperations):
     @classmethod
     def get_count(
             cls,
-            db_session: Session,
             field=None,
             value=None,
             model=None,
             criteria=None,
     ):
         db_count = super().get(
-            db_session=db_session,
             model=model or cls.database_model(),
             field=field,
             value=value,
@@ -74,9 +68,8 @@ class DatabaseInterface(CRUDOperations):
         return db_count
 
     @classmethod
-    def update_by_id(cls, db_session: Session, model_id: int, model_changes: any):
+    def update_by_id(cls, model_id: int, model_changes: any):
         db_model = super().update_by_id(
-            db_session=db_session,
             model=cls.database_model(),
             model_id=model_id,
             model_changes=model_changes,
@@ -84,9 +77,8 @@ class DatabaseInterface(CRUDOperations):
         return cls.as_schema_model(db_model)
 
     @classmethod
-    def delete(cls, db_session: Session, model_id: int):
+    def delete(cls, model_id: int):
         result = super().delete(
-            db_session=db_session,
             model=cls.database_model(),
             model_id=model_id
         )
