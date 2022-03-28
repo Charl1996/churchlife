@@ -42,18 +42,18 @@ def events(request: Request, domain: str, user: User = Depends(get_current_user)
     return {'template': 'layout_content/events/list.html'}
 
 
-@router.get('/{domain}/events/{event_id}')
-@view_request
-@domain_request
-def get_event(request: Request, domain: str, event_id: int, user: User = Depends(get_current_user)):
-    return {'template': 'layout_content/events/show_event.html'}
-
-
 @router.get('/{domain}/events/new')
 @view_request
 @domain_request
 def events(request: Request, domain: str, user: User = Depends(get_current_user)):
     return {'template': 'layout_content/events/new_event.html'}
+
+
+@router.get('/{domain}/events/{event_id}')
+@view_request
+@domain_request
+def get_event(request: Request, domain: str, event_id: int, user: User = Depends(get_current_user)):
+    return {'template': 'layout_content/events/show_event.html'}
 
 
 @router.post('/{domain}/event')

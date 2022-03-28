@@ -1,12 +1,79 @@
 {% extends "layout_content/events.html" %}
 
 {% block event_content %}
-  <div style="padding-top: 1em; padding-bottom: 2em;">
-    <button class="fluid ui basic primary button">
-      <i class="icon plus"></i>
-      Add new event
-    </button>
+  <div class="ui container">
+    <form id="new_event_form" class="ui form">
+      <div class="field">
+        <label class="ui left aligned">Event name</label>
+        <input type="text" name="event-name" placeholder="Event name">
+      </div>
+
+      <div id="event_type_form" class="ui form">
+        <div class="grouped fields">
+          <label data-tooltip="Indicate whether this event should happen as part of a series or only once off" data-position="top left" data-inverted="">Type of event</label>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input id="series_checkbox" type="radio" name="event-type" checked="checked">
+              <label>Series event</label>
+            </div>
+          </div>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input type="radio" name="event-type">
+              <label>One time event</label>
+            </div>
+          </div>
+      </div>
+
+      <div id="event-interval" class="field">
+        <label class="ui left aligned">Event interval</label>
+        <div class="ui compact selection dropdown">
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <div class="item">Daily</div>
+            <div class="item">Weekly</div>
+            <div class="item">Monthly</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="field" style="display: inline-block; padding-right: 1em;">
+          <label class="ui left aligned">From</label>
+          <input type="date" name="event-from-date" placeholder="From date">
+        </div>
+        <div class="field" style="display: inline-block; padding-right: 1em;">
+          <label class="ui left aligned">To</label>
+          <input type="date" name="event-to-date" placeholder="To date">
+        </div>
+        <div class="field" style="display: inline-block; padding-right: 1em;">
+          <label class="ui left aligned">Starts at</label>
+          <input type="time" value="08:00:00" name="event-start-time" placeholder="Start at">
+        </div>
+        <div class="field" style="display: inline-block; padding-right: 1em;">
+          <label class="ui left aligned">Ends at</label>
+          <input type="time" value="09:00:00" name="event-end-time" placeholder="End at">
+        </div>
+      </div>
+      <div class="ui toggle checkbox">
+        <input id="tracker-checkbox" type="checkbox" name="public">
+        <label>Track attendance</label>
+      </div>
+      <div id="tracker-start-before" class="field" style="display: none">
+        <label class="ui left aligned" data-tooltip="Specify how many minutes before the event the tracker should start capturing" data-position="top left" data-inverted="">Start tracking before event</label>
+        <input type="number" value="20" name="tracker-start-before" placeholder="">
+      </div>
+    </form>
   </div>
+
+<div class="ui clearing" style="padding-top: 2em;">
+  <div class="ui right floated header">
+    <div class="ui container center aligned" style="width: 20%"><button id="create_event_button" class="ui primary button">Create</button></div>
+  </div>
+  <div class="ui left floated header">
+    <div class="ui container center aligned" style="width: 20%"><button id="cancel-button" class="ui basic red button">Cancel</button></div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block javascript %}

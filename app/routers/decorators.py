@@ -38,6 +38,9 @@ def domain_request(func):
 
         response = func(*args, **kwargs)
 
+        if type(response) == RedirectResponse:
+            return response
+
         # Inject the organisation in response
         data = response.get('data', {})
         data['organisation'] = parse_obj_as(UserOrganisationView, organisation.fields)
