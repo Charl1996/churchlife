@@ -100,3 +100,43 @@ class DatabaseInterface(CRUDOperations):
         if schema is not None:
             return schema.from_orm(database_model)
         return cls.schema_model().from_orm(database_model)
+
+
+class DatabaseInterfaceWrapper(DatabaseInterface):
+
+    @classmethod
+    def create(cls, data: any):
+        create_schema = cls.create_schema_model()(**data)
+        db_model = cls.create_model(create_schema)
+        schema_model = super().create(model_data=db_model)
+        return cls.init_class_instance(schema_model)
+
+    @classmethod
+    def get(cls, model_id: int):
+        schema_model = super().get(model_id=model_id)
+        if not schema_model:
+            return None
+        return cls.init_class_instance(schema_model)
+
+    @classmethod
+    def get_by_domain(cls, domain: str):
+        schema_model = super().get_by(field="domain", value=domain)
+        if not schema_model:
+            return None
+        return cls.init_class_instance(schema_model)
+
+    @classmethod
+    def init_class_instance(cls):
+        """
+        This method should initialize the class instance associated
+        with the database model
+        """
+        raise NotImplementedError
+
+    @classmethod
+    def create_model(cls, data):
+        """
+        This method should implement the specific implementation used
+        to create the model
+        """
+        raise NotImplementedError

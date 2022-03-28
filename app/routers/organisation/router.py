@@ -4,10 +4,9 @@ from app.organisations import Organisation
 from app.users import User
 from app.routers.helper import get_current_user
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse
-from app.routers.helper import render_template
-from fastapi_sqlalchemy import db
-
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.exceptions import HTTPException
+from pydantic.error_wrappers import ValidationError
 
 router = APIRouter()
 
@@ -29,90 +28,90 @@ async def dashboard(request: Request, domain: str):
 @view_request
 @domain_request
 def dashboard(request: Request, domain: str, user: User = Depends(get_current_user)):
-    org = Organisation.get_by_domain(domain=domain)
-    # And some other stuff...
-    return {
-        'template': "layout.html",
-        'data': {
-            'organisation': {
-                'name': org.fields.name,
-            },
-            'initial_page': 'summary.html',
-        }
-    }
+    # Add some kind of dashboard?
+    # return dashboard view
 
-
-"""
-The following "views" works by returning rendered content which is simply
-used to replace a certain <div> element using jQuery. 
-"""
-
-
-@router.get('/{domain}/summary')
-@domain_request
-def summary(request: Request, domain: str, user: User = Depends(get_current_user)):
-    org = Organisation.get_by_domain(domain=domain)
-
-    data = {}
-
-    return render_template(request, 'layout_content/summary.html', data)
+    # For now, redirect to events page
+    return RedirectResponse(url=f'/{domain}/events')
 
 
 @router.get('/{domain}/events')
+@view_request
 @domain_request
 def events(request: Request, domain: str, user: User = Depends(get_current_user)):
-    org = Organisation.get_by_domain(domain=domain)
+    return {'template': 'layout_content/events/list.html'}
 
-    data = {}
 
-    return render_template(request, 'layout_content/events.html', data)
+@router.get('/{domain}/events/{event_id}')
+@view_request
+@domain_request
+def get_event(request: Request, domain: str, event_id: int, user: User = Depends(get_current_user)):
+    return {'template': 'layout_content/events/show_event.html'}
+
+
+@router.get('/{domain}/events/new')
+@view_request
+@domain_request
+def events(request: Request, domain: str, user: User = Depends(get_current_user)):
+    return {'template': 'layout_content/events/new_event.html'}
+
+
+@router.post('/{domain}/event')
+@domain_request
+async def create_event(request: Request, domain: str, user: User = Depends(get_current_user)):
+    from app.events import Event
+    data = await request.json()
+    breakpoint()
+    try:
+        event = Event.create(data=data['event'])
+    except ValidationError as _error:
+        raise HTTPException(status_code=422, detail='Missing user data')
+
+    # Need to create the ScheduleTrigger and action also
+
+    return None  # Redirect to events view
 
 
 @router.get('/{domain}/tracking')
+@view_request
 @domain_request
 def tracking(request: Request, domain: str, user: User = Depends(get_current_user)):
-    org = Organisation.get_by_domain(domain=domain)
-
     data = {}
 
-    return render_template(request, 'layout_content/tracking.html', data)
+    return {'template': 'layout_content/tracking.html', 'data': data}
 
 
 @router.get('/{domain}/settings')
+@view_request
 @domain_request
 def settings(request: Request, domain: str, user: User = Depends(get_current_user)):
-    org = Organisation.get_by_domain(domain=domain)
-
     data = {}
 
-    return render_template(request, 'layout_content/settings.html', data)
+    return {'template': 'layout_content/settings.html', 'data': data}
 
 
 @router.get('/{domain}/users')
+@view_request
 @domain_request
 def users(request: Request, domain: str, user: User = Depends(get_current_user)):
-    org = Organisation.get_by_domain(domain=domain)
-
     data = {}
 
-    return render_template(request, 'layout_content/users.html', data)
+    return {'template': 'layout_content/users.html', 'data': data}
 
 
 @router.get('/{domain}/database')
+@view_request
 @domain_request
 def database(request: Request, domain: str, user: User = Depends(get_current_user)):
-    org = Organisation.get_by_domain(domain=domain)
-
     data = {}
 
-    return render_template(request, 'layout_content/database.html', data)
+    return {'template': 'layout_content/database.html', 'data': data}
 
 
 @router.get('/{domain}/messaging')
+@view_request
 @domain_request
 def messaging(request: Request, domain: str, user: User = Depends(get_current_user)):
-    org = Organisation.get_by_domain(domain=domain)
-
     data = {}
 
-    return render_template(request, 'layout_content/messaging.html', data)
+    return {'template': 'layout_content/messaging.html', 'data': data}

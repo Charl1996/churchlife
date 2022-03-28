@@ -1,5 +1,4 @@
-from sqlalchemy.orm import Session
-from app.database.interface import DatabaseInterface
+from app.database.interface import DatabaseInterfaceWrapper
 
 from app.database import User as UserModel
 from app.database import OrganisationsUsers
@@ -17,7 +16,7 @@ from app.security.utils import (
 from app.security.auth import sign_jwt
 
 
-class User(DatabaseInterface):
+class User(DatabaseInterfaceWrapper):
 
     user: UserSchema
 
@@ -26,37 +25,30 @@ class User(DatabaseInterface):
         return UserModel
 
     @classmethod
+    def create_schema_model(cls):
+        return UserCreate
+
+    @classmethod
     def schema_model(cls):
         return UserSchema
 
     @classmethod
-    def create(cls, data: dict):
-        user_create = UserCreate(**data)
-
-        user_model = UserModel(
-            first_name=user_create.first_name,
-            last_name=user_create.last_name,
-            email=user_create.email,
-            password=hash_string(user_create.password),
+    def create_model(cls, create_schema: UserCreate):
+        return UserModel(
+            first_name=create_schema.first_name,
+            last_name=create_schema.last_name,
+            email=create_schema.email,
+            password=hash_string(create_schema.password),
         )
-        user_schema = super().create(model_data=user_model)
-        return cls(user=user_schema)
 
     @classmethod
-    def get(cls, user_id: int):
-        user_schema = super().get(model_id=user_id)
-        return cls(user=user_schema)
+    def init_class_instance(cls, schema_model):
+        return cls(user=schema_model)
 
     @classmethod
     def get_by_email(cls, email: str):
         user_schema = super().get_by(field="email", value=email)
         return cls(user=user_schema)
-
-    @classmethod
-    def delete(cls, user_id: int):
-        # Do user specific stuff here
-        # - Remove OrganisationUser
-        super().delete(model_id=user_id)
 
     @classmethod
     def check_credentials(cls, email: str, password: str) -> bool:
@@ -85,7 +77,22 @@ class User(DatabaseInterface):
     def organisations(self):
         return [UserOrganisationView.from_orm(org) for org in self.fields.organisations]
 
-    def belongs_to_domain(self, domain: str) -> bool:
+    # def belongs_to_domain(self, domain: str) -> bool:
+    #     org = Organisation.get_by_domain(domain=domain)
+    #     if not org:
+    #         return False
+    #
+    #     organisation_user_count = super().get_count(
+    #         criteria={
+    #             'user_id': self.fields.id,
+    #             'organisation_id': org.fields.id,
+    #         },
+    #         model=OrganisationsUsers,
+    #     )
+    #
+    #     return True if organisation_user_count == 1 else False
+
+    def get_user_organisation_by_domain(self, domain: str):
         org = Organisation.get_by_domain(domain=domain)
         if not org:
             return False
@@ -98,4 +105,4 @@ class User(DatabaseInterface):
             model=OrganisationsUsers,
         )
 
-        return True if organisation_user_count == 1 else False
+        return org if organisation_user_count == 1 else None

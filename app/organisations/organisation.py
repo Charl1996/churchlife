@@ -1,10 +1,8 @@
-from sqlalchemy.orm import Session
-
 from app.database import (
     Organisation as OrganisationModel,
     OrganisationsUsers as OrganisationsUsersModel,
 )
-from app.database.interface import DatabaseInterface
+from app.database.interface import DatabaseInterfaceWrapper
 from app.organisations.organisation_schema import (
     OrganisationCreate as OrganisationCreate,
     Organisation as OrganisationSchema,
@@ -16,7 +14,7 @@ from app.utils import (
 )
 
 
-class Organisation(DatabaseInterface):
+class Organisation(DatabaseInterfaceWrapper):
 
     organisation: OrganisationSchema
 
@@ -25,39 +23,23 @@ class Organisation(DatabaseInterface):
         return OrganisationModel
 
     @classmethod
+    def create_schema_model(cls):
+        return OrganisationCreate
+
+    @classmethod
     def schema_model(cls):
         return OrganisationSchema
 
     @classmethod
-    def create(cls, data: dict):
-        organisation_create = OrganisationCreate(**data)
-
-        org_model = OrganisationModel(
-            name=organisation_create.name,
-            domain=organisation_create.domain,
+    def create_model(cls, create_schema: OrganisationCreate):
+        return OrganisationModel(
+            name=create_schema.name,
+            domain=create_schema.domain,
         )
-        org_schema = super().create(model_data=org_model)
-        return cls(org=org_schema)
 
     @classmethod
-    def get(cls, org_id: int):
-        org_schema = super().get(model_id=org_id)
-        if not org_schema:
-            return None
-        return cls(org=org_schema)
-
-    @classmethod
-    def delete(cls, org_id: int):
-        # Do user specific stuff here
-        # - Remove OrganisationUser
-        super().delete(model_id=org_id)
-
-    @classmethod
-    def get_by_domain(cls, domain: str):
-        org_schema = super().get_by(field="domain", value=domain)
-        if not org_schema:
-            return None
-        return cls(org=org_schema)
+    def init_class_instance(cls, schema_model):
+        return cls(org=schema_model)
 
     def __init__(self, org: OrganisationSchema):
         self.organisation = org

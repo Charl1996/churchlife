@@ -40,3 +40,7 @@ class UserOrganisationView(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class UserView(UserBase):
+    pass

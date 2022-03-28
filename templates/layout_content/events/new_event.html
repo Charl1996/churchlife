@@ -1,0 +1,15 @@
+{% extends "layout_content/events.html" %}
+
+{% block event_content %}
+  <div style="padding-top: 1em; padding-bottom: 2em;">
+    <button class="fluid ui basic primary button">
+      <i class="icon plus"></i>
+      Add new event
+    </button>
+  </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ url_for('static', path='js/layout_content/events/new_event.js') }}"></script>
+{% endblock %}
+

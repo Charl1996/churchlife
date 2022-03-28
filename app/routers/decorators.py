@@ -2,6 +2,8 @@ from functools import wraps
 from app.routers.helper import render_template
 from fastapi.responses import RedirectResponse
 from fastapi.exceptions import HTTPException
+from app.users import UserOrganisationView, UserView
+from pydantic import parse_obj_as
 
 
 def view_request(view_function):
@@ -30,8 +32,16 @@ def domain_request(func):
         domain = kwargs.get('domain')
         user = kwargs.get('user')
 
-        if not user.belongs_to_domain(domain):
+        organisation = user.get_user_organisation_by_domain(domain)
+        if organisation is None:
             raise HTTPException(status_code=403, detail='User does not have access to domain')
 
-        return func(*args, **kwargs)
+        response = func(*args, **kwargs)
+
+        # Inject the organisation in response
+        data = response.get('data', {})
+        data['organisation'] = parse_obj_as(UserOrganisationView, organisation.fields)
+        data['user'] = parse_obj_as(UserView, user.fields)
+        return {'data': data, **response}
+
     return wrapper

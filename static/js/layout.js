@@ -2,92 +2,37 @@
 domain = window.location.pathname.split('/')[1];
 setCurrentDomain(domain);
 
-function summaryPage() {
-    var url = "/" + currentDomain() + "/summary";
-
-    var requestHandlers = {
-        200: function(data) {
-            $("#content").html(data);
-        }
-    };
-
-    request("GET", url, null, requestHandlers)
-};
-
 
 function eventsPage() {
     var url = "/" + currentDomain() + "/events";
-
-    var requestHandlers = {
-        200: function(data) {
-            $("#content").html(data);
-        }
-    };
-
-    request("GET", url, null, requestHandlers)
+    window.location.href = url;
 };
 
 
 function trackingPage() {
     var url = "/" + currentDomain() + "/tracking";
-
-    var requestHandlers = {
-        200: function(data) {
-            $("#content").html(data);
-        }
-    };
-
-    request("GET", url, null, requestHandlers)
+    window.location.href = url;
 };
 
 
 function settingsPage() {
     var url = "/" + currentDomain() + "/settings";
-
-    var requestHandlers = {
-        200: function(data) {
-            $("#content").html(data);
-        }
-    };
-
-    request("GET", url, null, requestHandlers)
+    window.location.href = url;
 };
 
 function usersPage() {
     var url = "/" + currentDomain() + "/users";
-
-    var requestHandlers = {
-        200: function(data) {
-            $("#content").html(data);
-        }
-    };
-
-    request("GET", url, null, requestHandlers)
+    window.location.href = url;
 };
 
 function databasePage() {
     var url = "/" + currentDomain() + "/database";
-
-    var requestHandlers = {
-        200: function(data) {
-            $("#content").html(data);
-        }
-    };
-
-    request("GET", url, null, requestHandlers)
-
+    window.location.href = url;
 };
 
 function messagingPage() {
     var url = "/" + currentDomain() + "/messaging";
-
-    var requestHandlers = {
-        200: function(data) {
-            $("#content").html(data);
-        }
-    };
-
-    request("GET", url, null, requestHandlers)
+    window.location.href = url;
 };
 
 function profilePage() {

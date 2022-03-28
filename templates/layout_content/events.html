@@ -1,8 +1,17 @@
+{% extends "layout.html" %}
 
-<div class="ui container center aligned">
-    <div class="ui menu">
-      <a class="header item">
-        Events
-      </a>
-    </div>
+{% block layout_content %}
+<h1 class="ui top attached header">
+  Events
+</h1>
+
+<div class="ui segment" style="height: 88%">
+
+{% block event_content %}
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ url_for('static', path='js/layout_content/events/list.js') }}"></script>
+{% endblock %}
 </div>
+{% endblock %}

@@ -22,12 +22,6 @@
         </div>
         </a>
         <a class="item">
-          <div id="summaryItemId" class="ui" onclick="summaryPage()">
-            <i class="clipboard list icon"></i>
-            Summary
-          </div>
-        </a>
-        <a class="item">
           <div id="eventsItemId" class="ui" onclick="eventsPage()">
             <i class="calendar alternate outline icon"></i>
             Events
@@ -87,9 +81,8 @@
       </div>
     </div>
     <div class="thirteen wide column">
-      <div id="content">
-        {% set path = 'layout_content/%s' % initial_page %}{% include path %}
-      </div>
+      {% block layout_content %}
+      {% endblock %}
     </div>
   </div>
 
