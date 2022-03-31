@@ -25,3 +25,7 @@ $("#cancel-button").click(function() {
     var url = "/" + currentDomain() + "/events/";
     window.location.href = url;
 });
+
+$("#create_event_button").click(function() {
+    var formData = new FormData(document.querySelector('form'))
+});

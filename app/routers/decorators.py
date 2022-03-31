@@ -44,7 +44,7 @@ def domain_request(func):
         # Inject the organisation in response
         data = response.get('data', {})
         data['organisation'] = parse_obj_as(UserOrganisationView, organisation.fields)
-        data['user'] = parse_obj_as(UserView, user.fields)
+        # data['user'] = parse_obj_as(UserView, user.fields)
         return {'data': data, **response}
 
     return wrapper

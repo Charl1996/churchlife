@@ -49,27 +49,28 @@ def events(request: Request, domain: str, user: User = Depends(get_current_user)
     return {'template': 'layout_content/events/new_event.html'}
 
 
-@router.get('/{domain}/events/{event_id}')
-@view_request
-@domain_request
-def get_event(request: Request, domain: str, event_id: int, user: User = Depends(get_current_user)):
-    return {'template': 'layout_content/events/show_event.html'}
-
-
-@router.post('/{domain}/event')
+@router.post('/{domain}/event/new')
 @domain_request
 async def create_event(request: Request, domain: str, user: User = Depends(get_current_user)):
     from app.events import Event
     data = await request.json()
     breakpoint()
     try:
-        event = Event.create(data=data['event'])
+        organisation = Organisation.get_by_domain(domain=domain)
+        organisation.create_event(event_data=data)
     except ValidationError as _error:
-        raise HTTPException(status_code=422, detail='Missing user data')
+        raise HTTPException(status_code=422, detail='Missing some data')
 
     # Need to create the ScheduleTrigger and action also
 
     return None  # Redirect to events view
+
+
+@router.get('/{domain}/events/{event_id}')
+@view_request
+@domain_request
+def get_event(request: Request, domain: str, event_id: int, user: User = Depends(get_current_user)):
+    return {'template': 'layout_content/events/show_event.html'}
 
 
 @router.get('/{domain}/tracking')

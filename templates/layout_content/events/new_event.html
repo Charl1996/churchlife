@@ -1,7 +1,13 @@
 {% extends "layout_content/events.html" %}
 
 {% block event_content %}
-  <div class="ui container">
+
+<div>
+  <h3 class="ui header center aligned" style="height: 10%;">
+    New
+  </h3>
+
+  <div class="ui container" style="height: 80%;">
     <form id="new_event_form" class="ui form">
       <div class="field">
         <label class="ui left aligned">Event name</label>
@@ -23,6 +29,7 @@
               <label>One time event</label>
             </div>
           </div>
+        </div>
       </div>
 
       <div id="event-interval" class="field">
@@ -65,13 +72,19 @@
     </form>
   </div>
 
-<div class="ui clearing" style="padding-top: 2em;">
-  <div class="ui right floated header">
-    <div class="ui container center aligned" style="width: 20%"><button id="create_event_button" class="ui primary button">Create</button></div>
+  <div class="ui container">
+  <div class="ui grid" style="height: 10%;">
+    <div class="four column row">
+      <div class="left floated column">
+        <button id="cancel-button" class="ui basic red button">Cancel</button>
+      </div>
+      <div class="right floated column right aligned">
+        <button id="create_event_button" class="ui primary button">Create</button>
+      </div>
+    </div>
   </div>
-  <div class="ui left floated header">
-    <div class="ui container center aligned" style="width: 20%"><button id="cancel-button" class="ui basic red button">Cancel</button></div>
   </div>
+
 </div>
 
 {% endblock %}

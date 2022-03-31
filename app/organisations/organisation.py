@@ -74,3 +74,17 @@ class Organisation(DatabaseInterfaceWrapper):
 
     def set_logo(self, image_bytes):
         pass
+
+    def create_event(self, event_data: dict):
+        # Create event
+        # event = Event.create(data=event_data)
+
+        # Find/create ScheduleTrigger and action
+        # Todo
+
+        # Create tracking event if necessary
+        # Todo
+
+        # Find/create ScheduleTrigger and action
+        # Todo
+        pass
