@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/static/js/create_account.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/create_account.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/organisation/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/organisation/router.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/layout_content/events/new_event.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout_content/events/new_event.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/create_account.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/create_account.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/layout_content/events/new_event.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/events/new_event.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -56,11 +55,11 @@
       <recent name="$PROJECT_DIR$/app/routers/organisation" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/static" />
       <recent name="$PROJECT_DIR$/templates/layout_content/events" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/app" />
       <recent name="$PROJECT_DIR$/templates" />
-      <recent name="$PROJECT_DIR$/app/security" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />

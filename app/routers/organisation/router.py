@@ -49,10 +49,10 @@ def events(request: Request, domain: str, user: User = Depends(get_current_user)
     return {'template': 'layout_content/events/new_event.html'}
 
 
-@router.post('/{domain}/event/new')
+@router.post('/{domain}/events/new')
 @domain_request
 async def create_event(request: Request, domain: str, user: User = Depends(get_current_user)):
-    from app.events import Event
+    breakpoint()
     data = await request.json()
     breakpoint()
     try:

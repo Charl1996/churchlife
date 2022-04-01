@@ -3,8 +3,8 @@
 {% block event_content %}
 
 <div>
-  <h3 class="ui header center aligned" style="height: 10%;">
-    New
+  <h3 class="ui header center aligned" style="height: 7%;">
+    New Event
   </h3>
 
   <div class="ui container" style="height: 90%;">
@@ -49,14 +49,14 @@
         </div>
       </div>
 
-      <div>
+      <div style="padding-top: 1em;">
         <div class="field" style="display: inline-block; padding-right: 1em;">
           <label class="ui left aligned" data-tooltip="Date of first event" data-position="top left" data-inverted="">From date</label>
           <input type="date" name="event-from-date" placeholder="From date" required>
         </div>
         <div id="to-date-picker" class="field" style="display: inline-block; padding-right: 1em;">
           <label class="ui left aligned" data-tooltip="Date of last event" data-position="top left" data-inverted="">To date</label>
-          <input id="to-date-picker-input" type="date" name="event-to-date" placeholder="To date" required>
+          <input id="to-date-picker-input" type="date" name="event-to-date" placeholder="To date">
         </div>
         <div id="continuous-event-checkbox" class="ui checkbox" style="display: inline-block; padding-left: 2em;">
           <input type="checkbox" id="unspecified-end-date-checkbox">
@@ -74,15 +74,80 @@
         </div>
       </div>
       <div class="ui toggle checkbox">
-        <input id="tracker-checkbox" type="checkbox" name="public">
-        <label>Track attendance</label>
+        <input id="tracker_checkbox" type="checkbox" name="public">
+        <label>Capture attendance</label>
       </div>
-      <div id="tracker-start-before" class="field" style="display: none">
-        <label class="ui left aligned" data-tooltip="Specify how many minutes before the event the tracker should start capturing" data-position="top left" data-inverted="">Start tracking before event</label>
-        <input type="number" value="20" name="tracker-start-before" placeholder="">
+      <div id="tracker-info" style="display: none; padding-top: 1em;">
+        <div style="padding-top: 1em;">
+          <div class="field" style="display: inline-block; padding-right: 1em;">
+            <label class="ui left aligned">Start before event begins (minutes)</label>
+            <input type="number" name="start-tracking-before" value="20" required>
+          </div>
+          <div class="field" style="display: inline-block; padding-right: 1em;">
+            <label class="ui left aligned">Stop after event begins (minutes)</label>
+            <input type="number" name="stop-tracking-after" value="20" required>
+          </div>
+        </div>
+
+<!--        <div style="padding-top: 1em;">-->
+<!--          <div class="field" style="display: inline-block; padding-right: 1em;">-->
+<!--            <label class="ui left aligned">Notify</label>-->
+<!--          </div>-->
+<!--          <div class="field" style="display: inline-block; padding-right: 1em; width: 20%;">-->
+<!--            <div id="notification-groups" class="ui fluid selection dropdown">-->
+<!--              <input type="hidden">-->
+<!--              <i class="dropdown icon"></i>-->
+<!--              <div class="default text">group</div>-->
+<!--              <div class="menu">-->
+<!--                <div class="item" data-value="1">-->
+<!--                  Groetspan-->
+<!--                </div>-->
+<!--                <div class="item" data-value="2">-->
+<!--                  Staff-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="field" style="display: inline-block; padding-right: 1em;">-->
+<!--            <label class="ui left aligned">when</label>-->
+<!--          </div>-->
+<!--          <div class="field" style="display: inline-block; padding-right: 1em; width: 20%;">-->
+<!--              <div id="notification-triggers" class="ui fluid selection dropdown">-->
+<!--                <input type="hidden">-->
+<!--                <i class="dropdown icon"></i>-->
+<!--                <div class="default text">event</div>-->
+<!--                <div class="menu">-->
+<!--                  <div class="item" data-value="1">-->
+<!--                    new face-->
+<!--                  </div>-->
+<!--                  <div class="item" data-value="2">-->
+<!--                    familiar face-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="field" style="display: inline-block; padding-right: 1em;">-->
+<!--              <label class="ui left aligned">is detected</label>-->
+<!--            </div>-->
+<!--            <div class="field" style="display: inline-block; padding-right: 1em; width: 20%;">-->
+<!--              <div id="notification-trigger-windows" class="ui fluid selection dropdown">-->
+<!--                <input type="hidden">-->
+<!--                <i class="dropdown icon"></i>-->
+<!--                <div class="default text">during window</div>-->
+<!--                <div class="menu">-->
+<!--                  <div class="item" data-value="1">-->
+<!--                    before event starts-->
+<!--                  </div>-->
+<!--                  <div class="item" data-value="2">-->
+<!--                    after event starts-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--        </div>-->
       </div>
 
-      <div class="ui container">
+      <div class="ui container" style="padding-top: 2em;">
         <div class="ui grid">
           <div class="four column row">
             <div class="left floated column">
@@ -98,9 +163,8 @@
   </div>
 </div>
 
+{% endblock %}
+
 {% block javascript %}
     <script src="{{ url_for('static', path='js/layout_content/events/new_event.js') }}"></script>
 {% endblock %}
-
-{% endblock %}
-

@@ -4,17 +4,21 @@ $('.ui.dropdown')
   .dropdown()
 ;
 
-$("#event_type_form").change(function() {
-   var isSeriesEvent = $('#series_checkbox').is(':checked');
+function recurringEvent() {
+    return $('#series_checkbox').is(':checked');
+}
 
-   if (isSeriesEvent) {
+$("#event_type_form").change(function() {
+   if (recurringEvent()) {
     $("#event-interval").show();
     $("#to-date-picker").show();
+    $('#to-date-picker-input').attr('required', true);
     $("#continuous-event-checkbox").show();
    }
    else {
     $("#event-interval").hide();
     $("#to-date-picker").hide();
+    $('#to-date-picker-input').removeAttr('required');
     $("#continuous-event-checkbox").hide();
    }
 });
@@ -36,14 +40,14 @@ $("#unspecified-end-date-checkbox").change(function() {
     }
 });
 
-$("#tracker-checkbox").change(function() {
-   var shouldTrack = $('#tracker-checkbox').is(':checked');
+$("#tracker_checkbox").change(function() {
+   var shouldTrack = $('#tracker_checkbox').is(':checked');
 
    if (shouldTrack) {
-    $("#tracker-start-before").show();
+    $("#tracker-info").show();
    }
    else {
-    $("#tracker-start-before").hide();
+    $("#tracker-info").hide();
    }
 });
 
@@ -61,9 +65,10 @@ $('form').on('submit', function(e) {
     var eventType = 'series';
     var eventInterval = $('#event-interval').dropdown('get value');
 
-    if (eventInterval == null | eventInterval == '') {
+    if (recurringEvent() && (eventInterval == null | eventInterval == '')) {
         $('#event-interval').addClass('error');
         showToast('error', "Please select event occurrence");
+        return
     }
 
     if (!isSeriesEvent) {
@@ -72,6 +77,7 @@ $('form').on('submit', function(e) {
     }
 
     var to_date = formData.get('event-to-date');
+
     var noEndDate = $('#unspecified-end-date-checkbox').is(':checked');
 
     if (noEndDate) {
@@ -89,6 +95,34 @@ $('form').on('submit', function(e) {
             end_at: formData.get('event-end-time')
         }
     };
-    // handle attendance
-    // make post to create
+
+    var captureAttendance = $('#tracker_checkbox').is(':checked')
+
+    if (captureAttendance) {
+        var trackingInfo = {
+            start_before: formData.get('start-tracking-before'),
+            stop_after: formData.get('stop-tracking-after')
+        }
+        newEventData["attendance_tracker"] = trackingInfo;
+    }
+
+    submitCreate(newEventData);
 });
+
+function submitCreate(postData) {
+
+    var resultHandlers = {
+        200: function(response) {
+            var url = "/" + currentDomain() + "/events";
+            window.location.href = url;
+        },
+        422: function(response) {
+            message = response.responseJSON.detail;
+            showToast('error', message);
+        }
+    };
+
+    var url = "/" + currentDomain() + "/events/new";
+    request('POST', url, postData, resultHandlers);
+
+}
