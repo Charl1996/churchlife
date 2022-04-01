@@ -1,7 +1,7 @@
 
 $('#account_create_form').submit(function(e) {
     e.preventDefault();
-    var formData = new FormData(document.querySelector('form'))
+    var formData = new FormData(document.querySelector('form'));
 
     var password = formData.get('password');
     var confirmPassword = formData.get('confirm-password');

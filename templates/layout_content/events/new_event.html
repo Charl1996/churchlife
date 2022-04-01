@@ -7,7 +7,7 @@
     New
   </h3>
 
-  <div class="ui container" style="height: 80%;">
+  <div class="ui container" style="height: 90%;">
     <form id="new_event_form" class="ui form">
       <div class="field">
         <label class="ui left aligned">Event name</label>
@@ -32,26 +32,40 @@
         </div>
       </div>
 
-      <div id="event-interval" class="field">
-        <label class="ui left aligned">Event interval</label>
-        <div class="ui compact selection dropdown">
+      <div class="field">
+        <div id="event-interval" class="ui fluid selection dropdown">
+          <input type="hidden" name="series-interval">
           <i class="dropdown icon"></i>
+          <div class="default text">Select interval</div>
           <div class="menu">
-            <div class="item">Daily</div>
-            <div class="item">Weekly</div>
-            <div class="item">Monthly</div>
+            <div class="item" data-value="daily">
+              Daily
+            </div>
+            <div class="item" data-value="weekly">
+              Weekly
+            </div>
+            <div class="item" data-value="monthly">
+              Monthly
+            </div>
           </div>
         </div>
       </div>
+
       <div>
         <div class="field" style="display: inline-block; padding-right: 1em;">
           <label class="ui left aligned">From</label>
           <input type="date" name="event-from-date" placeholder="From date">
         </div>
-        <div class="field" style="display: inline-block; padding-right: 1em;">
+        <div id="to-date-picker" class="field" style="display: inline-block; padding-right: 1em;">
           <label class="ui left aligned">To</label>
           <input type="date" name="event-to-date" placeholder="To date">
         </div>
+        <div id="continuous-event-checkbox" class="ui checkbox" style="display: inline-block; padding-left: 2em;">
+          <input type="checkbox" id="unspecified-end-date-checkbox">
+          <label for="unspecified-end-date-checkbox">No specified end date</label>
+        </div>
+      </div>
+      <div>
         <div class="field" style="display: inline-block; padding-right: 1em;">
           <label class="ui left aligned">Starts at</label>
           <input type="time" value="08:00:00" name="event-start-time" placeholder="Start at">
@@ -69,27 +83,26 @@
         <label class="ui left aligned" data-tooltip="Specify how many minutes before the event the tracker should start capturing" data-position="top left" data-inverted="">Start tracking before event</label>
         <input type="number" value="20" name="tracker-start-before" placeholder="">
       </div>
+
+      <div class="ui container">
+        <div class="ui grid">
+          <div class="four column row">
+            <div class="left floated column">
+              <button id="cancel-button" class="ui basic red button">Cancel</button>
+            </div>
+            <div class="right floated column right aligned">
+              <button id="create_event_button" class="ui primary button">Create</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </form>
   </div>
-
-  <div class="ui container">
-  <div class="ui grid" style="height: 10%;">
-    <div class="four column row">
-      <div class="left floated column">
-        <button id="cancel-button" class="ui basic red button">Cancel</button>
-      </div>
-      <div class="right floated column right aligned">
-        <button id="create_event_button" class="ui primary button">Create</button>
-      </div>
-    </div>
-  </div>
-  </div>
-
 </div>
-
-{% endblock %}
 
 {% block javascript %}
     <script src="{{ url_for('static', path='js/layout_content/events/new_event.js') }}"></script>
+{% endblock %}
+
 {% endblock %}
 
