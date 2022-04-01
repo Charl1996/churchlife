@@ -15,3 +15,9 @@ Start the service
 
 3. Start the celery workers and beat
 > start them
+
+### Install SemanticUI
+> npm init
+
+See the [Getting Started](https://semantic-ui.com/introduction/getting-started.html) page.
+If the install fails, see [this](https://linuxtut.com/en/4c229454d3eee6019f1b/) link.
