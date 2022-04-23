@@ -46,4 +46,4 @@ class OrganisationUserViewSchema(BaseModel):
     first_name: str
     last_name: str
     email: str
-    status: str
+    status: Optional[str]

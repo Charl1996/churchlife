@@ -94,7 +94,6 @@ class Organisation(DatabaseInterfaceWrapper):
         self.delete(model=OrganisationsUsersModel, model_id=org_user.id)
         return True
 
-
     def invite_new_user(self, user) -> bool:
         if self.add_user(user=user, status=PENDING_STATUS):
             send_invite_email(

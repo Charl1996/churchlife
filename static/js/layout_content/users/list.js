@@ -6,8 +6,6 @@ function inviteNewUser() {
 
 
 function removeClicked(instanceId) {
-
-
     var url = "/" + currentDomain() + "/users/" + instanceId;
 
     resultHandlers = {
@@ -20,5 +18,6 @@ function removeClicked(instanceId) {
 }
 
 function editClicked(instanceId) {
-    alert(instanceId);
+    var url = "/" + currentDomain() + "/users/" + instanceId + "/edit";
+    window.location.href = url;
 }

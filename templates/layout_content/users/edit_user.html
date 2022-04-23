@@ -1,0 +1,42 @@
+{% extends "layout_content/users.html" %}
+
+{% block users_content %}
+
+<div>
+  <h3 class="ui header center aligned" style="height: 7%;">
+    View User
+  </h3>
+
+  <div class="ui container" style="height: 90%;">
+    <form id="new_user_form" class="ui form">
+      <div class="field">
+        <label class="ui left aligned">First name</label>
+        <input type="text" value={{ first_name }} name="user-first-name" placeholder="First name" required>
+      </div>
+      <div class="field">
+        <label class="ui left aligned">Last name</label>
+        <input type="text" value={{ last_name }} name="user-last-name" placeholder="Last name" required>
+      </div>
+      <div class="field">
+        <label class="ui left aligned">Email</label>
+        <input type="email" value={{ email }} name="user-email" placeholder="Email" required>
+      </div>
+
+      <div class="ui container" style="padding-top: 2em;">
+        <div class="ui grid">
+          <div class="four column row">
+            <div class="left floated column">
+              <button onclick="cancel()" class="ui basic red button">Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ url_for('static', path='js/layout_content/users/new_user.js') }}"></script>
+{% endblock %}

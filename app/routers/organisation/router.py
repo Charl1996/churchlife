@@ -141,7 +141,10 @@ async def invite_new_user(request: Request, domain: str, user: User = Depends(ge
     data = await request.json()
 
     try:
-        user = User.create(data=data['user'])
+        user = User.get_by_email(data['user']['email'])
+
+        if not user:
+            user = User.create(data=data['user'])
     except ValidationError as _error:
         raise HTTPException(status_code=422, detail='Missing user data')
     except DuplicateResourceError:
@@ -151,7 +154,9 @@ async def invite_new_user(request: Request, domain: str, user: User = Depends(ge
         )
 
     organisation = Organisation.get_by_domain(domain)
-    organisation.invite_new_user(user)
+    if not user.get_user_organisation_by_domain(domain):
+        organisation.invite_new_user(user)
+
     return JSONResponse(status_code=200)
 
 
@@ -161,6 +166,26 @@ async def delete_organisation_user(request: Request, domain: str, user_id: str, 
     organisation = Organisation.get_by_domain(domain)
     organisation.remove_user(user_id=user_id)
     return JSONResponse(status_code=200)
+
+
+@router.get('/{domain}/users/{user_id}/edit')
+@view_request
+@domain_request
+async def get_new_user(request: Request, domain: str, user_id: str, user: User = Depends(get_current_user)):
+    from app.organisations.organisation_schema import OrganisationUserViewSchema
+
+    user = User.get_by_id(user_id)
+    if not user:
+        JSONResponse(status_code=404)
+
+    data = OrganisationUserViewSchema(
+        id=user.fields.id,
+        first_name=user.fields.first_name,
+        last_name=user.fields.last_name,
+        email=user.fields.email,
+    ).dict()
+
+    return {'template': 'layout_content/users/edit_user.html', 'data': data}
 
 
 @router.get('/{domain}/database')
