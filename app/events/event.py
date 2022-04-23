@@ -46,3 +46,8 @@ class Event(DatabaseInterfaceWrapper):
 
     def start_new_session(self):
         pass
+
+    def add_attendance_tracker(self, data: dict):
+        # Find/create ScheduleTrigger and action
+        # Todo
+        pass

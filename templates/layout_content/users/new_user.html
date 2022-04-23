@@ -1,0 +1,53 @@
+{% extends "layout_content/users.html" %}
+
+{% block users_content %}
+
+<div>
+  <h3 class="ui header center aligned" style="height: 7%;">
+    New User
+  </h3>
+
+  <div class="ui container" style="height: 90%;">
+    <form id="new_user_form" class="ui form">
+      <div class="field">
+        <label class="ui left aligned">First name</label>
+        <input type="text" name="user-first-name" placeholder="First name" required>
+      </div>
+      <div class="field">
+        <label class="ui left aligned">Last name</label>
+        <input type="text" name="user-last-name" placeholder="Last name" required>
+      </div>
+      <div class="field">
+        <label class="ui left aligned">Email</label>
+        <input type="email" name="user-email" placeholder="Email" required>
+      </div>
+      <div class="field">
+        <label class="ui left aligned">Password</label>
+        <input id="user-password" type="password" name="user-password" placeholder="Password" required>
+      </div>
+      <div class="field">
+        <label class="ui left aligned">Confirm password</label>
+        <input id="user-password-confirm" type="password" name="user-password-confirm" placeholder="Confirm password" required>
+      </div>
+
+      <div class="ui container" style="padding-top: 2em;">
+        <div class="ui grid">
+          <div class="four column row">
+            <div class="left floated column">
+              <button onclick="cancel()" class="ui basic red button">Cancel</button>
+            </div>
+            <div class="right floated column right aligned">
+              <button id="create_event_button" class="ui primary button" type="submit">Send invite</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ url_for('static', path='js/layout_content/users/new_user.js') }}"></script>
+{% endblock %}

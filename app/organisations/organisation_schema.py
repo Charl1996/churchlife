@@ -30,3 +30,20 @@ class Organisation(OrganisationBase):
 #
 #     class Config:
 #         orm_mode = True
+
+class OrganisationsUsersSchema(BaseModel):
+    id: str
+    organisation_id: str
+    user_id: str
+    status: str
+
+    class Config:
+        orm_mode = True
+
+
+class OrganisationUserViewSchema(BaseModel):
+    id: str
+    first_name: str
+    last_name: str
+    email: str
+    status: str

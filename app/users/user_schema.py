@@ -43,4 +43,6 @@ class UserOrganisationView(BaseModel):
 
 
 class UserView(UserBase):
-    pass
+    first_name: str
+    last_name: str
+    email: str

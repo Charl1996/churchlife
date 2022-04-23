@@ -51,6 +51,11 @@ class User(DatabaseInterfaceWrapper):
         return cls(user=user_schema)
 
     @classmethod
+    def get_by_id(cls, user_id: str):
+        user_schema = super().get_by(field="id", value=user_id)
+        return cls(user=user_schema)
+
+    @classmethod
     def check_credentials(cls, email: str, password: str) -> bool:
         user = super().get_by(field='email', value=email, schema=UserLogin, raise_error=True)
         return check_password(password=password, hashed_password=user.password)

@@ -29,14 +29,17 @@ class DatabaseInterface(CRUDOperations):
     @classmethod
     def get_by(
             cls,
+            model=None,
             field=None,
             value=None,
             schema=None,
             raise_error=False,
             criteria=None,
     ):
+        if model is None:
+            model = cls.database_model()
         db_model = super().get(
-            model=cls.database_model(),
+            model=model,
             field=field,
             value=value,
             criteria=criteria,
@@ -48,6 +51,37 @@ class DatabaseInterface(CRUDOperations):
         if schema:
             return cls.as_schema_model(db_model, schema=schema)
         return cls.as_schema_model(db_model)
+
+    @classmethod
+    def get_all_by(
+            cls,
+            model=None,
+            field=None,
+            value=None,
+            schema=None,
+            raise_error=False,
+            criteria=None,
+    ):
+        if model is None:
+            model = cls.database_model()
+        db_models = super().get(
+            model=model,
+            field=field,
+            value=value,
+            criteria=criteria,
+            get_all=True,
+        )
+
+        if raise_error and db_models is None:
+            raise ResourceNotFound
+
+        results = []
+        for db_model in db_models:
+            if schema:
+                results.append(cls.as_schema_model(db_model, schema=schema))
+            else:
+                results.append(cls.as_schema_model(db_model))
+        return results
 
     @classmethod
     def get_count(
@@ -77,9 +111,9 @@ class DatabaseInterface(CRUDOperations):
         return cls.as_schema_model(db_model)
 
     @classmethod
-    def delete(cls, model_id: int):
+    def delete(cls, model: any, model_id: int):
         result = super().delete(
-            model=cls.database_model(),
+            model=model or cls.database_model(),
             model_id=model_id
         )
         return result

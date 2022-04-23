@@ -2,9 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/static/js/layout_content/users/list.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/layout_content/users/new_user.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/layout_content/users/list.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/layout_content/users/new_user.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/layout_content/users/user_list_item.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database/interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/interface.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/database/operations.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/operations.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/events/event.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/events/event.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/organisations/organisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/organisations/organisation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/organisations/organisation_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/organisations/organisation_schema.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/account/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/account/router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routers/decorators.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/decorators.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/organisation/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/organisation/router.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/users/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/users/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/users/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/users/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/users/user_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/users/user_schema.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/js/layout_content/events/new_event.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout_content/events/new_event.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/utilities.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/utilities.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/layout_content/events/new_event.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/events/new_event.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/layout_content/users.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/users.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -1,4 +1,3 @@
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import PendingRollbackError, IntegrityError
 from app.database.exceptions import *
 from fastapi_sqlalchemy import db
@@ -33,17 +32,20 @@ class CRUDOperations(DBOperations):
         return cls.commit_to_db(model=model)
 
     @classmethod
-    def get(cls, model: any, model_id=None, field=None, value=None, criteria=None, count=False):
+    def get(cls, model: any, model_id=None, field=None, value=None, criteria=None, count=False, get_all=False):
         if model_id:
             result = db.session.get(model, model_id)
         elif criteria:
             criteria_string = cls._get_criteria_string(criteria)
 
-            # I don't like this...
-            action = 'first'
-            if count:
-                action = 'count'
-            result = eval(f"db.session.query(model).filter({criteria_string}).{action}()")
+            if get_all:
+                result = eval(f"db.session.query(model).filter({criteria_string})")
+            else:
+                # I don't like this...
+                action = 'first'
+                if count:
+                    action = 'count'
+                result = eval(f"db.session.query(model).filter({criteria_string}).{action}()")
         else:
             if not field:
                 raise Exception(f'No field provided to query {model} by')

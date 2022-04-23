@@ -1,0 +1,12 @@
+
+<div class="right floated content">
+    <button class="ui red basic left attached button" onclick="removeClicked({{ id }})">{{ remove_button }}</button>
+    <button class="right attached ui button" onclick="editClicked({{ id }})">{{ edit_button }}</button>
+</div>
+<div class="content">
+    {{ name }}
+    <span style="color: grey; padding-left: 2em;"><em>{{ email }}</em></span>
+<!--    {% if status and status != "active" %}-->
+<!--    <span style="color: green; padding-left: 2em;"><em>({{ status }})</em></span>-->
+<!--    {% endif %}-->
+</div>

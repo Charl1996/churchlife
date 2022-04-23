@@ -19,7 +19,7 @@ router = APIRouter(
 
 @router.get('/account/create')
 @view_request
-def create_account(request: Request):
+async def create_account(request: Request):
     return {'template': "create_account.html"}
 
 
@@ -54,7 +54,7 @@ async def create_account(request: Request):
 
 @router.get('/account/sign-in')
 @view_request
-def sign_in(request: Request):
+async def sign_in(request: Request):
     return {'template': "sign_in.html"}
 
 
@@ -76,7 +76,7 @@ async def sign_in(request: Request):
 
 
 @router.post('/account/sign-out')
-def sign_out(request: Request):
+async def sign_out(request: Request):
     response = JSONResponse(status_code=200)
     response.set_cookie(key=JWT_COOKIE, value=None)
     return response
@@ -84,7 +84,7 @@ def sign_out(request: Request):
 
 @router.get('/account/user')
 @view_request
-def user_profile(request: Request, user: User = Depends(get_current_user)):
+async def user_profile(request: Request, user: User = Depends(get_current_user)):
     return {
         'template': "user_profile.html",
         'data': {
@@ -99,7 +99,7 @@ def user_profile(request: Request, user: User = Depends(get_current_user)):
 
 @router.get('/account/organisations')
 @view_request
-def show_organisations(request: Request, user: User = Depends(get_current_user)):
+async def show_organisations(request: Request, user: User = Depends(get_current_user)):
     organisations = user.organisations
 
     if len(organisations) == 1:

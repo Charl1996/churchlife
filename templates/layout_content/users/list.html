@@ -1,0 +1,30 @@
+{% extends "layout_content/users.html" %}
+
+{% block users_content %}
+  <div style="padding-top: 1em; padding-bottom: 2em;">
+    <button onclick="inviteNewUser()" class="fluid ui basic primary button">
+      <i class="icon plus"></i>
+      Invite new user
+    </button>
+  </div>
+  <div id="events-content">
+    <div style="padding: 1em;">
+      <div class="ui middle aligned divided list">
+        {% for user in users %}
+          {% if current_user.email != user.email %}
+            <div class="item">
+              {% with id=user.id, name=user.first_name + " " + user.last_name, email=user.email, remove_button="Remove", edit_button="View", status=user.status %}
+                {% include "layout_content/users/user_list_item.html" %}
+              {% endwith %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+{% block javascript %}
+    <script src="{{ url_for('static', path='js/layout_content/users/list.js') }}"></script>
+{% endblock %}
+
+{% endblock %}

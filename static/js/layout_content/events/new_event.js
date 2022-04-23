@@ -51,11 +51,11 @@ $("#tracker_checkbox").change(function() {
    }
 });
 
-$("#cancel-button").click(function(e) {
-    e.preventDefault();
+function cancel() {
     var url = "/" + currentDomain() + "/events/";
     window.location.href = url;
-});
+}
+
 
 $('form').on('submit', function(e) {
         e.preventDefault();

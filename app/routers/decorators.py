@@ -8,10 +8,9 @@ from pydantic import parse_obj_as
 
 def view_request(view_function):
     @wraps(view_function)
-    def wrapper(*args, **kwargs):
+    async def wrapper(*args, **kwargs):
         request = kwargs['request']
-
-        response = view_function(*args, **kwargs)
+        response = await view_function(*args, **kwargs)
 
         if type(response) == RedirectResponse:
             return response
@@ -28,7 +27,7 @@ def view_request(view_function):
 
 def domain_request(func):
     @wraps(func)
-    def wrapper(*args, **kwargs):
+    async def wrapper(*args, **kwargs):
         domain = kwargs.get('domain')
         user = kwargs.get('user')
 
@@ -36,15 +35,19 @@ def domain_request(func):
         if organisation is None:
             raise HTTPException(status_code=403, detail='User does not have access to domain')
 
-        response = func(*args, **kwargs)
+        response = await func(*args, **kwargs)
 
         if type(response) == RedirectResponse:
             return response
 
-        # Inject the organisation in response
-        data = response.get('data', {})
-        data['organisation'] = parse_obj_as(UserOrganisationView, organisation.fields)
-        # data['user'] = parse_obj_as(UserView, user.fields)
-        return {'data': data, **response}
+        try:
+            # Inject the organisation in response
+            data = response.get('data', {})
+            data['organisation'] = parse_obj_as(UserOrganisationView, organisation.fields)
+            data['current_user'] = parse_obj_as(UserView, user.fields)
+            return {'data': data, **response}
+        except Exception as e:
+            print(f"Error occurred during domain_request. Error: {e}")
+            return response
 
     return wrapper

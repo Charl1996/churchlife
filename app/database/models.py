@@ -12,6 +12,7 @@ class OrganisationsUsers(Base):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, index=True)
+    status = Column(String)
     organisation_id = Column(
         Integer,
         ForeignKey('organisations.id', ondelete=SET_NULL),

@@ -23,6 +23,13 @@ function setCurrentDomain(domain) {
     localStorage.setItem('domain', domain);
 }
 
+function currentUserEmail() {
+    return localStorage.getItem('user_email');
+}
+
+function setCurrentUserEmail(domain) {
+    localStorage.setItem('user_email', domain);
+}
 
 function request(method, url, data = null, resultHandlers = {}, headers = null) {
     if (data != null) {
