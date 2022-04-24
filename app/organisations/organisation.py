@@ -14,6 +14,8 @@ from app.organisations.organisation_schema import (
 from app.utils import (
     send_invite_email
 )
+from app.integrations.database.database_platform import PlatformModel, PlatformSchema
+from app.integrations.database.breeze_platform import BreezeDatabasePlatform, BreezePlatformSchema
 
 ACTIVE_STATUS = 'active'
 PENDING_STATUS = 'pending'
@@ -141,3 +143,22 @@ class Organisation(DatabaseInterfaceWrapper):
             users_results.append(detailed_user)
 
         return users_results
+
+    def get_linked_database_platform(self):
+        result = self.get_by(
+            model=PlatformModel,
+            schema=PlatformSchema,
+            field='organisation_id',
+            value=self.fields.id,
+        )
+
+        # Better way to do this?
+        if result.slug == BreezeDatabasePlatform.slug:
+            result = self.get_by(
+                model=PlatformModel,
+                schema=BreezePlatformSchema,
+                field='organisation_id',
+                value=self.fields.id,
+            )
+
+        return result

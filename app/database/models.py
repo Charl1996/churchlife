@@ -41,6 +41,11 @@ class Organisation(Base):
         'Event',
         back_populates='organisation'
     )
+    platforms = relationship(
+        'Platform',
+        back_populates='organisation'
+    )
+
 
 
 class User(Base):
@@ -124,4 +129,21 @@ class Action(Base):
     schedule_trigger = relationship(
         'ScheduleTrigger',
         back_populates='actions'
+    )
+
+
+class Platform(Base):
+    __tablename__ = 'platform'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, primary_key=True, index=True)
+    api_key = Column(String, nullable=True)
+    subdomain = Column(String, nullable=True)
+    slug = Column(String, nullable=False, index=True)
+
+    organisation_id = Column(Integer, ForeignKey('organisations.id', ondelete=SET_NULL), index=True)
+
+    organisation = relationship(
+        'Organisation',
+        back_populates='platforms'
     )

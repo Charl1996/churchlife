@@ -8,6 +8,8 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.exceptions import HTTPException
 from pydantic.error_wrappers import ValidationError
 from app.database.exceptions import DuplicateResourceError
+from app.integrations.database.utils import test_database_platform_connection
+from app.integrations.database.database_platform import DatabasePlatform
 
 router = APIRouter()
 
@@ -191,10 +193,50 @@ async def get_new_user(request: Request, domain: str, user_id: str, user: User =
 @router.get('/{domain}/database')
 @view_request
 @domain_request
-async def database(request: Request, domain: str, user: User = Depends(get_current_user)):
-    data = {}
+async def get_database_platform(request: Request, domain: str, user: User = Depends(get_current_user)):
+    organisation = Organisation.get_by_domain(domain)
+    platform = organisation.get_linked_database_platform()
 
-    return {'template': 'layout_content/database.html', 'data': data}
+    return {'template': 'layout_content/database.html', 'data': platform.dict()}
+
+
+@router.post('/{domain}/database/test-connection')
+@domain_request
+async def test_connection(request: Request, domain: str, user: User = Depends(get_current_user)):
+    data = await request.json()
+    status_code, errors = test_database_platform_connection(data['platform'], data["configuration"])
+
+    if status_code not in [200, 403]:
+        return JSONResponse(status_code=422, content=errors)
+    else:
+        return JSONResponse(status_code=status_code, content=errors)
+
+
+@router.post('/{domain}/database/new')
+@domain_request
+async def create_new_database_platform(request: Request, domain: str, user: User = Depends(get_current_user)):
+    data = await request.json()
+    organisation = Organisation.get_by_domain(domain)
+
+    try:
+        data['configuration']['organisation_id'] = organisation.fields.id
+
+        if DatabasePlatform.linked_to_organisation(
+                organisation_id=organisation.fields.id,
+                slug=data['platform'],
+                api_key=data['configuration']['api_key']):
+            raise DuplicateResourceError
+
+        _platform = DatabasePlatform.create_database_platform(data['platform'], data['configuration'])
+    except ValidationError as _error:
+        raise HTTPException(status_code=422, detail='Missing some data')
+    except DuplicateResourceError:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Platform with provided API key already linked"
+        )
+
+    return JSONResponse(status_code=200)
 
 
 @router.get('/{domain}/messaging')

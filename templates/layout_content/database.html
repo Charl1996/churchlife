@@ -1,6 +1,54 @@
+{% extends "layout.html" %}
+
+{% block layout_content %}
 <h1 class="ui top attached header">
   Database
 </h1>
-<div class="ui segment" style="height: 88%">
 
+<div class="ui segment" style="height: 88%">
+  <h3 class="ui header center aligned" style="height: 7%;">
+    Configuration
+  </h3>
+
+  <div class="ui container">
+    <form id="database_form" class="ui form">
+      <div id="database-platform-options" class="ui fluid selection dropdown">
+        <input type="hidden" name="database-platform-options">
+        <i class="dropdown icon"></i>
+        <div class="default text">Platform</div>
+        <div id="interval" class="menu">
+          <div class="item" data-value="breeze">
+            Breeze
+          </div>
+        </div>
+      </div>
+
+      <div id="breeze-domain" class="field" style="padding-top: 2em;">
+        <label class="ui left aligned">Breeze subdomain</label>
+        <input type="text" value={{ subdomain }} name="breeze-subdomain" placeholder="Your subdomain" required>
+      </div>
+      <div id="breeze-api-key" class="field">
+        <label class="ui left aligned">API Key</label>
+        <input type="text" value={{ api_key }} name="api-key" placeholder="API key" required>
+      </div>
+
+      <div class="ui container" style="padding-top: 2em;">
+        <div class="ui grid">
+          <div class="four column row">
+            <div class="left floated column">
+              <button onclick="testConnection()" class="ui basic primary button" type="button">Test connection</button>
+            </div>
+            <div class="right floated column right aligned">
+              <button id="save_database_button" class="ui primary button" type="submit">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+{% block javascript %}
+    <script src="{{ url_for('static', path='js/layout_content/database.js') }}"></script>
+{% endblock %}
 </div>
+{% endblock %}

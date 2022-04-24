@@ -8,7 +8,13 @@ def post_request(url, data, headers):
         data=json.dumps(data),
         headers=headers,
     )
-    return response.status_code, json.loads(response.content)
+    content = json.loads(response.content)
+
+    errors = []
+    if isinstance(content, dict):
+        errors = content.get('errors', '')
+
+    return response.status_code, content, errors
 
 
 def get_request(url, headers):
@@ -16,4 +22,10 @@ def get_request(url, headers):
         url,
         headers=headers,
     )
-    return response.status_code, json.loads(response.content)
+    content = json.loads(response.content)
+
+    errors = []
+    if isinstance(content, dict):
+        errors = content.get('errors', '')
+
+    return response.status_code, content, errors

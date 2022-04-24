@@ -58,7 +58,7 @@ function cancel() {
 
 
 $('form').on('submit', function(e) {
-        e.preventDefault();
+    e.preventDefault();
     var formData = new FormData(document.querySelector('form'));
 
     var isSeriesEvent = $('#series_checkbox').is(':checked');

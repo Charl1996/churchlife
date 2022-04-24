@@ -30,7 +30,7 @@ class ContactsAPI(RespondIORequest):
     MAX_UPDATEABLE_TAGS = 10
 
     def get_contact(self, mobile_number):
-        status_code, content = get_request(
+        status_code, content, errors = get_request(
             url=self.get_contact_endpoint(mobile_number),
             headers=self.request_headers(),
         )
@@ -56,7 +56,7 @@ class ContactsAPI(RespondIORequest):
         for tags_partition in tags_to_update:
             data = self.parse_add_tags_data(tags_partition)
 
-            status_code, content = post_request(
+            status_code, content, errors = post_request(
                 url=self.add_tags_endpoint(contact_id),
                 data=data,
                 headers=self.request_headers()
@@ -68,7 +68,7 @@ class ContactsAPI(RespondIORequest):
     def create_contact(self, data):
         parsed_data = self.parse_create_contact_data(data)
 
-        status_code, content = post_request(
+        status_code, content, errors = post_request(
             url=self.create_contact_endpoint(),
             data=parsed_data,
             headers=self.request_headers(),
@@ -89,7 +89,7 @@ class MessagesAPI(RespondIORequest):
         # Hard override for now due to testing
         mobile_number = '27824991602'
 
-        status_code, content = post_request(
+        status_code, content, errors = post_request(
             self.send_message_endpoint(mobile_number),
             data,
             self.request_headers(),
@@ -138,7 +138,7 @@ class RespondIOHandler(ContactsAPI, MessagesAPI):
         contacts = []
 
         while True:
-            status_code, content = get_request(
+            status_code, content, errors = get_request(
                 self.get_contacts_endpoint(page=current_page),
                 headers=self.request_headers(),
             )
