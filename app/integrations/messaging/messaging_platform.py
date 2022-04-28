@@ -3,15 +3,15 @@ from app.integrations.platform_schema import PlatformSchema
 from app.database.models import Platform as PlatformModel
 
 
-DATABASE_PLATFORM_TYPE = 'database'
+MESSAGING_PLATFORM_TYPE = 'messaging'
 
 """
-This class is a generic database platform implementation that all
+This class is a generic messaging platform implementation that all
 subclasses should adhere to
 """
 
 
-class DatabasePlatform(DatabaseInterfaceWrapper):
+class MessagingPlatform(DatabaseInterfaceWrapper):
 
     @classmethod
     def database_model(cls):
@@ -38,28 +38,28 @@ class DatabasePlatform(DatabaseInterfaceWrapper):
             'organisation_id': organisation_id,
             'slug': slug,
             'api_key': api_key,
-            'type': DATABASE_PLATFORM_TYPE,
+            'type': MESSAGING_PLATFORM_TYPE,
         })
         return False if not res else True
 
     @classmethod
     def get_by_slug(cls, slug):
-        if slug == 'breeze':
-            from app.integrations.database.breeze_platform import BreezeDatabasePlatform
-            return BreezeDatabasePlatform
+        if slug == 'respondio':
+            from app.integrations.messaging.respondio_platform import RespondIOMessagingPlatform
+            return RespondIOMessagingPlatform
 
         return None
 
     @classmethod
     def create_platform(cls, platform, configuration):
         # Avoid circular imports
-        from app.integrations.database.breeze_platform import BreezeDatabasePlatform
+        from app.integrations.messaging.respondio_platform import RespondIOMessagingPlatform
 
         platform_obj = None
 
-        if platform == BreezeDatabasePlatform.slug:
-            configuration['slug'] = BreezeDatabasePlatform.slug
-            configuration['type'] = DATABASE_PLATFORM_TYPE
-            platform_obj = BreezeDatabasePlatform.create(configuration)
+        if platform == RespondIOMessagingPlatform.slug:
+            configuration['slug'] = RespondIOMessagingPlatform.slug
+            configuration['type'] = MESSAGING_PLATFORM_TYPE
+            platform_obj = RespondIOMessagingPlatform.create(configuration)
 
         return platform_obj

@@ -14,8 +14,10 @@ from app.organisations.organisation_schema import (
 from app.utils import (
     send_invite_email
 )
-from app.integrations.database.database_platform import PlatformModel, PlatformSchema
+from app.integrations.database.database_platform import PlatformModel, PlatformSchema, DATABASE_PLATFORM_TYPE
 from app.integrations.database.breeze_platform import BreezeDatabasePlatform, BreezePlatformSchema
+from app.integrations.messaging.messaging_platform import MESSAGING_PLATFORM_TYPE
+from app.integrations.messaging.respondio_platform import RespondIOMessagingPlatform
 
 ACTIVE_STATUS = 'active'
 PENDING_STATUS = 'pending'
@@ -145,20 +147,59 @@ class Organisation(DatabaseInterfaceWrapper):
         return users_results
 
     def get_linked_database_platform(self):
+        criteria = {
+            'type': DATABASE_PLATFORM_TYPE,
+            'organisation_id': self.fields.id,
+        }
+
         result = self.get_by(
             model=PlatformModel,
             schema=PlatformSchema,
-            field='organisation_id',
-            value=self.fields.id,
+            criteria=criteria,
         )
+
+        if not result:
+            return None
 
         # Better way to do this?
         if result.slug == BreezeDatabasePlatform.slug:
             result = self.get_by(
                 model=PlatformModel,
                 schema=BreezePlatformSchema,
-                field='organisation_id',
-                value=self.fields.id,
+                criteria=criteria,
             )
 
         return result
+
+    def get_linked_messaging_platform(self):
+        criteria = {
+            'type': MESSAGING_PLATFORM_TYPE,
+            'organisation_id': self.fields.id,
+        }
+
+        result = self.get_by(
+            model=PlatformModel,
+            schema=PlatformSchema,
+            criteria=criteria,
+        )
+
+        if not result:
+            return None
+
+        # Better way to do this?
+        if result.slug == RespondIOMessagingPlatform.slug:
+            result = self.get_by(
+                model=PlatformModel,
+                schema=PlatformSchema,
+                criteria=criteria,
+            )
+
+        return result
+
+    def update_details(self, data: dict):
+        organisation_details = OrganisationUpdate(**data)
+        self.update_by_id(model_id=self.fields.id, model_changes=organisation_details)
+
+    @property
+    def updateable_details(self):
+        return OrganisationUpdate(**self.fields.dict())

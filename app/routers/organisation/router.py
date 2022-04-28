@@ -8,8 +8,9 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.exceptions import HTTPException
 from pydantic.error_wrappers import ValidationError
 from app.database.exceptions import DuplicateResourceError
-from app.integrations.database.utils import test_database_platform_connection
+from app.integrations.utils import test_database_platform_connection, test_messaging_platform_connection
 from app.integrations.database.database_platform import DatabasePlatform
+from app.integrations.messaging.messaging_platform import MessagingPlatform
 
 router = APIRouter()
 
@@ -55,9 +56,7 @@ async def events(request: Request, domain: str, user: User = Depends(get_current
 @router.post('/{domain}/events/new')
 @domain_request
 async def create_event(request: Request, domain: str, user: User = Depends(get_current_user)):
-    breakpoint()
     data = await request.json()
-    breakpoint()
 
     # example_data = {
     #     'event': {
@@ -111,9 +110,19 @@ async def tracking(request: Request, domain: str, user: User = Depends(get_curre
 @view_request
 @domain_request
 async def settings(request: Request, domain: str, user: User = Depends(get_current_user)):
-    data = {}
+    org = Organisation.get_by_domain(domain)
+    return {'template': 'layout_content/settings.html', 'data': org.updateable_details.dict()}
 
-    return {'template': 'layout_content/settings.html', 'data': data}
+
+@router.post('/{domain}/settings')
+@domain_request
+async def settings(request: Request, domain: str, user: User = Depends(get_current_user)):
+    data = await request.json()
+
+    org = Organisation.get_by_domain(domain)
+    org.update_details(data)
+
+    return JSONResponse(status_code=200)
 
 
 @router.get('/{domain}/users')
@@ -156,6 +165,7 @@ async def invite_new_user(request: Request, domain: str, user: User = Depends(ge
         )
 
     organisation = Organisation.get_by_domain(domain)
+
     if not user.get_user_organisation_by_domain(domain):
         organisation.invite_new_user(user)
 
@@ -197,7 +207,11 @@ async def get_database_platform(request: Request, domain: str, user: User = Depe
     organisation = Organisation.get_by_domain(domain)
     platform = organisation.get_linked_database_platform()
 
-    return {'template': 'layout_content/database.html', 'data': platform.dict()}
+    data = {}
+    if platform:
+        data = platform.dict()
+
+    return {'template': 'layout_content/database.html', 'data': data}
 
 
 @router.post('/{domain}/database/test-connection')
@@ -227,7 +241,7 @@ async def create_new_database_platform(request: Request, domain: str, user: User
                 api_key=data['configuration']['api_key']):
             raise DuplicateResourceError
 
-        _platform = DatabasePlatform.create_database_platform(data['platform'], data['configuration'])
+        _platform = DatabasePlatform.create_platform(data['platform'], data['configuration'])
     except ValidationError as _error:
         raise HTTPException(status_code=422, detail='Missing some data')
     except DuplicateResourceError:
@@ -243,6 +257,49 @@ async def create_new_database_platform(request: Request, domain: str, user: User
 @view_request
 @domain_request
 async def messaging(request: Request, domain: str, user: User = Depends(get_current_user)):
+    organisation = Organisation.get_by_domain(domain)
+    platform = organisation.get_linked_messaging_platform()
+
     data = {}
+    if platform:
+        data = platform.dict()
 
     return {'template': 'layout_content/messaging.html', 'data': data}
+
+
+@router.post('/{domain}/messaging/test-connection')
+@domain_request
+async def test_messaging_connection(request: Request, domain: str, user: User = Depends(get_current_user)):
+    data = await request.json()
+    status_code, errors = test_messaging_platform_connection(data['platform'], data["configuration"])
+
+    if status_code not in [200, 403]:
+        return JSONResponse(status_code=422, content=errors)
+    else:
+        return JSONResponse(status_code=status_code, content=errors)
+
+
+@router.post('/{domain}/messaging/new')
+@domain_request
+async def new_messaging_platform(request: Request, domain: str, user: User = Depends(get_current_user)):
+    data = await request.json()
+    organisation = Organisation.get_by_domain(domain)
+
+    try:
+        data['configuration']['organisation_id'] = organisation.fields.id
+        if MessagingPlatform.linked_to_organisation(
+                organisation_id=organisation.fields.id,
+                slug=data['platform'],
+                api_key=data['configuration']['api_key']):
+            raise DuplicateResourceError
+
+        _platform = MessagingPlatform.create_platform(data['platform'], data['configuration'])
+    except ValidationError as _error:
+        raise HTTPException(status_code=422, detail='Missing some data')
+    except DuplicateResourceError:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Platform with provided API key already linked"
+        )
+
+    return JSONResponse(status_code=200)

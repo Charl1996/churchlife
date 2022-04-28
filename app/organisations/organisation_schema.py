@@ -13,7 +13,6 @@ class OrganisationCreate(OrganisationBase):
 
 class OrganisationUpdate(BaseModel):
     name: Optional[str] = None
-    users: Optional[List[object]] = []
 
 
 class Organisation(OrganisationBase):

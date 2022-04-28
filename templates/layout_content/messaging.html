@@ -1,6 +1,50 @@
+{% extends "layout.html" %}
+
+{% block layout_content %}
 <h1 class="ui top attached header">
   Messaging
 </h1>
-<div class="ui segment" style="height: 88%">
 
+<div class="ui segment" style="height: 88%">
+  <h3 class="ui header center aligned" style="height: 7%;">
+    Configuration
+  </h3>
+
+  <div class="ui container">
+    <form id="messaging_form" class="ui form">
+      <div id="messaging-platform-options" class="ui fluid selection dropdown">
+        <input type="hidden" name="messaging-platform-options">
+        <i class="dropdown icon"></i>
+        <div class="default text">Platform</div>
+        <div id="interval" class="menu">
+          <div class="item" data-value="respondio">
+            Respond.io
+          </div>
+        </div>
+      </div>
+
+      <div id="respondio-api-key" class="field" style="padding-top: 2em;">
+        <label class="ui left aligned">Channel Key</label>
+        <input type="text" value="{{ api_key }}" name="channel-key" placeholder="Channel key" required>
+      </div>
+
+      <div class="ui container" style="padding-top: 2em;">
+        <div class="ui grid">
+          <div class="four column row">
+            <div class="left floated column">
+              <button onclick="testConnection()" class="ui basic primary button" type="button">Test connection</button>
+            </div>
+            <div class="right floated column right aligned">
+              <button id="save_messaging_button" class="ui primary button" type="submit">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+{% block javascript %}
+    <script src="{{ url_for('static', path='js/layout_content/messaging.js') }}"></script>
+{% endblock %}
 </div>
+{% endblock %}

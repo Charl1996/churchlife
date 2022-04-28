@@ -1,12 +1,42 @@
+{% extends "layout.html" %}
+
+{% block layout_content %}
 <h1 class="ui top attached header">
   Settings
 </h1>
-<div class="ui segment" style="height: 88%">
 
+<div class="ui segment" style="height: 88%">
+  <h3 class="ui header center aligned" style="height: 7%;">
+    Organisation Details
+  </h3>
+
+  <div class="ui container">
+    <form id="messaging_form" class="ui form">
+
+      <div class="field" style="padding-top: 2em;">
+        <label class="ui left aligned">Organisation name</label>
+        <input type="text" value="{{ name }}" name="organisation-name" placeholder="Name" required>
+      </div>
+      <div class="field">
+        <label class="ui container left aligned">Logo</label>
+        <input id="logoImageInput" type="file" accept="image/*" onchange="readURL(this);">
+        <img id="logo_image" class="ui container center aligned small circular image hidden" style="padding: 1em; padding-top: 2em;" src="#" alt="" />
+      </div>
+
+      <div class="ui container" style="padding-top: 2em;">
+        <div class="ui grid">
+          <div class="four column row">
+            <div class="right floated column right aligned">
+              <button id="save_messaging_button" class="ui primary button" type="submit">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
 
 {% block javascript %}
     <script src="{{ url_for('static', path='js/layout_content/settings.js') }}"></script>
 {% endblock %}
 </div>
-
-
+{% endblock %}

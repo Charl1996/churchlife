@@ -140,6 +140,7 @@ class Platform(Base):
     api_key = Column(String, nullable=True)
     subdomain = Column(String, nullable=True)
     slug = Column(String, nullable=False, index=True)
+    type = Column(String, nullable=False, index=True)
 
     organisation_id = Column(Integer, ForeignKey('organisations.id', ondelete=SET_NULL), index=True)
 

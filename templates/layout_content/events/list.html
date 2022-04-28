@@ -8,58 +8,71 @@
     </button>
   </div>
   <div id="events-content">
-    <h3 class="ui block header">Upcoming</h3>
-    <div style="padding: 1em;">
-      <div class="ui middle aligned divided list">
-        <div class="item">
-          <div class="right floated content">
-            <button class="ui red basic left attached button">Cancel</button>
-            <button class="right attached ui button">View</button>
-          </div>
-          <div class="content">
-            Sondag Diens (27 March 2022)
+    <div class="ui tabular menu">
+      <a id='upcoming-events-content-item' class="active item">
+        <div class="ui" onclick="selectUpcomingEventsMenuItem()" >Upcoming</div>
+      </a>
+      <a id='past-events-content-item' class="item">
+        <div class="ui" onclick="selectPastEventsMenuItem()" >Past</div>
+      </a>
+    </div>
+
+    <div id="upcoming-events-content">
+<!--      <h3 class="ui block header">Upcoming</h3>-->
+      <div style="padding: 1em;">
+        <div class="ui middle aligned divided list">
+          <div class="item">
+            <div class="right floated content">
+              <button class="ui red basic left attached button">Cancel</button>
+              <button class="right attached ui button">View</button>
+            </div>
+            <div class="content">
+              Sondag Diens (27 March 2022)
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <h3 class="ui block header">Past</h3>
-    <div style="padding: 1em;">
-      <div class="ui middle aligned divided list">
-        <div class="item">
-          <div class="right floated content">
-            <div class="ui button">View</div>
+    <div id="past-events-content" hidden>
+<!--      <h3 class="ui block header">Past</h3>-->
+      <div style="padding: 1em;">
+        <div class="ui middle aligned divided list">
+          <div class="item">
+            <div class="right floated content">
+              <div class="ui button">View</div>
+            </div>
+            <div class="content">
+              <i class="check icon"></i>
+              Sondag Diens (13 March 2022)
+            </div>
           </div>
-          <div class="content">
-            <i class="check icon"></i>
-            Sondag Diens (13 March 2022)
+          <div class="item">
+            <div class="right floated content">
+              <div class="ui button">View</div>
+            </div>
+            <div class="content">
+              <i class="check icon"></i>
+              Sondag Diens (6 March 2022)
+            </div>
           </div>
-        </div>
-        <div class="item">
-          <div class="right floated content">
-            <div class="ui button">View</div>
+          <div class="item">
+            <div class="right floated content">
+              <div class="ui button">View</div>
+            </div>
+            <div class="content">
+              <i class="ban icon"></i>
+              Sondag Diens (27 Feb 2022)
+            </div>
           </div>
-          <div class="content">
-            <i class="check icon"></i>
-            Sondag Diens (6 March 2022)
-          </div>
-        </div>
-        <div class="item">
-          <div class="right floated content">
-            <div class="ui button">View</div>
-          </div>
-          <div class="content">
-            <i class="ban icon"></i>
-            Sondag Diens (27 Feb 2022)
-          </div>
-        </div>
-        <div class="item">
-          <div class="right floated content">
-            <div class="ui button">View</div>
-          </div>
-          <div class="content">
-            <i class="check icon"></i>
-            Sondag Diens (20 Feb 2022)
+          <div class="item">
+            <div class="right floated content">
+              <div class="ui button">View</div>
+            </div>
+            <div class="content">
+              <i class="check icon"></i>
+              Sondag Diens (20 Feb 2022)
+            </div>
           </div>
         </div>
       </div>

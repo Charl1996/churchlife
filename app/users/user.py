@@ -48,6 +48,8 @@ class User(DatabaseInterfaceWrapper):
     @classmethod
     def get_by_email(cls, email: str):
         user_schema = super().get_by(field="email", value=email)
+        if not user_schema:
+            return None
         return cls(user=user_schema)
 
     @classmethod

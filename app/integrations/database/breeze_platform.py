@@ -1,4 +1,4 @@
-from app.integrations.database.database_platform import DatabasePlatform
+from app.integrations.database.database_platform import DatabasePlatform, DATABASE_PLATFORM_TYPE
 from app.requests import (
     get_request
 )
@@ -49,6 +49,7 @@ class BreezeDatabasePlatform(DatabasePlatform):
             subdomain=create_schema.subdomain,
             api_key=create_schema.api_key,
             organisation_id=create_schema.organisation_id,
+            type=DATABASE_PLATFORM_TYPE,
         )
 
     @classmethod
