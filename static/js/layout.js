@@ -9,8 +9,8 @@ function eventsPage() {
 };
 
 
-function trackingPage() {
-    var url = "/" + currentDomain() + "/tracking";
+function notificationsPage() {
+    var url = "/" + currentDomain() + "/notifications";
     window.location.href = url;
 };
 

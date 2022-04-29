@@ -56,18 +56,15 @@ class DatabaseInterface(CRUDOperations):
     def get_all_by(
             cls,
             model=None,
-            field=None,
-            value=None,
             schema=None,
             raise_error=False,
             criteria=None,
     ):
         if model is None:
             model = cls.database_model()
+
         db_models = super().get(
             model=model,
-            field=field,
-            value=value,
             criteria=criteria,
             get_all=True,
         )
@@ -111,12 +108,18 @@ class DatabaseInterface(CRUDOperations):
         return cls.as_schema_model(db_model)
 
     @classmethod
-    def delete(cls, model: any, model_id: int):
-        result = super().delete(
+    def delete(cls, model_id: int, model=None):
+        return super().delete(
             model=model or cls.database_model(),
             model_id=model_id
         )
-        return result
+
+    @classmethod
+    def delete_where(cls, criteria: dict, model=None):
+        return super().delete_where(
+            model=model or cls.database_model(),
+            criteria=criteria
+        )
 
     @classmethod
     def database_model(cls, *args, **kwargs):

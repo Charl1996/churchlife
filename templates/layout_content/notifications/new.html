@@ -1,0 +1,63 @@
+{% extends "layout_content/notifications.html" %}
+
+{% block notification_content %}
+
+<script type="text/template" data-template="member-email" id="member-email">
+  <div style="padding-top: 1em;">
+    <input style="display: inline-block; width: 50%;" type="email" placeholder="Email" onfocusout="validateEmail(this)" required>
+    <div style="display: inline-block; padding-left: 2em;">
+      <div class="ui icon basic button red" onclick="removeNotificationMember(this.parentElement.parentElement.id)">
+        <i class="x icon"></i>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div>
+  <h3 class="ui header center aligned" style="height: 5%;">
+    New Notification
+  </h3>
+
+  <div class="ui container" style="height: 90%;">
+    <form id="new_notification_form" class="ui form">
+      <div class="field">
+        <label class="ui left aligned">Notification name</label>
+        <input type="text" name="notification-name" placeholder="Name" required>
+      </div>
+
+      <div class="field" style="padding-top: 1em;">
+        <label class="ui left aligned" data-position="top left" data-inverted="">Notification members</label>
+        <div id="notification-members">
+          <div style="padding-top: 1em;">
+            <input style="display: inline-block; width: 50%;" type="text" placeholder="Email" required>
+          </div>
+        </div>
+        <div style="padding-top: 1em;">
+          <button onclick="addNewNotificationMemberElement()" class="ui basic primary button" type="button">
+            <i class="icon plus"></i>
+            Add
+          </button>
+        </div>
+      </div>
+
+      <div class="ui container" style="padding-top: 2em;">
+        <div class="ui grid">
+          <div class="four column row">
+            <div class="left floated column">
+              <button onclick="cancel()" class="ui basic red button" type="button">Cancel</button>
+            </div>
+            <div class="right floated column right aligned">
+              <button id="create_notification_button" class="ui primary button" type="submit">Create</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ url_for('static', path='js/layout_content/notifications/new.js') }}"></script>
+{% endblock %}

@@ -18,6 +18,8 @@ from app.integrations.database.database_platform import PlatformModel, PlatformS
 from app.integrations.database.breeze_platform import BreezeDatabasePlatform, BreezePlatformSchema
 from app.integrations.messaging.messaging_platform import MESSAGING_PLATFORM_TYPE
 from app.integrations.messaging.respondio_platform import RespondIOMessagingPlatform
+from app.notifications import Notification, NotificationSchema
+from typing import List
 
 ACTIVE_STATUS = 'active'
 PENDING_STATUS = 'pending'
@@ -122,7 +124,7 @@ class Organisation(DatabaseInterfaceWrapper):
 
         pass
 
-    def get_users(self):
+    def get_users(self) -> List[OrganisationUserViewSchema]:
         from app.users import User
 
         criteria = {'organisation_id': self.fields.id}
@@ -203,3 +205,10 @@ class Organisation(DatabaseInterfaceWrapper):
     @property
     def updateable_details(self):
         return OrganisationUpdate(**self.fields.dict())
+
+    def get_notifications(self) -> List[NotificationSchema]:
+        return Notification.get_all_by(
+            criteria={
+                'organisation_id': self.fields.id
+            }
+        )

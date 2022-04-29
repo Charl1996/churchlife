@@ -1,4 +1,13 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Time, Boolean, JSON
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    ForeignKey,
+    DateTime,
+    Time,
+    Boolean,
+    JSON,
+)
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -45,7 +54,10 @@ class Organisation(Base):
         'Platform',
         back_populates='organisation'
     )
-
+    notifications = relationship(
+        'Notification',
+        back_populates='organisation'
+    )
 
 
 class User(Base):
@@ -148,3 +160,39 @@ class Platform(Base):
         'Organisation',
         back_populates='platforms'
     )
+
+
+class Notification(Base):
+    __tablename__ = 'notification'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+
+    organisation_id = Column(Integer, ForeignKey('organisations.id', ondelete=SET_NULL), index=True)
+
+    notification_items = relationship(
+        'NotificationItem',
+        back_populates='notification'
+    )
+    organisation = relationship(
+        'Organisation',
+        back_populates='notifications'
+    )
+
+
+class NotificationItem(Base):
+    __tablename__ = 'notification_item'
+    __table_args__ = {'extend_existing': True}
+
+    id = Column(Integer, primary_key=True, index=True)
+    type = Column(String, nullable=False)
+    data = Column(JSON, nullable=False)
+
+    notification_id = Column(Integer, ForeignKey('notification.id', ondelete=SET_NULL), index=True)
+
+    notification = relationship(
+        'Notification',
+        back_populates='notification_items'
+    )
+

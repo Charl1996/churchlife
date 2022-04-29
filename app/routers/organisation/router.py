@@ -11,6 +11,7 @@ from app.database.exceptions import DuplicateResourceError
 from app.integrations.utils import test_database_platform_connection, test_messaging_platform_connection
 from app.integrations.database.database_platform import DatabasePlatform
 from app.integrations.messaging.messaging_platform import MessagingPlatform
+from app.notifications import Notification
 
 router = APIRouter()
 
@@ -50,7 +51,7 @@ async def events(request: Request, domain: str, user: User = Depends(get_current
 @view_request
 @domain_request
 async def events(request: Request, domain: str, user: User = Depends(get_current_user)):
-    return {'template': 'layout_content/events/new_event.html'}
+    return {'template': 'layout_content/events/new.html'}
 
 
 @router.post('/{domain}/events/new')
@@ -97,13 +98,61 @@ async def get_event(request: Request, domain: str, event_id: int, user: User = D
     return {'template': 'layout_content/events/show_event.html'}
 
 
-@router.get('/{domain}/tracking')
+@router.get('/{domain}/notifications')
 @view_request
 @domain_request
-async def tracking(request: Request, domain: str, user: User = Depends(get_current_user)):
-    data = {}
+async def notifications(request: Request, domain: str, user: User = Depends(get_current_user)):
+    org = Organisation.get_by_domain(domain)
+    notifications_schemas = org.get_notifications()
 
-    return {'template': 'layout_content/tracking.html', 'data': data}
+    notifications_data = []
+    for notification in notifications_schemas:
+        notifications_data.append(notification)
+
+    data = {
+        'notifications': notifications_data
+    }
+
+    return {'template': 'layout_content/notifications/list.html', 'data': data}
+
+
+@router.get('/{domain}/notifications/new')
+@view_request
+@domain_request
+async def new_notification(request: Request, domain: str, user: User = Depends(get_current_user)):
+    return {'template': 'layout_content/notifications/new.html'}
+
+
+@router.post('/{domain}/notifications/new')
+@domain_request
+async def new_notification(request: Request, domain: str, user: User = Depends(get_current_user)):
+    data = await request.json()
+    org = Organisation.get_by_domain(domain)
+
+    try:
+        # Todo: do inside transaction
+        notification = Notification.create(data={
+            'name': data['name'],
+            'organisation_id': org.fields.id,
+        })
+        for notification_item in data['notification_members']:
+            notification.add_notification_item(
+                item_type=notification_item['type'],
+                data=notification_item['data'],
+            )
+
+    except Exception as e:
+        breakpoint()
+        return HTTPException(status_code=422, detail='Could not create notifications')
+
+    return JSONResponse(status_code=200)
+
+
+@router.delete('/{domain}/notifications/{notification_id}')
+@domain_request
+async def delete_notification(request: Request, domain: str, notification_id: str, user: User = Depends(get_current_user)):
+    Notification.delete(model_id=notification_id)
+    return JSONResponse(status_code=200)
 
 
 @router.get('/{domain}/settings')
@@ -143,7 +192,7 @@ async def users(request: Request, domain: str, user: User = Depends(get_current_
 async def get_new_user(request: Request, domain: str, user: User = Depends(get_current_user)):
     data = {}
 
-    return {'template': 'layout_content/users/new_user.html', 'data': data}
+    return {'template': 'layout_content/users/new.html', 'data': data}
 
 
 @router.post('/{domain}/users/new')

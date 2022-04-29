@@ -27,3 +27,11 @@ Start container with name, username and password
 ## PostgreSQL
 Start container with name, password and volume to mount to
 > docker run -d --name <container-name> -e POSTGRES_PASSWORD=<pass> -v <your-data-volume-dir>:/var/lib/postgresql/data -p <host-port>:5432 postgres
+
+
+## Alembic
+Automatically generate migration
+> alembic revision --autogenerate -m "Add notification model"
+ 
+Apply generated migration
+> alembic upgrade head

@@ -82,6 +82,11 @@ class CRUDOperations(DBOperations):
         return cls.commit_to_db()
 
     @classmethod
+    def delete_where(cls, model: any, criteria: dict):
+        criteria_string = cls._get_criteria_string(criteria)
+        return eval(f"db.session.query(model).filter({criteria_string}).delete()")
+
+    @classmethod
     def _get_criteria_string(cls, criteria: dict) -> str:
         def criterion_string(field_, value_):
             return f"model.{field_} == '{value_}'"

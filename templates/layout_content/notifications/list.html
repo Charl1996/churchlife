@@ -1,0 +1,29 @@
+{% extends "layout_content/notifications.html" %}
+
+{% block notification_content %}
+  <div style="padding-top: 1em; padding-bottom: 2em;">
+    <button class="fluid ui basic primary button" onclick="addNewNotification()">
+      <i class="icon plus"></i>
+      New notification
+    </button>
+  </div>
+  <div class="ui info message" >
+    Notifications can be used by linking them to events
+  </div>
+  <div style="padding: 1em;">
+    <div class="ui middle aligned divided list">
+      {% for notification in notifications %}
+        <div class="item">
+          <div class="right floated content">
+            <button class="ui red basic left attached button" onclick="deleteNotification({{ notification.id }})">Remove</button>
+            <button class="right attached ui button">View</button>
+          </div>
+          <div class="content">
+            <b>{{ notification.name }}</b>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+{% endblock %}
