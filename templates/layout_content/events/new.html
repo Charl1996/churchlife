@@ -8,158 +8,171 @@
   </h3>
 
   <div class="ui container" style="height: 90%;">
-    <form id="new_event_form" class="ui form">
-      <div class="field">
-        <label class="ui left aligned">Event name</label>
-        <input type="text" name="event-name" placeholder="Event name" required>
-      </div>
+    <div class="scrolling content">
+      <form id="new_event_form" class="ui form">
+        <div class="field">
+          <label class="ui left aligned">Event name</label>
+          <input type="text" name="event-name" placeholder="Event name" required>
+        </div>
 
-      <div id="event_type_form" class="ui form">
-        <div class="grouped fields">
-          <label data-tooltip="Indicate whether this event should happen on a recurring basis or once off" data-position="top left" data-inverted="">Type of event</label>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input id="series_checkbox" type="radio" name="event-type" checked="checked">
-              <label>Recurring event</label>
+        <div id="event_type_form" class="ui form">
+          <div class="grouped fields">
+            <label data-tooltip="Indicate whether this event should happen on a recurring basis or once off" data-position="top left" data-inverted="">Type of event</label>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input id="series_checkbox" type="radio" name="event-type" checked="checked">
+                <label>Recurring event</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input type="radio" name="event-type">
+                <label>One time event</label>
+              </div>
             </div>
           </div>
-          <div class="field">
-            <div class="ui radio checkbox">
-              <input type="radio" name="event-type">
-              <label>One time event</label>
+        </div>
+
+        <div id="event-interval" class="ui fluid selection dropdown">
+          <input type="hidden" name="series-interval">
+          <i class="dropdown icon"></i>
+          <div class="default text">Event occurrence</div>
+          <div id="interval" class="menu">
+            <div class="item" data-value="daily">
+              Daily
+            </div>
+            <div class="item" data-value="weekly">
+              Weekly
+            </div>
+            <div class="item" data-value="monthly">
+              Monthly
             </div>
           </div>
         </div>
-      </div>
 
-      <div id="event-interval" class="ui fluid selection dropdown">
-        <input type="hidden" name="series-interval">
-        <i class="dropdown icon"></i>
-        <div class="default text">Event occurrence</div>
-        <div id="interval" class="menu">
-          <div class="item" data-value="daily">
-            Daily
-          </div>
-          <div class="item" data-value="weekly">
-            Weekly
-          </div>
-          <div class="item" data-value="monthly">
-            Monthly
-          </div>
-        </div>
-      </div>
-
-      <div style="padding-top: 1em;">
-        <div class="field" style="display: inline-block; padding-right: 1em;">
-          <label class="ui left aligned" data-tooltip="Date of first event" data-position="top left" data-inverted="">From date</label>
-          <input type="date" name="event-from-date" placeholder="From date" required>
-        </div>
-        <div id="to-date-picker" class="field" style="display: inline-block; padding-right: 1em;">
-          <label class="ui left aligned" data-tooltip="Date of last event" data-position="top left" data-inverted="">To date</label>
-          <input id="to-date-picker-input" type="date" name="event-to-date" placeholder="To date">
-        </div>
-        <div id="continuous-event-checkbox" class="ui checkbox" style="display: inline-block; padding-left: 2em;">
-          <input type="checkbox" id="unspecified-end-date-checkbox">
-          <label for="unspecified-end-date-checkbox">No specified end date</label>
-        </div>
-      </div>
-      <div>
-        <div class="field" style="display: inline-block; padding-right: 1em;">
-          <label class="ui left aligned">Starts at</label>
-          <input type="time" value="08:00:00" name="event-start-time" placeholder="Start at" required>
-        </div>
-        <div class="field" style="display: inline-block; padding-right: 1em;">
-          <label class="ui left aligned">Ends at</label>
-          <input type="time" value="09:00:00" name="event-end-time" placeholder="End at" required>
-        </div>
-      </div>
-      <div class="ui toggle checkbox">
-        <input id="tracker_checkbox" type="checkbox" name="public">
-        <label>Capture attendance</label>
-      </div>
-      <div id="tracker-info" style="display: none; padding-top: 1em;">
         <div style="padding-top: 1em;">
           <div class="field" style="display: inline-block; padding-right: 1em;">
-            <label class="ui left aligned">Start before event begins (minutes)</label>
+            <label class="ui left aligned" data-tooltip="Date of first event" data-position="top left" data-inverted="">From date</label>
+            <input type="date" name="event-from-date" placeholder="From date" required>
+          </div>
+          <div id="to-date-picker" class="field" style="display: inline-block; padding-right: 1em;">
+            <label class="ui left aligned" data-tooltip="Date of last event" data-position="top left" data-inverted="">To date</label>
+            <input id="to-date-picker-input" type="date" name="event-to-date" placeholder="To date">
+          </div>
+          <div id="continuous-event-checkbox" class="ui checkbox" style="display: inline-block; padding-left: 2em;">
+            <input type="checkbox" id="unspecified-end-date-checkbox">
+            <label for="unspecified-end-date-checkbox">No specified end date</label>
+          </div>
+        </div>
+        <div>
+          <div class="field" style="display: inline-block; padding-right: 1em;">
+            <label class="ui left aligned">Starts at</label>
+            <input type="time" value="08:00:00" name="event-start-time" placeholder="Start at" required>
+          </div>
+          <div class="field" style="display: inline-block; padding-right: 1em;">
+            <label class="ui left aligned">Ends at</label>
+            <input type="time" value="09:00:00" name="event-end-time" placeholder="End at" required>
+          </div>
+        </div>
+        <h4 class="ui horizontal divider header">
+          Attendance tracking
+        </h4>
+        <div id="tracker-info" style="padding-top: 1em;">
+          <div class="field" style="display: inline-block; padding-right: 1em;">
+            <label class="ui left aligned">Start recording before event begins (minutes)</label>
             <input type="number" name="start-tracking-before" value="20" required>
           </div>
           <div class="field" style="display: inline-block; padding-right: 1em;">
-            <label class="ui left aligned">Stop after event begins (minutes)</label>
+            <label class="ui left aligned">Stop recording after event begins (minutes)</label>
             <input type="number" name="stop-tracking-after" value="20" required>
           </div>
+
+          {% if notifications %}
+          <div style="padding-top: 0em;">
+            <div style="display: inline-block;"><b>Notify </b></div>
+            <div style="display: inline-block; width: 30%; padding-left: 1em;">
+              <div id="post-processing-notifications" class="ui fluid selection dropdown">
+                <input type="hidden" name="notification-groups">
+                <i class="dropdown icon"></i>
+                <div class="default text">notification group</div>
+                <div id="notifications-dropdown" class="menu">
+                  {% for notification in notifications %}
+                    <div class="item" data-value="notification-{{ notification.id }}">
+                      {{ notification.name }}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div style="display: inline-block; padding-left: 1em;"><b> with attendance report.</b></div>
+          </div>
+
+<!--          THIS FEATURE IS FOR A LITTLE LATER    -->
+
+<!--          <div style="padding-top: 1em;">-->
+<!--            <div style="display: inline-block;"><b>Notify </b></div>-->
+<!--            <div style="display: inline-block; width: 30%; padding-left: 1em;">-->
+<!--              <div id="event-notifications2" class="ui fluid selection dropdown">-->
+<!--                <input type="hidden" name="notification-groups">-->
+<!--                <i class="dropdown icon"></i>-->
+<!--                <div class="default text">notification group</div>-->
+<!--                <div id="notifications-dropdown2" class="menu">-->
+<!--                  {% for notification in notifications %}-->
+<!--                    <div class="item" data-value="notification-{{ notification.id }}">-->
+<!--                      {{ notification.name }}-->
+<!--                    </div>-->
+<!--                  {% endfor %}-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div style="display: inline-block; padding-left: 1em;"><b> when </b></div>-->
+<!--            <div style="display: inline-block; width: 30%; padding-left: 1em;">-->
+<!--              <div id="notification-actions" class="ui fluid selection dropdown">-->
+<!--                <input type="hidden" name="series-interval">-->
+<!--                <i class="dropdown icon"></i>-->
+<!--                <div class="default text">face type</div>-->
+<!--                <div id="notification-actions-dropdown" class="menu">-->
+<!--                  <div class="item" data-value="new_face">-->
+<!--                    new-->
+<!--                  </div>-->
+<!--                  <div class="item" data-value="familiar_face">-->
+<!--                    familiar-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div style="display: inline-block; padding-left: 1em;"><b> face is detected. </b></div>-->
+<!--          </div>-->
+          {% else %}
+          <div class="ui warn message" >
+            <div class="ui left aligned">
+              You currently have no notifications set up. Click the "Add notifications" button
+              to add notifications.
+            </div>
+            <div class="ui right aligned">
+              <div class="ui basic primary icon button" onclick="addNotification()">
+                <i class="plus icon"></i>
+                Add notifications
+              </div>
+            </div>
+          </div>
+          {% endif %}
         </div>
 
-<!--        <div style="padding-top: 1em;">-->
-<!--          <div class="field" style="display: inline-block; padding-right: 1em;">-->
-<!--            <label class="ui left aligned">Notify</label>-->
-<!--          </div>-->
-<!--          <div class="field" style="display: inline-block; padding-right: 1em; width: 20%;">-->
-<!--            <div id="notification-groups" class="ui fluid selection dropdown">-->
-<!--              <input type="hidden">-->
-<!--              <i class="dropdown icon"></i>-->
-<!--              <div class="default text">group</div>-->
-<!--              <div class="menu">-->
-<!--                <div class="item" data-value="1">-->
-<!--                  Groetspan-->
-<!--                </div>-->
-<!--                <div class="item" data-value="2">-->
-<!--                  Staff-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="field" style="display: inline-block; padding-right: 1em;">-->
-<!--            <label class="ui left aligned">when</label>-->
-<!--          </div>-->
-<!--          <div class="field" style="display: inline-block; padding-right: 1em; width: 20%;">-->
-<!--              <div id="notification-triggers" class="ui fluid selection dropdown">-->
-<!--                <input type="hidden">-->
-<!--                <i class="dropdown icon"></i>-->
-<!--                <div class="default text">event</div>-->
-<!--                <div class="menu">-->
-<!--                  <div class="item" data-value="1">-->
-<!--                    new face-->
-<!--                  </div>-->
-<!--                  <div class="item" data-value="2">-->
-<!--                    familiar face-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div class="field" style="display: inline-block; padding-right: 1em;">-->
-<!--              <label class="ui left aligned">is detected</label>-->
-<!--            </div>-->
-<!--            <div class="field" style="display: inline-block; padding-right: 1em; width: 20%;">-->
-<!--              <div id="notification-trigger-windows" class="ui fluid selection dropdown">-->
-<!--                <input type="hidden">-->
-<!--                <i class="dropdown icon"></i>-->
-<!--                <div class="default text">during window</div>-->
-<!--                <div class="menu">-->
-<!--                  <div class="item" data-value="1">-->
-<!--                    before event starts-->
-<!--                  </div>-->
-<!--                  <div class="item" data-value="2">-->
-<!--                    after event starts-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--        </div>-->
-      </div>
-
-      <div class="ui container" style="padding-top: 2em;">
-        <div class="ui grid">
-          <div class="four column row">
-            <div class="left floated column">
-              <button onclick="cancel()" class="ui basic red button">Cancel</button>
-            </div>
-            <div class="right floated column right aligned">
-              <button id="create_event_button" class="ui primary button" type="submit">Create</button>
+        <div class="ui container" style="padding-top: 2em;">
+          <div class="ui grid">
+            <div class="four column row">
+              <div class="left floated column">
+                <button onclick="cancel()" class="ui basic red button">Cancel</button>
+              </div>
+              <div class="right floated column right aligned">
+                <button id="create_event_button" class="ui primary button" type="submit">Create</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
 

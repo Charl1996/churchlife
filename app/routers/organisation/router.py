@@ -50,8 +50,14 @@ async def events(request: Request, domain: str, user: User = Depends(get_current
 @router.get('/{domain}/events/new')
 @view_request
 @domain_request
-async def events(request: Request, domain: str, user: User = Depends(get_current_user)):
-    return {'template': 'layout_content/events/new.html'}
+async def new_event(request: Request, domain: str, user: User = Depends(get_current_user)):
+    org = Organisation.get_by_domain(domain)
+
+    data = {
+        'notifications': org.get_notifications(),
+    }
+
+    return {'template': 'layout_content/events/new.html', 'data': data}
 
 
 @router.post('/{domain}/events/new')
@@ -59,36 +65,16 @@ async def events(request: Request, domain: str, user: User = Depends(get_current
 async def create_event(request: Request, domain: str, user: User = Depends(get_current_user)):
     data = await request.json()
 
-    # example_data = {
-    #     'event': {
-    #         'name': '<name>',
-    #         'type': 'one-time' / 'series',
-    #         'interval': 'daily' / 'weekly' / 'monthly',
-    #         'from_date': '<date>',
-    #         'to_date': '<date>' / '',
-    #         'start_at': '<time>',
-    #         'end_at': '<time>'m
-    #     },
-    #     'attendance_tracker': {
-    #         'start_before': '',
-    #         'stop_after': '',
-    #     }
-    # }
-
     try:
         organisation = Organisation.get_by_domain(domain=domain)
-        organisation_event = organisation.create_event(data=data['event'])
+        organisation.create_event(
+            detail=data['event'],
+            attendance=data['attendance'],
+        )
     except ValidationError as _error:
         raise HTTPException(status_code=422, detail='Missing some data')
 
-    if data.get('attendance_tracker'):
-        try:
-            organisation_event = organisation_event.add_attendance_tracker(data=data['attendance_tracker'])
-        except ValidationError as _error:
-            raise HTTPException(status_code=422, detail='Missing some data')
-        # Need to create the ScheduleTrigger and action also
-
-    return None  # Redirect to events view
+    return JSONResponse(status_code=200)
 
 
 @router.get('/{domain}/events/{event_id}')

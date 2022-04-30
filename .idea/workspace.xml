@@ -2,29 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/notifications/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/notifications/exceptions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/notifications/notifications.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/notifications/notifications_schema.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/layout_content/notifications/list.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/js/layout_content/notifications/new.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/layout_content/notifications.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/layout_content/notifications/list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/layout_content/notifications/new.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database/interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/interface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/organisations/organisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/organisations/organisation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/organisation/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/organisation/router.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/howto.md" beforeDir="false" afterPath="$PROJECT_DIR$/howto.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/layout_content/events/new_event.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout_content/events/new.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/layout_content/users/new_user.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout_content/users/new.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout_content/events/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/events/list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout_content/events/new_event.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/events/new.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout_content/users/edit_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/users/edit_user.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/layout_content/users/new_user.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/users/new.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/layout_content/events/new.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout_content/events/new.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/layout_content/events/new.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/events/new.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,11 +43,11 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "last_opened_file_path": "/home/charl/projects/churchlife/templates/layout_content"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;last_opened_file_path&quot;: &quot;/home/charl/projects/churchlife/templates/layout_content&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/templates/layout_content" />

@@ -113,14 +113,25 @@ class Organisation(DatabaseInterfaceWrapper):
     def set_logo(self, image_bytes):
         pass
 
-    def create_event(self, data: dict):
-        data['organisation_id'] = self.fields.id
+    def create_event(self, detail: dict, attendance=None):
+        breakpoint()
+        detail['organisation_id'] = self.fields.id
+
+        # Todo:
+        # CREATE IN TRANSACTION
 
         # Create event
         # event = Event.create(data=event_data)
 
-        # Find/create ScheduleTrigger and action
-        # Todo
+        # Find/create ScheduleTrigger and action for event
+
+        # Determine attendance tracking event
+
+        # Find/create ScheduleTrigger and action for attendance event
+
+        # Create notification
+
+        # Link notification to event
 
         pass
 

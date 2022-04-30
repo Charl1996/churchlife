@@ -27,6 +27,10 @@ $('#event-interval').change(function() {
     $('#event-interval').removeClass('error');
 });
 
+$('#post-processing-notifications').change(function() {
+    $('#post-processing-notifications').removeClass('error');
+});
+
 $("#unspecified-end-date-checkbox").change(function() {
     var noEndDate = $('#unspecified-end-date-checkbox').is(':checked');
 
@@ -40,20 +44,18 @@ $("#unspecified-end-date-checkbox").change(function() {
     }
 });
 
-$("#tracker_checkbox").change(function() {
-   var shouldTrack = $('#tracker_checkbox').is(':checked');
-
-   if (shouldTrack) {
-    $("#tracker-info").show();
-   }
-   else {
-    $("#tracker-info").hide();
-   }
-});
-
 function cancel() {
     var url = "/" + currentDomain() + "/events/";
     window.location.href = url;
+}
+
+function addNotification() {
+    var url = "/" + currentDomain() + "/notifications/new";
+    window.location.href = url;
+}
+
+function extractNotificationId(stringId) {
+    return stringId.split("-")[1];
 }
 
 
@@ -84,6 +86,14 @@ $('form').on('submit', function(e) {
         to_date = '';
     }
 
+    var postProcessingNotifications = $('#post-processing-notifications').dropdown('get value');
+
+    if (!postProcessingNotifications) {
+        $('#post-processing-notifications').addClass('error');
+        showToast('error', "Please select notification group");
+        return
+    }
+
     var newEventData = {
         event: {
             name: formData.get('event-name'),
@@ -92,19 +102,16 @@ $('form').on('submit', function(e) {
             from_date: formData.get('event-from-date'),
             to_date: to_date,
             start_at: formData.get('event-start-time'),
-            end_at: formData.get('event-end-time')
+            end_at: formData.get('event-end-time'),
+            notification_id: extractNotificationId(postProcessingNotifications)
         }
     };
 
-    var captureAttendance = $('#tracker_checkbox').is(':checked')
-
-    if (captureAttendance) {
-        var trackingInfo = {
-            start_before: formData.get('start-tracking-before'),
-            stop_after: formData.get('stop-tracking-after')
-        }
-        newEventData["attendance_tracker"] = trackingInfo;
+    var trackingInfo = {
+        start_before: formData.get('start-tracking-before'),
+        stop_after: formData.get('stop-tracking-after')
     }
+    newEventData["attendance"] = trackingInfo;
 
     submitCreate(newEventData);
 });
