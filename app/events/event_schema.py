@@ -1,31 +1,89 @@
-from typing import Optional, List
-from datetime import datetime
-from time import time
+from typing import Optional
 from pydantic import BaseModel
+import datetime
+
+Datetime = datetime.datetime
+Time = datetime.time
 
 
 class EventBase(BaseModel):
-    from_date: datetime
-    to_date: Optional[datetime]
-    start_time: time
-    end_time: Optional[time]
+    name: str
+    type: str
     interval: str
     organisation_id: int
 
 
 class EventCreate(EventBase):
-    pass
+    from_date: str
+    to_date: Optional[str]
+    start_time: str
+    end_time: Optional[str]
 
 
-class EventUpdate(BaseModel):
-    from_date: datetime
-    to_date: datetime
-    start_time: time
-    end_time: time
+class EventUpdate(EventBase):
+    from_date: Datetime
+    to_date: Optional[Datetime]
+    start_time: Time
+    end_time: Time
 
 
 class Event(EventBase):
     id: int
+    from_date: Datetime
+    to_date: Optional[Datetime]
+    start_time: Time
+    end_time: Time
+    name: str
+    type: str
+    interval: str
 
     class Config:
         orm_mode = True
+
+
+class TrackingEventBase(BaseModel):
+    interval: str
+    type: str
+    event_id: str
+
+
+class TrackingEventCreate(TrackingEventBase):
+    from_date: str
+    to_date: Optional[str]
+    start_time: str
+    end_time: str
+
+
+class TrackingEvent(TrackingEventBase):
+    id: int
+    from_date: Datetime
+    to_date: Optional[Datetime]
+    start_time: Time
+    end_time: Time
+
+    class Config:
+        orm_mode = True
+
+
+class SessionEventCreate(BaseModel):
+    active: bool
+    start_time: str
+    end_time: str
+    date: Datetime
+    event_id: Optional[str]
+    tracking_event_id: Optional[str]
+
+
+class SessionEvent(SessionEventCreate):
+    id: str
+
+    class Config:
+        orm_mode = True
+
+
+class EventListItem(BaseModel):
+    id: int
+    name: str
+    date: str  # eg. 5 March 2022
+    start_time: str
+    end_time: str

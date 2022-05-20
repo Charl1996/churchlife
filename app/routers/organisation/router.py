@@ -12,6 +12,7 @@ from app.integrations.utils import test_database_platform_connection, test_messa
 from app.integrations.database.database_platform import DatabasePlatform
 from app.integrations.messaging.messaging_platform import MessagingPlatform
 from app.notifications import Notification
+from app.workflows.triggers.trigger import TrackingEventTrigger
 
 router = APIRouter()
 
@@ -44,7 +45,20 @@ async def dashboard(request: Request, domain: str, user: User = Depends(get_curr
 @view_request
 @domain_request
 async def events(request: Request, domain: str, user: User = Depends(get_current_user)):
-    return {'template': 'layout_content/events/list.html'}
+    org = Organisation.get_by_domain(domain)
+
+    upcoming_events = []
+    for event in org.get_upcoming_events():
+        upcoming_events.append(event.dict())
+
+    past_events = []
+    for event in org.get_past_events():
+        past_events.append(event.dict())
+
+    return {'template': 'layout_content/events/list.html', 'data': {
+        'upcoming_events': upcoming_events,
+        'past_events': past_events,
+    }}
 
 
 @router.get('/{domain}/events/new')
@@ -55,6 +69,7 @@ async def new_event(request: Request, domain: str, user: User = Depends(get_curr
 
     data = {
         'notifications': org.get_notifications(),
+        'trigger_types': TrackingEventTrigger.SUPPORTED_TYPES,
     }
 
     return {'template': 'layout_content/events/new.html', 'data': data}
@@ -67,9 +82,11 @@ async def create_event(request: Request, domain: str, user: User = Depends(get_c
 
     try:
         organisation = Organisation.get_by_domain(domain=domain)
+        data['event']['organisation_id'] = organisation.fields.id
+
         organisation.create_event(
-            detail=data['event'],
-            attendance=data['attendance'],
+            event_detail=data['event'],
+            attendance_tracking_detail=data['attendance_tracking'],
         )
     except ValidationError as _error:
         raise HTTPException(status_code=422, detail='Missing some data')
@@ -128,7 +145,6 @@ async def new_notification(request: Request, domain: str, user: User = Depends(g
             )
 
     except Exception as e:
-        breakpoint()
         return HTTPException(status_code=422, detail='Could not create notifications')
 
     return JSONResponse(status_code=200)

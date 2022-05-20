@@ -6,8 +6,9 @@ from app.database.exceptions import ResourceNotFound
 class DatabaseInterface(CRUDOperations):
 
     @classmethod
-    def create(cls, model_data: any):
-        db_model = super().create(model=model_data)
+    def create(cls, model_data: any, **kwargs):
+        transaction = kwargs.get('transaction', False)
+        db_model = super().create(model=model_data, transaction=transaction)
         return cls.as_schema_model(db_model)
 
     @classmethod
@@ -142,10 +143,10 @@ class DatabaseInterface(CRUDOperations):
 class DatabaseInterfaceWrapper(DatabaseInterface):
 
     @classmethod
-    def create(cls, data: any):
+    def create(cls, data: any, **kwargs):
         create_schema = cls.create_schema_model()(**data)
         db_model = cls.create_model(create_schema)
-        schema_model = super().create(model_data=db_model)
+        schema_model = super().create(model_data=db_model, **kwargs)
         return cls.init_class_instance(schema_model)
 
     @classmethod
@@ -171,7 +172,7 @@ class DatabaseInterfaceWrapper(DatabaseInterface):
         raise NotImplementedError
 
     @classmethod
-    def create_model(cls, data):
+    def create_model(cls, data, **kwargs):
         """
         This method should implement the specific implementation used
         to create the model

@@ -23,13 +23,17 @@ class DBOperations:
             cls.commit_to_db(db.session, model)
         except Exception:
             db.session.rollback()
+            raise
 
 
 class CRUDOperations(DBOperations):
 
     @classmethod
-    def create(cls, model: any):
-        return cls.commit_to_db(model=model)
+    def create(cls, model: any, transaction=False):
+        if transaction:
+            db.session.add(model)
+        else:
+            return cls.commit_to_db(model=model)
 
     @classmethod
     def get(cls, model: any, model_id=None, field=None, value=None, criteria=None, count=False, get_all=False):
@@ -91,10 +95,24 @@ class CRUDOperations(DBOperations):
         def criterion_string(field_, value_):
             return f"model.{field_} == '{value_}'"
 
+        def criterion_string_with_operator(field_, value_, operator):
+            return f"model.{field_} {operator} '{value_}'"
+
         criteria_string = ''
         for field, value in criteria.items():
             if criteria_string == '':
-                criteria_string = criterion_string(field, value)
+                if type(value) == str:
+                    criteria_string = criterion_string(field, value)
+                elif type(value) == dict:
+                    v = value['value']
+                    op = value['operator']
+                    criteria_string = f'{criterion_string_with_operator(field, v, op)}'
             else:
-                criteria_string = f'{criteria_string}, {criterion_string(field, value)}'
+                if type(value) == str:
+                    criteria_string = f'{criteria_string}, {criterion_string(field, value)}'
+                elif type(value) == dict:
+                    v = value['value']
+                    op = value['operator']
+                    criteria_string = f'{criteria_string}, {criterion_string_with_operator(field, v, op)}'
+
         return criteria_string

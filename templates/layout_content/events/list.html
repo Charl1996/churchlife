@@ -21,16 +21,18 @@
 <!--      <h3 class="ui block header">Upcoming</h3>-->
       <div style="padding: 1em;">
         <div class="ui middle aligned divided list">
-          <div class="item">
-            <div class="right floated content">
-              <button class="ui red basic left attached button">Cancel</button>
-              <button class="right attached ui button">View</button>
+          {% for event in upcoming_events %}
+            <div class="item">
+              <div class="right floated content">
+                <button class="ui red basic left attached button">Cancel</button>
+                <button class="right attached ui button">View</button>
+              </div>
+              <div class="content">
+                <span><b>{{ event.name }}</b></span>
+                <span style="color: #a6a6a6"> ( {{ event.date }} ) @ {{ event.start_time }}</span>
+              </div>
             </div>
-            <div class="content">
-              <span><b>Sondag Diens</b></span>
-              <span style="color: #a6a6a6">(27 March 2022)</span>
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </div>
@@ -39,46 +41,18 @@
 <!--      <h3 class="ui block header">Past</h3>-->
       <div style="padding: 1em;">
         <div class="ui middle aligned divided list">
-          <div class="item">
-            <div class="right floated content">
-              <div class="ui button">View</div>
+          {% for event in past_events %}
+            <div class="item">
+              <div class="right floated content">
+                <button class="ui red basic left attached button disabled">Cancel</button>
+                <button class="right attached ui button">View</button>
+              </div>
+              <div class="content">
+                <span><b>{{ event.name }}</b></span>
+                <span style="color: #a6a6a6">  ( {{ event.date }} )  {{ event.start_time }}-{{ event.end_time }}</span>
+              </div>
             </div>
-            <div class="content">
-              <i class="check icon"></i>
-              <span><b>Sondag Diens</b></span>
-              <span style="color: #a6a6a6">(13 March 2022)</span>
-            </div>
-          </div>
-          <div class="item">
-            <div class="right floated content">
-              <div class="ui button">View</div>
-            </div>
-            <div class="content">
-              <i class="check icon"></i>
-              <span><b>Sondag Diens</b></span>
-              <span style="color: #a6a6a6">(6 March 2022)</span>
-            </div>
-          </div>
-          <div class="item">
-            <div class="right floated content">
-              <div class="ui button">View</div>
-            </div>
-            <div class="content">
-              <i class="ban icon"></i>
-              <span><b>Sondag Diens</b></span>
-              <span style="color: #a6a6a6">(27 Feb 2022)</span>
-            </div>
-          </div>
-          <div class="item">
-            <div class="right floated content">
-              <div class="ui button">View</div>
-            </div>
-            <div class="content">
-              <i class="check icon"></i>
-              <span><b>Sondag Diens</b></span>
-              <span style="color: #a6a6a6">(20 Feb 2022)</span>
-            </div>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </div>

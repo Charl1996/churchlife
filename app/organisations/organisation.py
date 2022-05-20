@@ -1,3 +1,5 @@
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 from app.database import (
     Organisation as OrganisationModel,
     OrganisationsUsers as OrganisationsUsersModel,
@@ -10,7 +12,6 @@ from app.organisations.organisation_schema import (
     OrganisationsUsersSchema,
     OrganisationUserViewSchema,
 )
-# from app.events.event_schema import EventCreate
 from app.utils import (
     send_invite_email
 )
@@ -19,10 +20,14 @@ from app.integrations.database.breeze_platform import BreezeDatabasePlatform, Br
 from app.integrations.messaging.messaging_platform import MESSAGING_PLATFORM_TYPE
 from app.integrations.messaging.respondio_platform import RespondIOMessagingPlatform
 from app.notifications import Notification, NotificationSchema
+from app.utils import create_scheduler_actions
+from app.utils import offset_minutes
 from typing import List
+import pytz
 
 ACTIVE_STATUS = 'active'
 PENDING_STATUS = 'pending'
+TIMEZONE = 'Africa/Johannesburg'
 
 
 class Organisation(DatabaseInterfaceWrapper):
@@ -113,27 +118,105 @@ class Organisation(DatabaseInterfaceWrapper):
     def set_logo(self, image_bytes):
         pass
 
-    def create_event(self, detail: dict, attendance=None):
-        breakpoint()
-        detail['organisation_id'] = self.fields.id
+    def get_events(self):
+        from app.events import Event
+        return Event.get_all_by(criteria={'organisation_id': self.fields.id})
 
-        # Todo:
-        # CREATE IN TRANSACTION
+    def get_upcoming_events(self):
+        from app.events.event_schema import EventListItem
+        from app.events import Event
+        events = self.get_events()
 
-        # Create event
-        # event = Event.create(data=event_data)
+        session_events = []
 
-        # Find/create ScheduleTrigger and action for event
+        for event in events:
+            session_event = Event.get_upcoming_event(event_id=event.id)
+            if session_event:
+                session_events.append(EventListItem(
+                    id=session_event.fields.id,
+                    name=event.name,
+                    date=session_event.readable_date,
+                    start_time=session_event.start_time,
+                    end_time=session_event.end_time
+                ))
 
-        # Determine attendance tracking event
+        return session_events
 
-        # Find/create ScheduleTrigger and action for attendance event
+    def get_past_events(self):
+        from app.events.event_schema import EventListItem
+        from app.events import Event
+        events = self.get_events()
 
-        # Create notification
+        session_events = []
 
-        # Link notification to event
+        for event in events:
+            session_event = Event.get_past_events(event_id=event.id)
+            if session_event:
+                session_events.append(EventListItem(
+                    id=session_event.fields.id,
+                    name=event.name,
+                    date=session_event.readable_date,
+                    start_time=session_event.start_time,
+                    end_time=session_event.end_time
+                ))
 
-        pass
+        return session_events
+
+    def create_event(self, event_detail: dict, attendance_tracking_detail=dict):
+        from app.events import Event, TrackingEvent
+
+        event = Event.create(data=event_detail)
+
+        tracker_triggers = attendance_tracking_detail.pop('triggers')
+        attendance_tracking_detail['event_id'] = event.fields.id
+
+        attendance_tracking_detail['start_time'] = offset_minutes(
+            event_detail['start_time'],
+            -1*int(attendance_tracking_detail['start_before']),
+        )
+        attendance_tracking_detail['end_time'] = offset_minutes(
+            event_detail['end_time'],
+            int(attendance_tracking_detail['stop_after']),
+        )
+
+        attendance_tracking_detail['from_date'] = event_detail['from_date']
+        attendance_tracking_detail['to_date'] = event_detail['to_date']
+        attendance_tracking_detail['type'] = event_detail['type']
+        attendance_tracking_detail['interval'] = event_detail['interval']
+
+        tracking_event = TrackingEvent.set_up_tracking_event(
+            data=attendance_tracking_detail,
+            triggers=tracker_triggers,
+        )
+
+        self._initialize_scheduled_sessions(
+            start_time=event.fields.start_time,
+            date=event.fields.from_date,
+            interval=event.fields.interval,
+            action_data={
+                'method': 'execute_trigger_event',
+                'args': [
+                    'Event.create_event_session',
+                    event.fields.id,
+                    'from app.events.event import Event'
+                ],
+            },
+        )
+
+        # Create scheduled sessions for tracking event
+        self._initialize_scheduled_sessions(
+            start_time=tracking_event.fields.start_time,
+            date=tracking_event.fields.from_date,
+            interval=event.fields.interval,
+            action_data={
+                'method': 'execute_trigger_event',
+                'args': [
+                    'TrackingEvent.create_event_session',
+                    tracking_event.fields.id,
+                    'from app.events.event import TrackingEvent'
+                ],
+            },
+        )
 
     def get_users(self) -> List[OrganisationUserViewSchema]:
         from app.users import User
@@ -222,4 +305,43 @@ class Organisation(DatabaseInterfaceWrapper):
             criteria={
                 'organisation_id': self.fields.id
             }
+        )
+
+    def _initialize_scheduled_sessions(self, start_time, date, interval, action_data):
+        from app.workflows.actions.action import Action
+
+        delta_time = relativedelta(hours=start_time.hour, minutes=start_time.minute)
+        execution_date = date + delta_time
+        now = datetime.now(tz=pytz.timezone(TIMEZONE))
+
+        if not interval:
+            # Create events without interval one week before
+            interval = 'weekly'
+
+        interval_delta = None
+
+        if interval == 'daily':
+            interval_delta = relativedelta(days=1)
+        elif interval == 'weekly':
+            interval_delta = relativedelta(weeks=1)
+        elif interval == 'monthly':
+            interval_delta = relativedelta(months=1)
+
+        if interval_delta:
+            execution_date_minus_one_interval_date = execution_date - interval_delta
+
+            if execution_date_minus_one_interval_date.date() > now.date():
+                execution_date = execution_date_minus_one_interval_date
+            else:
+                execution_date = now
+
+        execution_date = execution_date.date() + relativedelta(
+            hours=execution_date.hour,
+            minutes=execution_date.minute
+        )
+
+        create_scheduler_actions(
+            execute_date=execution_date,
+            action_type=Action.FUNCTION,
+            action_data=action_data
         )

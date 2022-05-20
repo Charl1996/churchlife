@@ -46,6 +46,10 @@ class Notification(DatabaseInterfaceWrapper):
         return cls(notification=schema_obj)
 
     @classmethod
+    def notify_event_trigger(cls, notification_id, trigger_type):
+        pass
+
+    @classmethod
     def delete(cls, model_id: str):
         NotificationItem.delete_where(
             criteria={'notification_id': model_id},

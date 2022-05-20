@@ -88,10 +88,10 @@
           </div>
 
           {% if notifications %}
-          <div style="padding-top: 0em;">
+          <div style="padding-top: 1em;">
             <div style="display: inline-block;"><b>Notify </b></div>
             <div style="display: inline-block; width: 30%; padding-left: 1em;">
-              <div id="post-processing-notifications" class="ui fluid selection dropdown">
+              <div id="event-notifications" class="ui fluid selection dropdown">
                 <input type="hidden" name="notification-groups">
                 <i class="dropdown icon"></i>
                 <div class="default text">notification group</div>
@@ -104,45 +104,22 @@
                 </div>
               </div>
             </div>
-            <div style="display: inline-block; padding-left: 1em;"><b> with attendance report.</b></div>
+            <div style="display: inline-block; padding-left: 1em;"><b> on </b></div>
+            <div style="display: inline-block; width: 30%; padding-left: 1em;">
+              <div id="notification-trigger" class="ui fluid selection dropdown">
+                <input type="hidden" name="series-interval">
+                <i class="dropdown icon"></i>
+                <div class="default text">trigger</div>
+                <div id="notification-trigger-dropdown" class="menu">
+                  {% for trigger_type in trigger_types %}
+                    <div class="item" data-value="{{ trigger_type.type }}">
+                      {{ trigger_type.display_item_text }}
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
           </div>
-
-<!--          THIS FEATURE IS FOR A LITTLE LATER    -->
-
-<!--          <div style="padding-top: 1em;">-->
-<!--            <div style="display: inline-block;"><b>Notify </b></div>-->
-<!--            <div style="display: inline-block; width: 30%; padding-left: 1em;">-->
-<!--              <div id="event-notifications2" class="ui fluid selection dropdown">-->
-<!--                <input type="hidden" name="notification-groups">-->
-<!--                <i class="dropdown icon"></i>-->
-<!--                <div class="default text">notification group</div>-->
-<!--                <div id="notifications-dropdown2" class="menu">-->
-<!--                  {% for notification in notifications %}-->
-<!--                    <div class="item" data-value="notification-{{ notification.id }}">-->
-<!--                      {{ notification.name }}-->
-<!--                    </div>-->
-<!--                  {% endfor %}-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div style="display: inline-block; padding-left: 1em;"><b> when </b></div>-->
-<!--            <div style="display: inline-block; width: 30%; padding-left: 1em;">-->
-<!--              <div id="notification-actions" class="ui fluid selection dropdown">-->
-<!--                <input type="hidden" name="series-interval">-->
-<!--                <i class="dropdown icon"></i>-->
-<!--                <div class="default text">face type</div>-->
-<!--                <div id="notification-actions-dropdown" class="menu">-->
-<!--                  <div class="item" data-value="new_face">-->
-<!--                    new-->
-<!--                  </div>-->
-<!--                  <div class="item" data-value="familiar_face">-->
-<!--                    familiar-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <div style="display: inline-block; padding-left: 1em;"><b> face is detected. </b></div>-->
-<!--          </div>-->
           {% else %}
           <div class="ui warn message" >
             <div class="ui left aligned">
