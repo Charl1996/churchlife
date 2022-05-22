@@ -13,6 +13,8 @@ from app.integrations.database.database_platform import DatabasePlatform
 from app.integrations.messaging.messaging_platform import MessagingPlatform
 from app.notifications import Notification
 from app.workflows.triggers.trigger import TrackingEventTrigger
+from app.events import Event, TrackingEvent, SessionEvent
+from app.workflows.actions.action import Action
 
 router = APIRouter()
 
@@ -47,17 +49,27 @@ async def dashboard(request: Request, domain: str, user: User = Depends(get_curr
 async def events(request: Request, domain: str, user: User = Depends(get_current_user)):
     org = Organisation.get_by_domain(domain)
 
-    upcoming_events = []
+    upcoming_session_events = []
     for event in org.get_upcoming_events():
-        upcoming_events.append(event.dict())
+        upcoming_session_events.append(event.dict())
 
-    past_events = []
+    past_session_events = []
     for event in org.get_past_events():
-        past_events.append(event.dict())
+        past_session_events.append(event.dict())
+
+    all_events = []
+    for event in org.get_all_events():
+        event_ = event.dict()
+        event_['start_time'] = event.start_time.strftime('%H:%M')
+        event_['end_time'] = event.end_time.strftime('%H:%M')
+        event_['weekday'] = event.from_date.strftime("%A")
+        event_['monthly_date'] = event.from_date.day
+        all_events.append(event_)
 
     return {'template': 'layout_content/events/list.html', 'data': {
-        'upcoming_events': upcoming_events,
-        'past_events': past_events,
+        'upcoming_events': upcoming_session_events,
+        'past_events': past_session_events,
+        'all_events': all_events,
     }}
 
 
@@ -94,11 +106,39 @@ async def create_event(request: Request, domain: str, user: User = Depends(get_c
     return JSONResponse(status_code=200)
 
 
-@router.get('/{domain}/events/{event_id}')
+@router.delete('/{domain}/events/{event_id}')
+@domain_request
+async def delete_event_by_(request: Request, domain: str, event_id: int, user: User = Depends(get_current_user)):
+    tracking_event = TrackingEvent.get_by(criteria={'event_id': event_id})
+
+    tracking_event_triggers = TrackingEventTrigger.get_all_by(criteria={'tracking_event_id': tracking_event.id})
+    for tet in tracking_event_triggers:
+        actions = Action.get_all_by(criteria={'tracking_event_trigger_id': tet.id})
+        for action in actions:
+            Action.delete(action.id)
+        TrackingEventTrigger.delete(tet.id)
+
+    TrackingEvent.delete(tracking_event.id)
+    Event.delete(event_id)
+
+    return JSONResponse(status_code=200)
+
+
+@router.get('/{domain}/events/sessions/{session_event_id}')
 @view_request
 @domain_request
-async def get_event(request: Request, domain: str, event_id: int, user: User = Depends(get_current_user)):
-    return {'template': 'layout_content/events/show_event.html'}
+async def view_session_event(request: Request, domain: str, session_event_id: int, user: User = Depends(get_current_user)):
+    session_event = SessionEvent.get(session_event_id)
+    data = session_event.event_details().dict()
+
+    return {'template': 'layout_content/events/view_session.html', 'data': data}
+
+
+@router.post('/{domain}/events/sessions/{session_event_id}/cancel')
+@domain_request
+async def cancel_session_event(request: Request, domain: str, session_event_id: int, user: User = Depends(get_current_user)):
+
+    return JSONResponse(status_code=200)
 
 
 @router.get('/{domain}/notifications')

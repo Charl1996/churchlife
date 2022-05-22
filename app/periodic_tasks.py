@@ -6,14 +6,13 @@ from app.workflows.triggers.trigger import ScheduledTrigger
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from app.workflows.actions.action import Action
-
-TIMEZONE = 'Africa/Johannesburg'
+from app.utils import timezoned_time
 
 
 @celery_app.task
 def run_periodic_scheduler():
     logger.info("Executing 'run_periodic_scheduler'")
-    now = datetime.now(tz=pytz.timezone(TIMEZONE))
+    now = timezoned_time()
     filter_date = now + relativedelta(minutes=5)
 
     criteria = {
@@ -24,8 +23,9 @@ def run_periodic_scheduler():
     }
 
     triggers = ScheduledTrigger.get_all_by(criteria=criteria)
+    triggers_within_frame = [trigger for trigger in triggers if trigger.execute_date > now]
 
-    for trigger in triggers:
+    for trigger in triggers_within_frame:
         actions = Action.get_all_by(criteria={
             'schedule_trigger_id': trigger.id,
         })
@@ -33,7 +33,9 @@ def run_periodic_scheduler():
         for action in actions:
             Action(action=action).run()
 
-    # Delete the triggers here
+    for trigger in triggers:
+        ScheduledTrigger.delete(trigger.id)
+
 
 @celery_app.task
 def sync_database_with_messaging_platform():
@@ -43,7 +45,7 @@ def sync_database_with_messaging_platform():
 celery_app.conf.beat_schedule = {
     'scheduler': {
         'task': 'app.periodic_tasks.run_periodic_scheduler',
-        'schedule': crontab(minute=5),
+        'schedule': crontab(minute=1),
     }
 }
 

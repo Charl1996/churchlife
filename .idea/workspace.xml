@@ -2,26 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a338b8d-ef55-4710-a4d1-aa77953c5a80" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/workflows/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/workflows/actions/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/workflows/actions/action.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/workflows/actions/action_schema.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/workflows/triggers/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/workflows/triggers/trigger.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/workflows/triggers/trigger_schema.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/layout_content/events/view_session.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/layout_content/events/view_session.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database/interface.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/interface.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/database/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/database/operations.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database/operations.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/events/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/events/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/events/event.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/events/event.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/events/event_schema.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/events/event_schema.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/notifications/notifications.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/notifications/notifications.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/organisations/organisation.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/organisations/organisation.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/periodic_tasks.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/periodic_tasks.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routers/organisation/router.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routers/organisation/router.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/layout_content/events/new.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout_content/events/new.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/celery_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/celery_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/layout_content/events/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/layout_content/events/list.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/layout_content/events/list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/events/list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/layout_content/events/new.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/layout_content/events/new.html" afterDir="false" />
     </list>
@@ -33,8 +27,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -62,6 +56,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "last_opened_file_path": "/home/charl/projects/churchlife/app/workflows/triggers"
   }
 }]]></component>

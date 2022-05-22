@@ -13,8 +13,11 @@ class DBOperations:
             else:
                 db.session.add(model)
             db.session.commit()
-            db.session.refresh(model)
-            return model
+            try:
+                db.session.refresh(model)
+                return model
+            except Exception:
+                return
         except IntegrityError:
             db.session.rollback()
             raise DuplicateResourceError
@@ -101,14 +104,14 @@ class CRUDOperations(DBOperations):
         criteria_string = ''
         for field, value in criteria.items():
             if criteria_string == '':
-                if type(value) == str:
+                if type(value) != dict:
                     criteria_string = criterion_string(field, value)
                 elif type(value) == dict:
                     v = value['value']
                     op = value['operator']
                     criteria_string = f'{criterion_string_with_operator(field, v, op)}'
             else:
-                if type(value) == str:
+                if type(value) != dict:
                     criteria_string = f'{criteria_string}, {criterion_string(field, value)}'
                 elif type(value) == dict:
                     v = value['value']

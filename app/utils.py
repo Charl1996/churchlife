@@ -1,9 +1,11 @@
+import pytz
 from datetime import (
     datetime,
     timedelta,
 )
 from app.workflows.triggers.trigger import ScheduledTrigger
 
+TIMEZONE = 'Africa/Johannesburg'
 TIME_STRING_FORMAT = "%H:%M"
 
 
@@ -36,3 +38,8 @@ def create_scheduler_actions(execute_date: any, action_type: str, action_data: d
         action_type=action_type,
         action_data=action_data,
     )
+
+
+def timezoned_time():
+    now = datetime.now(tz=pytz.timezone(TIMEZONE))
+    return datetime.strptime(now.strftime('%Y-%m-%d %H:%M'), '%Y-%m-%d %H:%M')

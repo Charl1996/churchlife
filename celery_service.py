@@ -8,7 +8,6 @@ celery_app = Celery(
     broker=RABBITMQ_URL,
     include=[
         'app.periodic_tasks',
-        'app.messaging.tasks',
     ]
 )
 

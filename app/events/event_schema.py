@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 from pydantic import BaseModel
 import datetime
 
@@ -18,6 +18,7 @@ class EventCreate(EventBase):
     to_date: Optional[str]
     start_time: str
     end_time: Optional[str]
+    event_data: Optional[Any]
 
 
 class EventUpdate(EventBase):
@@ -25,6 +26,7 @@ class EventUpdate(EventBase):
     to_date: Optional[Datetime]
     start_time: Time
     end_time: Time
+    event_data: Optional[Any]
 
 
 class Event(EventBase):
@@ -70,6 +72,7 @@ class SessionEventCreate(BaseModel):
     start_time: str
     end_time: str
     date: Datetime
+    event_data: Optional[Any]
     event_id: Optional[str]
     tracking_event_id: Optional[str]
 
@@ -87,3 +90,12 @@ class EventListItem(BaseModel):
     date: str  # eg. 5 March 2022
     start_time: str
     end_time: str
+
+
+class SessionEventDetails(BaseModel):
+    start_time: Time
+    end_time: Time
+    name: str
+    active: bool
+    date: Datetime
+    event_data: Optional[Any]

@@ -1,0 +1,88 @@
+{% extends "layout_content/events.html" %}
+
+{% block event_content %}
+
+<script type="text/template" data-template="add-datum" id="add-datum">
+  <div>
+    <div style="display: inline-block; width: 30%;">
+      <input type="text" placeholder="Key" required>
+    </div>
+    <div style="display: inline-block; width: 30%;">
+      <input type="text" placeholder="Value" required>
+    </div>
+    <div style="display: inline-block; padding-left: 2em;">
+      <div class="ui icon basic button red" style="vertical-align: top;" onclick="removeDatum(this.parentElement.parentElement.id)">
+        <i class="x icon"></i>
+      </div>
+    </div>
+  </div>
+</script>
+
+<div>
+  <h3 class="ui header center aligned" style="height: 7%;">
+    {{ name }} data
+  </h3>
+
+  <div class="ui container" style="height: 90%;">
+    <div class="scrolling content">
+      <button onclick="viewEvent()" class="ui basic primary button" type="button">View event details</button>
+
+      <form id="event_details_form" class="ui form" style="padding-top: 2em;">
+        <div class="field">
+          <label class="ui left aligned">Custom data</label>
+        </div>
+        {% if event_data %}
+          {% for key, value in event_data.items() %}
+            <div class="field" style="padding-top: 1em;">
+              <label class="ui left aligned"> {{ key }} </label>
+              <input type="text" value="{{value}}">
+            </div>
+          {% endfor %}
+        {% else %}
+        <div id="no-data-notification" class="ui info message" >
+          You have no data defined on this event yet.
+        </div>
+        {% endif %}
+
+        <div class="field">
+          <div id="data-members">
+            <div style="padding-top: 1em;">
+              <div style="display: inline-block; width: 30%;">
+                <input type="text" placeholder="Key" required>
+              </div>
+              <div style="display: inline-block; width: 30%;">
+                <input type="text" placeholder="Value" required>
+              </div>
+            </div>
+          </div>
+          <div style="padding-top: 1em;">
+            <button onclick="addDatumElement()" class="ui basic primary button" type="button">
+              <i class="icon plus"></i>
+              Add
+            </button>
+          </div>
+        </div>
+
+        <div class="ui container" style="padding-top: 2em;">
+          <div class="ui grid">
+            <div class="four column row">
+              <div class="left floated column">
+                <button onclick="cancel()" class="ui basic red button" type="button">Cancel</button>
+              </div>
+              <div class="right floated column right aligned">
+                <button id="save_event_details" class="ui primary button" type="submit">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ url_for('static', path='js/layout_content/events/view_session.js') }}"></script>
+{% endblock %}

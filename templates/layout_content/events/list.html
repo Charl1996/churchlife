@@ -15,6 +15,9 @@
       <a id='past-events-content-item' class="item">
         <div class="ui" onclick="selectPastEventsMenuItem()" >Past</div>
       </a>
+      <a id='all-events-content-item' class="item">
+        <div class="ui" onclick="selectAllEventsMenuItem()" >All</div>
+      </a>
     </div>
 
     <div id="upcoming-events-content">
@@ -24,12 +27,12 @@
           {% for event in upcoming_events %}
             <div class="item">
               <div class="right floated content">
-                <button class="ui red basic left attached button">Cancel</button>
-                <button class="right attached ui button">View</button>
+                <button class="ui red basic left attached button" onclick="cancelSessionEvent({{ event.id }})">Cancel</button>
+                <button class="right attached ui button" onclick="viewSessionEvent({{ event.id }})">View</button>
               </div>
               <div class="content">
                 <span><b>{{ event.name }}</b></span>
-                <span style="color: #a6a6a6"> ( {{ event.date }} ) @ {{ event.start_time }}</span>
+                <span style="color: #a6a6a6"> ({{ event.date }}  @  {{ event.start_time }})</span>
               </div>
             </div>
           {% endfor %}
@@ -44,12 +47,39 @@
           {% for event in past_events %}
             <div class="item">
               <div class="right floated content">
-                <button class="ui red basic left attached button disabled">Cancel</button>
-                <button class="right attached ui button">View</button>
+<!--                <button class="ui red basic left attached button disabled">Cancel</button>-->
+                <button class="ui button">View</button>
               </div>
               <div class="content">
                 <span><b>{{ event.name }}</b></span>
-                <span style="color: #a6a6a6">  ( {{ event.date }} )  {{ event.start_time }}-{{ event.end_time }}</span>
+                <span style="color: #a6a6a6">  ({{ event.date }} {{ event.start_time }}-{{ event.end_time }})</span>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div id="all-events-content" hidden>
+      <div style="padding: 1em;">
+        <div class="ui middle aligned divided list">
+          {% for event in all_events %}
+            <div class="item">
+              <div class="right floated content">
+                <button class="ui red basic left attached button" onclick="deleteEvent({{ event.id }})">Delete</button>
+                <button class="right attached ui button" onclick="viewEvent({{ event.id }})">View</button>
+              </div>
+              <div class="content">
+                <span><b>{{ event.name }}</b></span>
+                {% if event.interval == "daily" %}
+                <span style="color: #a6a6a6"> (Daily @ {{ event.start_time }}-{{ event.end_time }})</span>
+                {% endif %}
+                {% if event.interval == "weekly" %}
+                <span style="color: #a6a6a6"> (Weekly on {{ event.weekday }}s @ {{ event.start_time }}-{{ event.end_time }})</span>
+                {% endif %}
+                {% if event.interval == "monthly" %}
+                <span style="color: #a6a6a6"> (Monthly on day {{ event.monthly_date }} @ {{ event.start_time }}-{{ event.end_time }})</span>
+                {% endif %}
               </div>
             </div>
           {% endfor %}

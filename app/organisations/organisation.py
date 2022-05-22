@@ -122,6 +122,10 @@ class Organisation(DatabaseInterfaceWrapper):
         from app.events import Event
         return Event.get_all_by(criteria={'organisation_id': self.fields.id})
 
+    def get_all_events(self):
+        from app.events import Event
+        return Event.get_all_by(criteria={'organisation_id': self.fields.id})
+
     def get_upcoming_events(self):
         from app.events.event_schema import EventListItem
         from app.events import Event
@@ -134,6 +138,7 @@ class Organisation(DatabaseInterfaceWrapper):
             if session_event:
                 session_events.append(EventListItem(
                     id=session_event.fields.id,
+                    event_id=event.id,
                     name=event.name,
                     date=session_event.readable_date,
                     start_time=session_event.start_time,
@@ -331,17 +336,20 @@ class Organisation(DatabaseInterfaceWrapper):
             execution_date_minus_one_interval_date = execution_date - interval_delta
 
             if execution_date_minus_one_interval_date.date() > now.date():
-                execution_date = execution_date_minus_one_interval_date
+                execution_date = execution_date.date() + relativedelta(
+                    hours=execution_date.hour,
+                    minutes=execution_date.minute
+                )
+
+                create_scheduler_actions(
+                    execute_date=execution_date,
+                    action_type=Action.FUNCTION,
+                    action_data=action_data
+                )
             else:
-                execution_date = now
+                method = action_data['args'][0]
+                model_id = action_data['args'][1]
+                import_statement = action_data['args'][2]
 
-        execution_date = execution_date.date() + relativedelta(
-            hours=execution_date.hour,
-            minutes=execution_date.minute
-        )
-
-        create_scheduler_actions(
-            execute_date=execution_date,
-            action_type=Action.FUNCTION,
-            action_data=action_data
-        )
+                exec(import_statement)
+                exec(f'{method}(model_id, calculate_session_date=True)')

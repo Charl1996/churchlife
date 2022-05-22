@@ -91,6 +91,7 @@ class Event(Base):
     end_time = Column(Time, nullable=True)
     interval = Column(String, nullable=True)
     type = Column(String, nullable=False)
+    event_data = Column(JSON, nullable=True)
     organisation_id = Column(Integer, ForeignKey('organisations.id', ondelete=SET_NULL))
 
     organisation = relationship(
@@ -116,6 +117,7 @@ class EventSession(Base):
     start_time = Column(String)
     end_time = Column(String)
     date = Column(DateTime)
+    event_data = Column(JSON, nullable=True)
     event_id = Column(Integer, ForeignKey('events.id', ondelete=CASCADE), nullable=True)
     tracking_event_id = Column(Integer, ForeignKey('tracking_events.id', ondelete=CASCADE), nullable=True)
 
