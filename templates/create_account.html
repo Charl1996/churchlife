@@ -5,16 +5,21 @@
         <div class="ui container center aligned">
             <h2 style="padding: 1em; font-size: 4em">Create Account</h2>
             <div>
+                <div style="width: 50%;" class="ui two steps">
+                  <div id="step-1" class="active step">
+                    <div class="content">
+                      <div class="title">User</div>
+                    </div>
+                  </div>
+                  <div id="step-2" class="disabled step">
+                    <div class="content">
+                      <div class="title">Organisation</div>
+                    </div>
+                  </div>
+                </div>
                 <form id="account_create_form" class="ui form">
-                    <div class="ui placeholder segment">
-                      <div class="ui two column stackable center aligned grid">
-                        <div class="ui vertical divider">AND</div>
-                        <div class="row">
-                          <div class="column">
-                            <div class="ui icon header">
-                              <i class="user icon"></i>
-                              User details
-                            </div>
+                    <div class="ui container" style="width: 50%;">
+                        <div id="user-details">
                             <div class="ui container center aligned">
                               <div class="ui container center aligned" style="padding-bottom: 2em">
                                 <div class="field">
@@ -47,12 +52,8 @@
                                 </div>
                               </div>
                             </div>
-                          </div>
-                          <div class="column">
-                            <div class="ui icon header">
-                              <i class="world icon"></i>
-                              Organisation details
-                            </div>
+                        </div>
+                        <div id="org-details" hidden>
                             <div class="ui container center aligned" style="padding-bottom: 2em">
                               <div class="field">
                                   <label class="ui container left aligned">Name</label>
@@ -72,12 +73,24 @@
                                     <img id="logo_image" class="ui container center aligned small circular image hidden" style="padding: 1em; padding-top: 2em;" src="#" alt="" />
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="ui container" style="padding-top: 2em;">
+                      <div class="ui grid">
+                        <div class="four column row">
+                          <div class="left floated column"></div>
+                          <div class="left floated column left aligned">
+                            <button id="previous-button" onclick="previous()" class="ui basic red button disabled">Previous</button>
                           </div>
+                          <div class="right floated column right aligned">
+                            <button id="next_button" class="ui primary button" type="button">Next</button>
+                          </div>
+                          <div class="right floated column"></div>
                         </div>
                       </div>
                     </div>
                     <div style="padding-top: 2em;">
-                        <div class="ui container center aligned" style="width: 12%"><button class="ui button primary fluid" type="submit" >Create</button></div>
+                        <div class="ui container center aligned" style="width: 12%"><button id="create_button" class="ui button primary fluid" type="submit" >Create</button></div>
                     </div>
                 </form>
                 <div class="ui container center aligned" style="width: 12%"><button id="sign_in_button" class="ui basic button fluid small">Sign in</button></div>

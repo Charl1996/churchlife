@@ -23,9 +23,8 @@ def run_periodic_scheduler():
     }
 
     triggers = ScheduledTrigger.get_all_by(criteria=criteria)
-    triggers_within_frame = [trigger for trigger in triggers if trigger.execute_date > now]
 
-    for trigger in triggers_within_frame:
+    for trigger in triggers:
         actions = Action.get_all_by(criteria={
             'schedule_trigger_id': trigger.id,
         })

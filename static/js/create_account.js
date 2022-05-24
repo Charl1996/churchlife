@@ -1,3 +1,47 @@
+function setCurrentStep(step) {
+    localStorage.setItem('current-step', step);
+}
+
+function getCurrentStep(step) {
+    return localStorage.getItem('current-step');
+}
+
+setCurrentStep('1');
+
+$("#next_button").click(function() {
+    step = getCurrentStep();
+
+    if (step == '1') {
+        $("#user-details").hide();
+        $("#step-1").removeClass("active");
+
+        $("#org-details").show();
+        $("#step-2").removeClass("disabled");
+        $("#step-2").addClass("active");
+        $("#previous-button").removeClass("disabled");
+
+        setCurrentStep('2');
+        $("#next_button").addClass("disabled");
+    }
+
+});
+
+function previous() {
+    step = getCurrentStep();
+
+    if (step == '2') {
+        $("#user-details").show();
+        $("#step-1").addClass("active");
+
+        $("#org-details").hide();
+        $("#step-2").removeClass("active");
+        $("#previous-button").addClass("disabled");
+
+        $("#next_button").removeClass("disabled");
+        setCurrentStep('1');
+    }
+}
+
 
 $('#account_create_form').submit(function(e) {
     e.preventDefault();

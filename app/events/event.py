@@ -66,13 +66,15 @@ class BaseEvent(DatabaseInterfaceWrapper):
         if type(self.fields) == TrackingEventSchema:
             event_type_id = 'tracking_event_id'
 
-        SessionEvent.create(data={
-            'active': False,
-            'start_time': self.fields.start_time.strftime('%H:%M'),
-            'end_time': self.fields.end_time.strftime('%H:%M'),
-            'date': session_date.strftime('%Y-%m-%d %H:%M:%S'),
-            event_type_id: self.fields.id,
-        })
+        # Check if any upcoming sessions; should only have one
+        if not Event.get_upcoming_event(self.fields.id):
+            SessionEvent.create(data={
+                'active': False,
+                'start_time': self.fields.start_time.strftime('%H:%M'),
+                'end_time': self.fields.end_time.strftime('%H:%M'),
+                'date': session_date.strftime('%Y-%m-%d %H:%M:%S'),
+                event_type_id: self.fields.id,
+            })
 
     def interval_delta(self):
         interval = self.fields.interval

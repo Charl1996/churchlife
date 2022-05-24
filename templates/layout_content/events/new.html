@@ -9,75 +9,139 @@
 
   <div class="ui container" style="height: 90%;">
     <div class="scrolling content">
+    <div class="ui three steps">
+      <div id="step-1" class="active step">
+        <div class="content">
+          <div class="title">Details</div>
+        </div>
+      </div>
+      <div id="step-2" class="disabled step">
+        <div class="content">
+          <div class="title">Custom Data</div>
+        </div>
+      </div>
+      <div id="step-3" class="disabled step">
+        <div class="content">
+          <div class="title">Attendance</div>
+        </div>
+      </div>
+    </div>
       <form id="new_event_form" class="ui form">
-        <div class="field">
-          <label class="ui left aligned">Event name</label>
-          <input type="text" name="event-name" value="{{name}}" placeholder="Event name" required>
-        </div>
+        <div id="event-details">
+          <div class="field">
+            <label class="ui left aligned">Event name</label>
+            <input type="text" name="event-name" value="{{name}}" placeholder="Event name" required>
+          </div>
 
-        <div id="event_type_form" class="ui form">
-          <div class="grouped fields">
-            <label data-tooltip="Indicate whether this event should happen on a recurring basis or once off" data-position="top left" data-inverted="">Type of event</label>
-            <div class="field">
-              <div class="ui radio checkbox">
-                <input id="series_checkbox" type="radio" name="event-type" checked="checked">
-                <label>Recurring event</label>
+          <div id="event_type_form" class="ui form">
+            <div class="grouped fields">
+              <label data-tooltip="Indicate whether this event should happen on a recurring basis or once off" data-position="top left" data-inverted="">Type of event</label>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input id="series_checkbox" type="radio" name="event-type" checked="checked">
+                  <label>Recurring event</label>
+                </div>
+              </div>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input type="radio" name="event-type">
+                  <label>One time event</label>
+                </div>
               </div>
             </div>
-            <div class="field">
-              <div class="ui radio checkbox">
-                <input type="radio" name="event-type">
-                <label>One time event</label>
+          </div>
+
+          <div id="event-interval" class="ui fluid selection dropdown">
+            <input type="hidden" name="series-interval">
+            <i class="dropdown icon"></i>
+            <div class="default text">Event occurrence</div>
+            <div id="interval" class="menu">
+              <div class="item" data-value="daily">
+                Daily
+              </div>
+              <div class="item" data-value="weekly">
+                Weekly
+              </div>
+              <div class="item" data-value="monthly">
+                Monthly
               </div>
             </div>
           </div>
+
+          <div style="padding-top: 1em;">
+            <div class="field" style="display: inline-block; padding-right: 1em;">
+              <label class="ui left aligned" data-tooltip="Date of first event" data-position="top left" data-inverted="">From date</label>
+              <input type="date" name="event-from-date" placeholder="From date" required>
+            </div>
+            <div id="to-date-picker" class="field" style="display: inline-block; padding-right: 1em;">
+              <label class="ui left aligned" data-tooltip="Date of last event" data-position="top left" data-inverted="">To date</label>
+              <input id="to-date-picker-input" type="date" name="event-to-date" placeholder="To date">
+            </div>
+            <div id="continuous-event-checkbox" class="ui checkbox" style="display: inline-block; padding-left: 2em;">
+              <input type="checkbox" id="unspecified-end-date-checkbox">
+              <label for="unspecified-end-date-checkbox">No specified end date</label>
+            </div>
+          </div>
+          <div>
+            <div class="field" style="display: inline-block; padding-right: 1em;">
+              <label class="ui left aligned">Starts at</label>
+              <input type="time" value="08:00:00" name="event-start-time" placeholder="Start at" required>
+            </div>
+            <div class="field" style="display: inline-block; padding-right: 1em;">
+              <label class="ui left aligned">Ends at</label>
+              <input type="time" value="09:00:00" name="event-end-time" placeholder="End at" required>
+            </div>
+          </div>
         </div>
 
-        <div id="event-interval" class="ui fluid selection dropdown">
-          <input type="hidden" name="series-interval">
-          <i class="dropdown icon"></i>
-          <div class="default text">Event occurrence</div>
-          <div id="interval" class="menu">
-            <div class="item" data-value="daily">
-              Daily
+        <div id="event-data" hidden>
+          <script type="text/template" data-template="add-datum" id="add-datum">
+            <div style="padding-top: 0.5em;">
+              <div style="display: inline-block; width: 30%; vertical-align: top;">
+                <input type="text" placeholder="Key" required>
+              </div>
+              <div style="display: inline-block; width: 30%; vertical-align: top;">
+                <div class="ui checkbox" style="display: inline-block; padding-left: 2em;">
+                  <input type="checkbox" id="bool2-field">
+                  <label for="bool2-field">Is boolean field</label>
+                </div>
+              </div>
+              <div style="display: inline-block; padding-left: 2em; vertical-align: center;">
+                <div class="ui icon basic button red" onclick="removeDatum(this.parentElement.parentElement.id)">
+                  <i class="x icon"></i>
+                </div>
+              </div>
             </div>
-            <div class="item" data-value="weekly">
-              Weekly
+          </script>
+
+          <div class="ui info message" >
+            Define custom data that might be of interest on each event.
+          </div>
+
+          <div class="field">
+            <div id="data-members">
+              <div style="padding-top: 1em;">
+                <div style="display: inline-block; width: 30%; vertical-align: top;">
+                  <input type="text" placeholder="Key" required>
+                </div>
+                <div style="display: inline-block; width: 30%; vertical-align: top;">
+                  <div class="ui checkbox" style="display: inline-block; padding-left: 2em;">
+                    <input type="checkbox" id="bool-field">
+                    <label for="bool-field">Is boolean field</label>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="item" data-value="monthly">
-              Monthly
+            <div style="padding-top: 1em;">
+              <button onclick="addDatumElement()" class="ui basic primary button" type="button">
+                <i class="icon plus"></i>
+                Add
+              </button>
             </div>
           </div>
         </div>
 
-        <div style="padding-top: 1em;">
-          <div class="field" style="display: inline-block; padding-right: 1em;">
-            <label class="ui left aligned" data-tooltip="Date of first event" data-position="top left" data-inverted="">From date</label>
-            <input type="date" name="event-from-date" placeholder="From date" required>
-          </div>
-          <div id="to-date-picker" class="field" style="display: inline-block; padding-right: 1em;">
-            <label class="ui left aligned" data-tooltip="Date of last event" data-position="top left" data-inverted="">To date</label>
-            <input id="to-date-picker-input" type="date" name="event-to-date" placeholder="To date">
-          </div>
-          <div id="continuous-event-checkbox" class="ui checkbox" style="display: inline-block; padding-left: 2em;">
-            <input type="checkbox" id="unspecified-end-date-checkbox">
-            <label for="unspecified-end-date-checkbox">No specified end date</label>
-          </div>
-        </div>
-        <div>
-          <div class="field" style="display: inline-block; padding-right: 1em;">
-            <label class="ui left aligned">Starts at</label>
-            <input type="time" value="08:00:00" name="event-start-time" placeholder="Start at" required>
-          </div>
-          <div class="field" style="display: inline-block; padding-right: 1em;">
-            <label class="ui left aligned">Ends at</label>
-            <input type="time" value="09:00:00" name="event-end-time" placeholder="End at" required>
-          </div>
-        </div>
-        <h4 class="ui horizontal divider header">
-          Attendance tracking
-        </h4>
-        <div id="tracker-info" style="padding-top: 1em;">
+        <div id="tracker-info" style="padding-top: 1em;" hidden>
           <div class="field" style="display: inline-block; padding-right: 1em;">
             <label class="ui left aligned">Start recording before event begins (minutes)</label>
             <input type="number" name="start-tracking-before" value="20" required>
@@ -141,9 +205,11 @@
             <div class="four column row">
               <div class="left floated column">
                 <button onclick="cancel()" class="ui basic red button">Cancel</button>
+                <button id="previous-button" onclick="previous()" class="ui basic red button disabled">Previous</button>
               </div>
               <div class="right floated column right aligned">
-                <button id="create_event_button" class="ui primary button" type="submit">Create</button>
+                <button id="next_button" class="ui primary button" type="button">Next</button>
+                <button id="create_event_button" class="ui primary button disabled" type="submit">Create</button>
               </div>
             </div>
           </div>

@@ -2,7 +2,6 @@
 domain = window.location.pathname.split('/')[1];
 setCurrentDomain(domain);
 
-
 function eventsPage() {
     var url = "/" + currentDomain() + "/events";
     window.location.href = url;
