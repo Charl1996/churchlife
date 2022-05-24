@@ -1,90 +1,47 @@
 {% extends "layout_content/events.html" %}
 
 {% block event_content %}
-  <div style="padding-top: 1em; padding-bottom: 2em;">
-    <button class="fluid ui basic primary button" onclick="addNewEvent()">
-      <i class="icon plus"></i>
-      New event
-    </button>
-  </div>
-  <div id="events-content">
-    <div class="ui tabular menu">
-      <a id='upcoming-events-content-item' class="active item">
-        <div class="ui" onclick="selectUpcomingEventsMenuItem()" >Upcoming</div>
-      </a>
-      <a id='past-events-content-item' class="item">
-        <div class="ui" onclick="selectPastEventsMenuItem()" >Past</div>
-      </a>
-      <a id='all-events-content-item' class="item">
-        <div class="ui" onclick="selectAllEventsMenuItem()" >All</div>
-      </a>
-    </div>
-
-    <div id="upcoming-events-content">
-<!--      <h3 class="ui block header">Upcoming</h3>-->
-      <div style="padding: 1em;">
-        <div class="ui middle aligned divided list">
-          {% for event in upcoming_events %}
-            <div class="item">
-              <div class="right floated content">
-                <button class="ui red basic left attached button" onclick="cancelSessionEvent({{ event.id }})">Cancel</button>
-                <button class="right attached ui button" onclick="viewSessionEvent({{ event.id }})">View</button>
-              </div>
-              <div class="content">
-                <span><b>{{ event.name }}</b></span>
-                <span style="color: #a6a6a6"> ({{ event.date }}  @  {{ event.start_time }})</span>
+  <div style="padding-bottom: 2em;">
+    <div>
+      <div style="padding-left: 1em; padding-bottom: 1em; display: inline-block;">
+        <button class="ui basic button" onclick="goToToday()" style="display: inline-block; padding-left: 1em;">
+          Today
+        </button>
+        <button class="ui left attached icon basic button" onclick="calendarPrev()" style="display: inline-block; vertical-align: top;;">
+          <i class="icon left arrow"></i>
+        </button>
+        <button class="ui right attached icon basic button" onclick="calendarNext()" style="display: inline-block; vertical-align: top;">
+          <i class="icon right arrow"></i>
+        </button>
+      </div>
+      <h2 id="calendar-heading" style="display: inline-block; margin: auto; text-align: center; width: 63%;">
+      </h2>
+      <div style="display: inline-block; vertical-align: top; float: right;">
+        <form id="custom_date_form" class="ui form">
+          <div style="display: inline-block; vertical-align: top;">
+            <div id="calendar-view" class="ui fluid selection dropdown">
+              <input type="hidden" name="calendar-view">
+              <i class="dropdown icon"></i>
+              <div class="default text" style="display: inline-block;">Month</div>
+              <div id="interval" class="menu">
+                <div class="item" data-value="day">
+                  Day
+                </div>
+                <div class="item" data-value="week">
+                  Week
+                </div>
+                <div class="item" data-value="month">
+                  Month
+                </div>
               </div>
             </div>
-          {% endfor %}
-        </div>
+          </div>
+          <div id="to-date-picker" class="field" style="display: inline-block; padding-right: 1em; vertical-align: top;">
+            <input id="custom-date-picker-input" type="date" name="custom_date" placeholder="Select date">
+          </div>
+        </form>
       </div>
     </div>
-
-    <div id="past-events-content" hidden>
-<!--      <h3 class="ui block header">Past</h3>-->
-      <div style="padding: 1em;">
-        <div class="ui middle aligned divided list">
-          {% for event in past_events %}
-            <div class="item">
-              <div class="right floated content">
-<!--                <button class="ui red basic left attached button disabled">Cancel</button>-->
-                <button class="ui button">View</button>
-              </div>
-              <div class="content">
-                <span><b>{{ event.name }}</b></span>
-                <span style="color: #a6a6a6">  ({{ event.date }} {{ event.start_time }}-{{ event.end_time }})</span>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-
-    <div id="all-events-content" hidden>
-      <div style="padding: 1em;">
-        <div class="ui middle aligned divided list">
-          {% for event in all_events %}
-            <div class="item">
-              <div class="right floated content">
-                <button class="ui red basic left attached button" onclick="deleteEvent({{ event.id }})">Delete</button>
-                <button class="right attached ui button" onclick="viewEvent({{ event.id }})">View</button>
-              </div>
-              <div class="content">
-                <span><b>{{ event.name }}</b></span>
-                {% if event.interval == "daily" %}
-                <span style="color: #a6a6a6"> (Daily @ {{ event.start_time }}-{{ event.end_time }})</span>
-                {% endif %}
-                {% if event.interval == "weekly" %}
-                <span style="color: #a6a6a6"> (Weekly on {{ event.weekday }}s @ {{ event.start_time }}-{{ event.end_time }})</span>
-                {% endif %}
-                {% if event.interval == "monthly" %}
-                <span style="color: #a6a6a6"> (Monthly on day {{ event.monthly_date }} @ {{ event.start_time }}-{{ event.end_time }})</span>
-                {% endif %}
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
+    <div id="calendar" style="height: 80%;"></div>
   </div>
 {% endblock %}

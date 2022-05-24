@@ -9,7 +9,8 @@
   "dependencies": {
     "fomantic-ui": "^2.8.8",
     "gulp-header": "^2.0.9",
-    "natives": "^1.1.6"
+    "natives": "^1.1.6",
+    "tui-calendar": "^1.15.3"
   },
   "devDependencies": {},
   "scripts": {

@@ -1,4 +1,13 @@
 
+//import Calendar from 'tui-calendar'; /* ES6 */
+//import "tui-calendar/dist/tui-calendar.css";
+//
+//// If you use the default popups, use this.
+//import 'tui-date-picker/dist/tui-date-picker.css';
+//import 'tui-time-picker/dist/tui-time-picker.css';
+
+var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 function setCookie(name, value) {
     var validityDuration = 60*60*24;
     var expires = (new Date(Date.now()+ validityDuration*1000)).toUTCString();

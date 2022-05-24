@@ -1,37 +1,43 @@
-$(document).ready(function() {
-    $('.ui.menu').menu();
+
+$('.ui.dropdown')
+  .dropdown()
+;
+
+var $calEl = $('#calendar').tuiCalendar({
+  defaultView: 'month',
+  taskView: true,
+  scheduleView: true,
+  useDetailPopup: true,
+  template: {
+    month: {
+        daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        startDayOfWeek: 0,
+        narrowWeekend: true
+    },
+  }
 });
 
-function removeActive() {
-    $('#upcoming-events-content-item').removeClass('active');
-    $('#upcoming-events-content').hide();
+// You can get calendar instance
+var calendarInstance = $calEl.data('tuiCalendar');
 
-    $('#past-events-content-item').removeClass('active');
-    $('#past-events-content').hide();
+calendarInstance.on('beforeCreateSchedule', function(event) {
+   addNewEvent();
+});
 
-    $('#all-events-content-item').removeClass('active');
-    $('#all-events-content').hide();
+function goToToday() {
+    calendarInstance.today();
+    setCalendarMonthHeading();
 }
 
-function setActive(id) {
-    removeActive();
-
-    $('#' + id).show();
-    $("#" + id + "-item").addClass("active");
+function calendarNext() {
+    calendarInstance.next();
+    setCalendarMonthHeading();
 }
 
-function selectUpcomingEventsMenuItem() {
-    setActive('upcoming-events-content');
+function calendarPrev() {
+    calendarInstance.prev();
+    setCalendarMonthHeading();
 }
-
-function selectPastEventsMenuItem() {
-    setActive('past-events-content');
-}
-
-function selectAllEventsMenuItem() {
-    setActive('all-events-content');
-}
-
 
 function addNewEvent() {
 //    Redirect to new event page
@@ -72,3 +78,27 @@ function viewSessionEvent(sessionEventId) {
     var url = "/" + currentDomain() + "/events/sessions/" + sessionEventId;
     window.location.href = url;
 }
+
+function updateCalendarHeading(newHeading) {
+    $("#calendar-heading").text(newHeading);
+}
+
+$("#calendar-view").change(function() {
+    var calendarView = $('#calendar-view').dropdown('get value');
+    calendarInstance.changeView(calendarView, true);
+});
+
+$("#custom-date-picker-input").change(function() {
+    var formData = new FormData(document.querySelector('form'));
+    var custom_date = formData.get('custom_date');
+    calendarInstance.setDate(new Date(custom_date));
+
+    setCalendarMonthHeading();
+});
+
+function setCalendarMonthHeading() {
+    var headingText = MONTHS[calendarInstance.getDate().getMonth()] + " " + calendarInstance.getDate().getFullYear();
+    updateCalendarHeading(headingText);
+}
+
+setCalendarMonthHeading();
