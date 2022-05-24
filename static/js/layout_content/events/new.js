@@ -50,19 +50,28 @@ function recurringEvent() {
     return $('#series_checkbox').is(':checked');
 }
 
-$("#event_type_form").change(function() {
+function handleEventTypeUI() {
    if (recurringEvent()) {
     $("#event-interval").show();
     $("#to-date-picker").show();
     $('#to-date-picker-input').attr('required', true);
     $("#continuous-event-checkbox").show();
+    // Update label values
+    $("#event-start-date-label").html("First event");
+    $("#event-end-date-label").html("Last event");
    }
    else {
     $("#event-interval").hide();
     $("#to-date-picker").hide();
     $('#to-date-picker-input').removeAttr('required');
     $("#continuous-event-checkbox").hide();
+    // Update label values
+    $("#event-start-date-label").html("Event date");
    }
+}
+
+$("#event_type_form").change(function() {
+    handleEventTypeUI();
 });
 
 $('#event-interval').change(function() {
@@ -249,4 +258,48 @@ function submitCreate(postData) {
     var url = "/" + currentDomain() + "/events/new";
     request('POST', url, postData, resultHandlers);
 
+}
+
+handleEventTypeUI();
+
+if (localStorage.getItem(NEW_EVENT_DATA)) {
+    // Pre-populate datetime info
+    var newEventData = JSON.parse(localStorage.getItem(NEW_EVENT_DATA))
+
+    if (newEventData.datetime) {
+        // Handle from date
+        var storedDate = new Date(newEventData.datetime);
+
+        var day = ("0" + storedDate.getDate()).slice(-2);
+        var month = ("0" + (storedDate.getMonth() + 1)).slice(-2);
+        var fullDate = storedDate.getFullYear()+"-"+(month)+"-"+(day) ;
+
+        var $fromDate = $("#from-date-picker-input");
+        $fromDate.val(fullDate);
+
+        // Handle time
+        var starthours = storedDate.getHours();
+        var endhours = starthours + 1;
+        if (endhours > 23) { endhours = 0 }
+
+        var starthoursString = starthours.toString();
+        var endhoursString = endhours.toString();
+
+        if (starthoursString.length == 1) { starthoursString = '0' + starthoursString }
+        if (endhoursString.length == 1) { endhoursString = '0' + endhoursString }
+
+        var minutes = storedDate.getMinutes();
+        var minutesString = minutes.toString();
+
+        if (minutesString === '0') { minutesString = "00" }
+
+        var defaultStartTime = starthoursString + ":" + minutesString;
+        var defaultEndTime = endhoursString + ":" + minutesString;
+
+        var $startTime = $("#event-start-time");
+        var $endTime = $("#event-end-time");
+
+        $startTime.val(defaultStartTime);
+        $endTime.val(defaultEndTime);
+    }
 }

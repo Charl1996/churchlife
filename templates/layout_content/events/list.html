@@ -3,7 +3,7 @@
 {% block event_content %}
   <div style="padding-bottom: 2em;">
     <div>
-      <div style="padding-left: 1em; padding-bottom: 1em; display: inline-block;">
+      <div style="padding-left: 1em; padding-bottom: 2em; display: inline-block;">
         <button class="ui basic button" onclick="goToToday()" style="display: inline-block; padding-left: 1em;">
           Today
         </button>
@@ -36,12 +36,15 @@
               </div>
             </div>
           </div>
-          <div id="to-date-picker" class="field" style="display: inline-block; padding-right: 1em; vertical-align: top;">
+          <div id="to-date-picker" class="field" style="display: inline-block; padding-right: 1em; vertical-align: top;" data-tooltip="Jump to specific date" data-position="top left" data-inverted="">
             <input id="custom-date-picker-input" type="date" name="custom_date" placeholder="Select date">
           </div>
         </form>
       </div>
     </div>
-    <div id="calendar" style="height: 80%;"></div>
+    <div id="calendar" style="height: 91%;"></div>
   </div>
+
+<meta id="events-data" data-events="{{ all_events }}">
+
 {% endblock %}

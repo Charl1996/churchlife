@@ -4,7 +4,7 @@
 
 <div>
   <h3 class="ui header center aligned" style="height: 7%;">
-    New Event
+    Create new event
   </h3>
 
   <div class="ui container" style="height: 90%;">
@@ -38,14 +38,14 @@
               <label data-tooltip="Indicate whether this event should happen on a recurring basis or once off" data-position="top left" data-inverted="">Type of event</label>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input id="series_checkbox" type="radio" name="event-type" checked="checked">
-                  <label>Recurring event</label>
+                  <input type="radio" name="event-type" checked="checked">
+                  <label>One time event</label>
                 </div>
               </div>
               <div class="field">
                 <div class="ui radio checkbox">
-                  <input type="radio" name="event-type">
-                  <label>One time event</label>
+                  <input id="series_checkbox" type="radio" name="event-type">
+                  <label>Recurring event</label>
                 </div>
               </div>
             </div>
@@ -70,11 +70,11 @@
 
           <div style="padding-top: 1em;">
             <div class="field" style="display: inline-block; padding-right: 1em;">
-              <label class="ui left aligned" data-tooltip="Date of first event" data-position="top left" data-inverted="">From date</label>
-              <input type="date" name="event-from-date" placeholder="From date" required>
+              <label id="event-start-date-label" class="ui left aligned" data-tooltip="Date of first event" data-position="top left" data-inverted="">First event</label>
+              <input id="from-date-picker-input" type="date" name="event-from-date" placeholder="From date" required>
             </div>
             <div id="to-date-picker" class="field" style="display: inline-block; padding-right: 1em;">
-              <label class="ui left aligned" data-tooltip="Date of last event" data-position="top left" data-inverted="">To date</label>
+              <label id="event-end-date-label" class="ui left aligned" data-tooltip="Date of last event" data-position="top left" data-inverted="">Last event</label>
               <input id="to-date-picker-input" type="date" name="event-to-date" placeholder="To date">
             </div>
             <div id="continuous-event-checkbox" class="ui checkbox" style="display: inline-block; padding-left: 2em;">
@@ -85,11 +85,11 @@
           <div>
             <div class="field" style="display: inline-block; padding-right: 1em;">
               <label class="ui left aligned">Starts at</label>
-              <input type="time" value="08:00:00" name="event-start-time" placeholder="Start at" required>
+              <input id="event-start-time" type="time" value="08:00:00" name="event-start-time" placeholder="Start at" required>
             </div>
             <div class="field" style="display: inline-block; padding-right: 1em;">
               <label class="ui left aligned">Ends at</label>
-              <input type="time" value="09:00:00" name="event-end-time" placeholder="End at" required>
+              <input id="event-end-time" type="time" value="09:00:00" name="event-end-time" placeholder="End at" required>
             </div>
           </div>
         </div>

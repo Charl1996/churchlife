@@ -5,7 +5,8 @@ $('.ui.dropdown')
 
 var $calEl = $('#calendar').tuiCalendar({
   defaultView: 'month',
-  taskView: true,
+  theme: CALENDAR_THEME_CONFIG,
+  taskView: false,
   scheduleView: true,
   useDetailPopup: true,
   template: {
@@ -21,8 +22,46 @@ var $calEl = $('#calendar').tuiCalendar({
 var calendarInstance = $calEl.data('tuiCalendar');
 
 calendarInstance.on('beforeCreateSchedule', function(event) {
-   addNewEvent();
+    // Set data in localstorage for auto-population
+    var data = {
+        datetime: new Date(event.start)
+    };
+
+    localStorage.setItem(NEW_EVENT_DATA, JSON.stringify(data));
+    addNewEvent();
 });
+
+function populateCalendarEvents(events) {
+    var schedules = [];
+
+    for (i=0; i < events.length; i++) {
+        schedule = parseToCalendarSchedule(events[i]);
+        schedules.push(schedule);
+    }
+
+    updateCalendarSchedules(schedules);
+}
+
+function updateCalendarSchedules(schedules) {
+    calendarInstance.clear();
+    calendarInstance.createSchedules(schedules);
+}
+
+function parseToCalendarSchedule(event) {
+    var eventDate = event.from_date.split(" ")[0];
+    var start = new Date(eventDate + " " + event.start_time);
+    var end = new Date(eventDate + " " + event.end_time);
+
+    return {
+        id: '1',
+        category: 'time',
+        dueDateClass: '',
+        calendarId: event.id,
+        title: event.name,
+        start: start,
+        end: end,
+    }
+}
 
 function goToToday() {
     calendarInstance.today();
@@ -102,3 +141,6 @@ function setCalendarMonthHeading() {
 }
 
 setCalendarMonthHeading();
+
+var events = $('#events-data').data("events");
+populateCalendarEvents(events);

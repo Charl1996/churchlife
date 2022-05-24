@@ -6,7 +6,37 @@
 //import 'tui-date-picker/dist/tui-date-picker.css';
 //import 'tui-time-picker/dist/tui-time-picker.css';
 
-var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+var PRIMARY_COLOR = "#2185d0";
+
+var CALENDAR_THEME_CONFIG = {
+    'week.today.color': PRIMARY_COLOR,
+    'common.today.color': PRIMARY_COLOR,
+    'week.today.color': PRIMARY_COLOR,
+    'week.today.backgroundColor': 'rgba(81, 92, 230, 0.05)',
+    'week.currentTime.color': PRIMARY_COLOR,
+    'week.currentTimeLinePast.border': '1px dashed ' + PRIMARY_COLOR,
+    'week.currentTimeLineBullet.backgroundColor': PRIMARY_COLOR,
+    'week.currentTimeLineToday.border': '1px solid ' + PRIMARY_COLOR,
+    'month.weekend.backgroundColor': '#fafafa',
+
+};
+
+var MONTHS = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+];
+
+var NEW_EVENT_DATA = "new_event_data"
 
 function setCookie(name, value) {
     var validityDuration = 60*60*24;

@@ -1,3 +1,5 @@
+import json
+
 from app.routers.decorators import view_request, domain_request
 from fastapi import Request, Depends
 from app.organisations import Organisation
@@ -49,13 +51,13 @@ async def dashboard(request: Request, domain: str, user: User = Depends(get_curr
 async def events(request: Request, domain: str, user: User = Depends(get_current_user)):
     org = Organisation.get_by_domain(domain)
 
-    upcoming_session_events = []
-    for event in org.get_upcoming_events():
-        upcoming_session_events.append(event.dict())
-
-    past_session_events = []
-    for event in org.get_past_events():
-        past_session_events.append(event.dict())
+    # upcoming_session_events = []
+    # for event in org.get_upcoming_events():
+    #     upcoming_session_events.append(event.dict())
+    #
+    # past_session_events = []
+    # for event in org.get_past_events():
+    #     past_session_events.append(event.dict())
 
     all_events = []
     for event in org.get_all_events():
@@ -67,9 +69,7 @@ async def events(request: Request, domain: str, user: User = Depends(get_current
         all_events.append(event_)
 
     return {'template': 'layout_content/events/list.html', 'data': {
-        'upcoming_events': upcoming_session_events,
-        'past_events': past_session_events,
-        'all_events': all_events,
+        'all_events': json.dumps(all_events, default=str),
     }}
 
 
