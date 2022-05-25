@@ -70,6 +70,21 @@ function handleEventTypeUI() {
    }
 }
 
+$("#event-start-time").change(function() {
+    var startTimeString = $("#event-start-time").val();
+    var timeSplit = startTimeString.split(":");
+
+    var startTime = parseInt(timeSplit[0]);
+    var endTime = startTime + 1;
+
+    if (endTime > 23) { endTime = 0 }
+
+    var endTimeString = endTime.toString();
+    if (endTimeString.length == 1) { endTimeString = "0" + endTimeString }
+
+    $("#event-end-time").val(endTimeString + ":" + timeSplit[1]);
+});
+
 $("#event_type_form").change(function() {
     handleEventTypeUI();
 });

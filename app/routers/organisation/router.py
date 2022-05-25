@@ -298,11 +298,26 @@ async def get_database_platform(request: Request, domain: str, user: User = Depe
     organisation = Organisation.get_by_domain(domain)
     platform = organisation.get_linked_database_platform()
 
-    data = {}
+    data = {'database': None, 'entities': []}
     if platform:
-        data = platform.dict()
+        data['database'] = platform.fields.dict()
+        # data['entities'] = platform.get_entities(as_dict=True)
 
     return {'template': 'layout_content/database.html', 'data': data}
+
+
+@router.get('/{domain}/database/entities')
+@view_request
+@domain_request
+async def get_database_platform(request: Request, domain: str, user: User = Depends(get_current_user)):
+    organisation = Organisation.get_by_domain(domain)
+    platform = organisation.get_linked_database_platform()
+
+    data = {'database': None, 'entities': []}
+    if platform:
+        data['entities'] = platform.get_entities(as_dict=True)
+
+    return {'template': 'layout_content/database/database_entities_list.html', 'data': data}
 
 
 @router.post('/{domain}/database/test-connection')

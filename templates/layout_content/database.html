@@ -6,11 +6,12 @@
 </h1>
 
 <div class="ui segment" style="height: 88%">
-  <h3 class="ui header center aligned" style="height: 7%;">
-    Configuration
-  </h3>
 
+  {% if not database %}
   <div class="ui container">
+    <h3 class="ui header center aligned" style="height: 7%;">
+      Configuration
+    </h3>
     <form id="database_form" class="ui form">
       <div id="database-platform-options" class="ui fluid selection dropdown">
         <input type="hidden" name="database-platform-options">
@@ -46,6 +47,36 @@
       </div>
     </form>
   </div>
+  {% else %}
+  <div class="ui container">
+    <div style="padding-top: 1em; padding-bottom: 2em;">
+      <button onclick="editDatabase()" class="fluid ui basic primary button">
+        <i class="icon edit"></i>
+        Edit database connection
+      </button>
+    </div>
+    <div id="database-entities-content">
+      <div class="ui secondary menu">
+        <button class="ui basic button" data-tooltip="Reloads the data from the remote database. This operation could take a while." data-position="top left" data-inverted="">Refresh</button>
+        <div class="right menu">
+          <div class="item">
+            <div class="ui icon input">
+              <input type="text" placeholder="Search...">
+              <i class="search link icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="loader" class="ui active inverted dimmer">
+        <div class="ui small text loader">Fetching remote data...</div>
+      </div>
+      <div id="database-entities-list" style="overflow: auto; max-height: 80%;">
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <meta id="database-data" data-database="{{ database }}">
 
 {% block javascript %}
     <script src="{{ url_for('static', path='js/layout_content/database.js') }}"></script>

@@ -25,7 +25,7 @@ class DatabasePlatform(DatabaseInterfaceWrapper):
     def create_schema_model(cls):
         return PlatformSchema
 
-    def get_people(self):
+    def get_entities(self):
         raise NotImplementedError
 
     @classmethod

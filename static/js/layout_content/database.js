@@ -85,3 +85,30 @@ $('form').on('submit', function(e) {
     var url = "/" + currentDomain() + "/database/new";
     request("POST", url, data, resultHandlers);
 });
+
+function getDatabaseEntities() {
+    var resultHandlers = {
+        200: function(response) {
+            $("#database-entities-list").html(response);
+            $("#loader").hide();
+        },
+        422: function(response) {
+            message = response.responseJSON.detail;
+            showToast('error', message);
+        }
+    };
+
+    var url = "/" + currentDomain() + "/database/entities";
+    request("GET", url, null, resultHandlers);
+}
+
+function viewEntityDetails(entityRemoteId) {
+    showToast('warning', "Not implemented yet")
+}
+
+
+var database = $("#database-data").data("database");
+
+if (database) {
+    getDatabaseEntities();
+}

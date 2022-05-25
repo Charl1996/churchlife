@@ -264,11 +264,12 @@ class Organisation(DatabaseInterfaceWrapper):
 
         # Better way to do this?
         if result.slug == BreezeDatabasePlatform.slug:
-            result = self.get_by(
+            platform = self.get_by(
                 model=PlatformModel,
                 schema=BreezePlatformSchema,
                 criteria=criteria,
             )
+            result = BreezeDatabasePlatform(platform=platform)
 
         return result
 

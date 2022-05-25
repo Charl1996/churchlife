@@ -1,0 +1,33 @@
+
+<div class="ui middle aligned selection list">
+{% for entity in entities %}
+    <div class="item">
+      <div class="content" onclick="viewEntityDetails({{ entity.id }})">
+        <div>
+          <div style="display: inline-block; vertical-align: 50%;">
+            <img class="ui circular mini image" src="/static/empty-profile-picture.png">
+          </div>
+          <div style="display: inline-block;">
+            <h4 class="header">{{ entity.first_name }} {{ entity.last_name }}</h4>
+            <span style="color: grey; padding-left: 2em;">
+              <div>
+                {% if entity.mobile %}
+                  {{ entity.mobile }}
+                {% else %}
+                  No phone number
+                {% endif %}
+              </div>
+              <div><em>
+                {% if entity.email %}
+                  {{ entity.email }}
+                {% else %}
+                  No email
+                {% endif %}
+              </em></div>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endfor %}
+</div>
