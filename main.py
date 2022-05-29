@@ -1,6 +1,5 @@
 import uvicorn
 
-from fastapi import FastAPI
 from configs import (
     APPLICATION_HOST,
     APPLICATION_PORT,
@@ -17,6 +16,10 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 
 from fastapi_sqlalchemy import DBSessionMiddleware
+from fastapi import FastAPI
+
+from fastapi_cache import caches, close_caches
+from fastapi_cache.backends.redis import CACHE_KEY, RedisCacheBackend
 
 
 app = FastAPI()
@@ -44,6 +47,17 @@ app.include_router(organisation_router)
 @app.get('/')
 def root():
     return RedirectResponse(url='/account/sign-in')
+
+
+@app.on_event('startup')
+async def on_startup() -> None:
+    rc = RedisCacheBackend('redis://redis')
+    caches.set(CACHE_KEY, rc)
+
+
+@app.on_event('shutdown')
+async def on_shutdown() -> None:
+    await close_caches()
 
 
 if __name__ == '__main__':

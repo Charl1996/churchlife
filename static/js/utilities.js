@@ -18,7 +18,6 @@ var CALENDAR_THEME_CONFIG = {
     'week.currentTimeLineBullet.backgroundColor': PRIMARY_COLOR,
     'week.currentTimeLineToday.border': '1px solid ' + PRIMARY_COLOR,
     'month.weekend.backgroundColor': '#fafafa',
-
 };
 
 var MONTHS = [

@@ -8,10 +8,10 @@ function eventsPage() {
 };
 
 
-function notificationsPage() {
-    var url = "/" + currentDomain() + "/notifications";
-    window.location.href = url;
-};
+//function notificationsPage() {
+//    var url = "/" + currentDomain() + "/notifications";
+//    window.location.href = url;
+//};
 
 
 function settingsPage() {

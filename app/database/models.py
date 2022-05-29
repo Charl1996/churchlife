@@ -113,7 +113,6 @@ class EventSession(Base):
     __table_args__ = {'extend_existing': True}
 
     id = Column(Integer, primary_key=True, index=True)
-    active = Column(Boolean, default=False)
     start_time = Column(String)
     end_time = Column(String)
     date = Column(DateTime)

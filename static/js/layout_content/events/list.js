@@ -9,13 +9,6 @@ var $calEl = $('#calendar').tuiCalendar({
   taskView: false,
   scheduleView: true,
   useDetailPopup: true,
-  template: {
-    month: {
-        daynames: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        startDayOfWeek: 0,
-        narrowWeekend: true
-    },
-  }
 });
 
 // You can get calendar instance
@@ -48,7 +41,18 @@ function updateCalendarSchedules(schedules) {
 }
 
 function parseToCalendarSchedule(event) {
-    var eventDate = event.from_date.split(" ")[0];
+    var eventDate;
+    var calendarId;
+
+    if (event['from_date']) {
+        eventDate = event.from_date.split(" ")[0];
+        calendarId = event.id;
+    }
+    else {
+        eventDate = event.date.split(" ")[0];
+        calendarId = event.event_id;
+    }
+
     var start = new Date(eventDate + " " + event.start_time);
     var end = new Date(eventDate + " " + event.end_time);
 
@@ -56,25 +60,67 @@ function parseToCalendarSchedule(event) {
         id: '1',
         category: 'time',
         dueDateClass: '',
-        calendarId: event.id,
+        calendarId: calendarId,
         title: event.name,
         start: start,
         end: end,
     }
 }
 
+function getTimeframeSchedules(fromTime, toTime) {
+    var data = {
+        start: fromTime,
+        end: toTime
+    }
+    resultHandlers = {
+        200: function(response) {
+            populateCalendarEvents(response);
+        },
+    }
+
+    var url = "/" + currentDomain() + "/events/calendar-data";
+    request("POST", url, data, resultHandlers)
+}
+
+function setCalendarEvents() {
+    var calDate = calendarInstance.getDate();
+    var calYear = calDate.getFullYear();
+    var calMonth = calDate.getMonth();
+
+    if (calendarInstance._viewName == "month") {
+        var fromTime = new Date(calYear, calMonth-1, 1);
+        var toTime = new Date(calYear, calMonth+2, 0);
+    }
+    else {
+        if (calendarInstance._viewName == "week") {
+            var fromTime = new Date(calYear, calMonth, calDate.getDate() - calDate.getDay());
+            var toTime = new Date(calYear, calMonth, calDate.getDate() + (6 - calDate.getDay()));
+        }
+        else {
+            if (calendarInstance._viewName == "day") {
+                var fromTime = new Date(calYear, calMonth, calDate.getDate());
+                var toTime = new Date(calYear, calMonth, calDate.getDate() + 1);
+            }
+        }
+    }
+    getTimeframeSchedules(fromTime, toTime);
+}
+
 function goToToday() {
     calendarInstance.today();
+    setCalendarEvents();
     setCalendarMonthHeading();
 }
 
 function calendarNext() {
     calendarInstance.next();
+    setCalendarEvents();
     setCalendarMonthHeading();
 }
 
 function calendarPrev() {
     calendarInstance.prev();
+    setCalendarEvents();
     setCalendarMonthHeading();
 }
 
@@ -124,7 +170,17 @@ function updateCalendarHeading(newHeading) {
 
 $("#calendar-view").change(function() {
     var calendarView = $('#calendar-view').dropdown('get value');
+
+    var refreshFromBE = false;
+    if (calendarInstance._viewName == 'day') {
+        refreshFromBE = true;
+    }
+    if (calendarInstance._viewName == 'week' && calendarView == 'month') {
+        refreshFromBE = true;
+    }
+
     calendarInstance.changeView(calendarView, true);
+    if (refreshFromBE) { setCalendarEvents(); }
 });
 
 $("#custom-date-picker-input").change(function() {
@@ -133,7 +189,12 @@ $("#custom-date-picker-input").change(function() {
     calendarInstance.setDate(new Date(custom_date));
 
     setCalendarMonthHeading();
+    setCalendarEvents();
 });
+
+function refresh() {
+    setCalendarEvents();
+}
 
 function setCalendarMonthHeading() {
     var headingText = MONTHS[calendarInstance.getDate().getMonth()] + " " + calendarInstance.getDate().getFullYear();
@@ -141,6 +202,5 @@ function setCalendarMonthHeading() {
 }
 
 setCalendarMonthHeading();
+setCalendarEvents();
 
-var events = $('#events-data').data("events");
-populateCalendarEvents(events);

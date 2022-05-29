@@ -107,15 +107,43 @@ class CRUDOperations(DBOperations):
                 if type(value) != dict:
                     criteria_string = criterion_string(field, value)
                 elif type(value) == dict:
-                    v = value['value']
-                    op = value['operator']
-                    criteria_string = f'{criterion_string_with_operator(field, v, op)}'
+                    if value.get('logic'):
+                        logical_operation = value['logic']  # Currently only supports AND
+                        logical_operation_criteria = value['criteria']
+
+                        logical_criteria_string = ''
+                        for logical_criterion in logical_operation_criteria:
+                            op = logical_criterion['operator']
+                            v = logical_criterion['value']
+                            if logical_criteria_string:
+                                logical_criteria_string = f'{logical_criteria_string}, {criterion_string_with_operator(field, v, op)}'
+                            else:
+                                logical_criteria_string = f'{criterion_string_with_operator(field, v, op)}'
+                        criteria_string = logical_criteria_string
+                    else:
+                        v = value['value']
+                        op = value['operator']
+                        criteria_string = f'{criterion_string_with_operator(field, v, op)}'
             else:
                 if type(value) != dict:
                     criteria_string = f'{criteria_string}, {criterion_string(field, value)}'
                 elif type(value) == dict:
-                    v = value['value']
-                    op = value['operator']
-                    criteria_string = f'{criteria_string}, {criterion_string_with_operator(field, v, op)}'
+                    if value.get('logic'):
+                        logical_operation = value['logic']  # Currently only supports AND
+                        logical_operation_criteria = value['criteria']
+
+                        logical_criteria_string = ''
+                        for logical_criterion in logical_operation_criteria:
+                            op = logical_criterion['operator']
+                            v = logical_criterion['value']
+                            if logical_criteria_string:
+                                logical_criteria_string = f'{logical_criteria_string}, {criterion_string_with_operator(field, v, op)}'
+                            else:
+                                logical_criteria_string = f'{criterion_string_with_operator(field, v, op)}'
+                        criteria_string = f'{criteria_string}, {logical_criteria_string}'
+                    else:
+                        v = value['value']
+                        op = value['operator']
+                        criteria_string = f'{criterion_string_with_operator(field, v, op)}'
 
         return criteria_string

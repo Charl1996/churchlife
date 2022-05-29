@@ -67,9 +67,9 @@
               <div class="item" data-value="weekly">
                 Weekly
               </div>
-              <div class="item" data-value="monthly">
-                Monthly
-              </div>
+<!--              <div class="item" data-value="monthly">-->
+<!--                Monthly-->
+<!--              </div>-->
             </div>
           </div>
 
@@ -107,8 +107,8 @@
               </div>
               <div style="display: inline-block; width: 30%; vertical-align: top;">
                 <div class="ui checkbox" style="display: inline-block; padding-left: 2em;">
-                  <input type="checkbox" id="bool2-field">
-                  <label for="bool2-field">Is boolean field</label>
+                  <input type="checkbox">
+                  <label>Is boolean field</label>
                 </div>
               </div>
               <div style="display: inline-block; padding-left: 2em; vertical-align: center;">
@@ -124,24 +124,26 @@
           </div>
 
           <div class="field">
-            <div id="data-members">
-              <div style="padding-top: 1em;">
-                <div style="display: inline-block; width: 30%; vertical-align: top;">
-                  <input type="text" placeholder="Key" required>
-                </div>
-                <div style="display: inline-block; width: 30%; vertical-align: top;">
-                  <div class="ui checkbox" style="display: inline-block; padding-left: 2em;">
-                    <input type="checkbox" id="bool-field">
-                    <label for="bool-field">Is boolean field</label>
+            <div style="overflow: auto; max-height: 60%;">
+              <div id="data-members">
+                <div style="padding-top: 1em;">
+                  <div style="display: inline-block; width: 30%; vertical-align: top;">
+                    <input type="text" placeholder="Key" required>
+                  </div>
+                  <div style="display: inline-block; width: 30%; vertical-align: top;">
+                    <div class="ui checkbox" style="display: inline-block; padding-left: 2em;">
+                      <input type="checkbox" id="bool-field">
+                      <label for="bool-field">Is boolean field</label>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div style="padding-top: 1em;">
-              <button onclick="addDatumElement()" class="ui basic primary button" type="button">
-                <i class="icon plus"></i>
-                Add
-              </button>
+              <div style="padding-top: 1em;">
+                <button onclick="addDatumElement()" class="ui basic primary button" type="button">
+                  <i class="icon plus"></i>
+                  Add
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -156,53 +158,114 @@
             <input type="number" name="stop-tracking-after" value="20" required>
           </div>
 
-          {% if notifications %}
-          <div style="padding-top: 1em;">
-            <div style="display: inline-block;"><b>Notify </b></div>
-            <div style="display: inline-block; width: 30%; padding-left: 1em;">
-              <div id="event-notifications" class="ui fluid selection dropdown">
-                <input type="hidden" name="notification-groups">
+<!--          {% if notifications %}-->
+<!--          <div style="padding-top: 1em;">-->
+<!--            <div style="display: inline-block;"><b>Notify </b></div>-->
+<!--            <div style="display: inline-block; width: 30%; padding-left: 1em;">-->
+<!--              <div id="event-notifications" class="ui fluid selection dropdown">-->
+<!--                <input type="hidden" name="notification-groups">-->
+<!--                <i class="dropdown icon"></i>-->
+<!--                <div class="default text">notification group</div>-->
+<!--                <div id="notifications-dropdown" class="menu">-->
+<!--                  {% for notification in notifications %}-->
+<!--                    <div class="item" data-value="notification-{{ notification.id }}">-->
+<!--                      {{ notification.name }}-->
+<!--                    </div>-->
+<!--                  {% endfor %}-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div style="display: inline-block; padding-left: 1em;"><b> on </b></div>-->
+<!--            <div style="display: inline-block; width: 30%; padding-left: 1em;">-->
+<!--              <div id="notification-trigger" class="ui fluid selection dropdown">-->
+<!--                <input type="hidden" name="series-interval">-->
+<!--                <i class="dropdown icon"></i>-->
+<!--                <div class="default text">trigger</div>-->
+<!--                <div id="notification-trigger-dropdown" class="menu">-->
+<!--                  {% for trigger_type in trigger_types %}-->
+<!--                    <div class="item" data-value="{{ trigger_type.type }}">-->
+<!--                      {{ trigger_type.display_item_text }}-->
+<!--                    </div>-->
+<!--                  {% endfor %}-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          {% else %}-->
+<!--          <div class="ui warn message" >-->
+<!--            <div class="ui left aligned">-->
+<!--              You currently have no notifications set up. Click the "Add notifications" button-->
+<!--              to add notifications.-->
+<!--            </div>-->
+<!--            <div class="ui right aligned">-->
+<!--              <div class="ui basic primary icon button" onclick="addNotification()">-->
+<!--                <i class="plus icon"></i>-->
+<!--                Add notifications-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          {% endif %}-->
+        </div>
+
+        <div id="notification-info" style="padding-top: 1em;" hidden>
+          <div class="field">
+            <div style="display: inline-block;">Send</div>
+            <div style="display: inline-block;">
+              <div id="template-message-dropdown" class="ui fluid selection dropdown">
+                <input type="hidden" name="template-messages">
                 <i class="dropdown icon"></i>
-                <div class="default text">notification group</div>
-                <div id="notifications-dropdown" class="menu">
-                  {% for notification in notifications %}
-                    <div class="item" data-value="notification-{{ notification.id }}">
-                      {{ notification.name }}
-                    </div>
-                  {% endfor %}
+                <div class="default text">template</div>
+                <div id="template-messages" class="menu">
+                  <div class="item" data-value="daily">
+                    Template 1
+                  </div>
+                  <div class="item" data-value="weekly">
+                    Template 2
+                  </div>
+                  <div class="item" data-value="monthly">
+                    Template 3
+                  </div>
                 </div>
               </div>
             </div>
-            <div style="display: inline-block; padding-left: 1em;"><b> on </b></div>
-            <div style="display: inline-block; width: 30%; padding-left: 1em;">
-              <div id="notification-trigger" class="ui fluid selection dropdown">
-                <input type="hidden" name="series-interval">
+            <div style="display: inline-block;">message to people with tag</div>
+            <div style="display: inline-block;">
+              <div id="tags-dropdown" class="ui fluid selection dropdown">
+                <input type="hidden" name="tags">
                 <i class="dropdown icon"></i>
-                <div class="default text">trigger</div>
-                <div id="notification-trigger-dropdown" class="menu">
-                  {% for trigger_type in trigger_types %}
-                    <div class="item" data-value="{{ trigger_type.type }}">
-                      {{ trigger_type.display_item_text }}
-                    </div>
-                  {% endfor %}
+                <div class="default text">tag</div>
+                <div id="tags" class="menu">
+                  <div class="item" data-value="daily">
+                    Tag 1
+                  </div>
+                  <div class="item" data-value="weekly">
+                    Tag 2
+                  </div>
+                  <div class="item" data-value="monthly">
+                    Tag 3
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="display: inline-block;">
+              <div id="actions-dropdown" class="ui fluid selection dropdown">
+                <input type="hidden" name="tags">
+                <i class="dropdown icon"></i>
+                <div class="default text">on action</div>
+                <div id="actions" class="menu">
+                  <div class="item" data-value="daily">
+                    on arrival
+                  </div>
+                  <div class="item" data-value="monthly">
+                    before event
+                  </div>
+                  <div class="item" data-value="monthly">
+                    after event
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          {% else %}
-          <div class="ui warn message" >
-            <div class="ui left aligned">
-              You currently have no notifications set up. Click the "Add notifications" button
-              to add notifications.
-            </div>
-            <div class="ui right aligned">
-              <div class="ui basic primary icon button" onclick="addNotification()">
-                <i class="plus icon"></i>
-                Add notifications
-              </div>
-            </div>
-          </div>
-          {% endif %}
         </div>
 
         <div class="ui container" style="padding-top: 2em;">

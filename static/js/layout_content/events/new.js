@@ -32,7 +32,14 @@ function addDatumElement() {
 
     var newElementIndex = $("#data-members").children().length-1;
     var domElement = $("#data-members").children()[newElementIndex];
-    domElement.id = 'member-' + newElementIndex;
+
+    domElement.id = 'data-' + newElementIndex;
+
+    checkboxInput = domElement.children[1].children[0].children[0];
+    checkboxLabel = domElement.children[1].children[0].children[1];
+
+    checkboxInput.id = 'bool-field-' + newElementIndex;
+    checkboxLabel.setAttribute("for", checkboxInput.id);
 }
 
 function removeDatum(instanceID) {
@@ -93,13 +100,13 @@ $('#event-interval').change(function() {
     $('#event-interval').removeClass('error');
 });
 
-$('#event-notifications').change(function() {
-    $('#event-notifications').removeClass('error');
-});
+//$('#event-notifications').change(function() {
+//    $('#event-notifications').removeClass('error');
+//});
 
-$('#notification-trigger').change(function() {
-    $('#notification-trigger').removeClass('error');
-});
+//$('#notification-trigger').change(function() {
+//    $('#notification-trigger').removeClass('error');
+//});
 
 $("#unspecified-end-date-checkbox").change(function() {
     var noEndDate = $('#unspecified-end-date-checkbox').is(':checked');
@@ -150,9 +157,20 @@ $("#next_button").click(function() {
         $("#step-3").removeClass("disabled");
         $("#step-3").addClass("active");
 
+        setCurrentStep('3');
+    }
+    if (step == '3') {
+        $("#tracker-info").hide();
+        $("#step-3").removeClass("active");
+
+        $("#notification-info").show();
+        $("#step-4").removeClass("disabled");
+        $("#step-4").addClass("active");
+
         $("#next_button").addClass("disabled");
         $("#create_event_button").removeClass("disabled");
-        setCurrentStep('3');
+
+        setCurrentStep('4');
     }
 
 });
@@ -177,10 +195,39 @@ function previous() {
         $("#tracker-info").hide();
         $("#step-3").removeClass("active");
 
-        $("#next_button").removeClass("disabled");
-        $("#create_event_button").addClass("disabled");
+
         setCurrentStep('2');
     }
+    if (step == '4') {
+        $("#tracker-info").show();
+        $("#step-3").addClass("active");
+
+        $("#notification-info").hide();
+        $("#step-4").removeClass("active");
+
+        $("#next_button").removeClass("disabled");
+        $("#create_event_button").addClass("disabled");
+        setCurrentStep('3');
+    }
+}
+
+function getCustomData() {
+    debugger;
+    var dataMembersElement = $("#data-members")[0]
+
+    data = []
+    for (i=0; i < dataMembersElement.children.length; i++) {
+        var childElement = dataMembersElement.children[i];
+        var inputElement = childElement.children[0].children[0];
+        var checkboxElement = childElement.children[1].children[0].children[0];
+
+        data.push({
+            is_bool: checkboxElement.checked,
+            field_name: inputElement.value
+        })
+    }
+
+    return data
 }
 
 //$('form').on('submit', function(e) {
@@ -212,21 +259,20 @@ $("#create_event_button").click(function(e) {
         to_date = '';
     }
 
-    var eventNotification = $('#event-notifications').dropdown('get value');
-    var eventNotificationTrigger = $('#notification-trigger').dropdown('get value');
-
-    if (!eventNotification) {
-        $('#event-notifications').addClass('error');
-        showToast('error', "Please select notification group");
-        return
-    }
-
-    if (!eventNotificationTrigger) {
-        $('#notification-trigger').addClass('error');
-        showToast('error', "Please select notification trigger");
-        return
-    }
-    event_data = {};
+//    var eventNotification = $('#event-notifications').dropdown('get value');
+//    var eventNotificationTrigger = $('#notification-trigger').dropdown('get value');
+//
+//    if (!eventNotification) {
+//        $('#event-notifications').addClass('error');
+//        showToast('error', "Please select notification group");
+//        return
+//    }
+//
+//    if (!eventNotificationTrigger) {
+//        $('#notification-trigger').addClass('error');
+//        showToast('error', "Please select notification trigger");
+//        return
+//    }
 
     var newEventData = {
         event: {
@@ -237,19 +283,19 @@ $("#create_event_button").click(function(e) {
             to_date: to_date,
             start_time: formData.get('event-start-time'),
             end_time: formData.get('event-end-time'),
-            event_data: event_data
+            event_data: getCustomData()
         }
     };
 
     var trackingInfo = {
         start_before: formData.get('start-tracking-before'),
         stop_after: formData.get('stop-tracking-after'),
-        triggers: [
-            {
-                type: eventNotificationTrigger,
-                notification_id: extractNotificationId(eventNotification)
-            }
-        ]
+//        triggers: [
+//            {
+//                type: eventNotificationTrigger,
+//                notification_id: extractNotificationId(eventNotification)
+//            }
+//        ]
         }
 
     newEventData["attendance_tracking"] = trackingInfo;

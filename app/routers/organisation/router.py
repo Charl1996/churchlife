@@ -2,6 +2,7 @@ import json
 
 from app.routers.decorators import view_request, domain_request
 from fastapi import Request, Depends
+from fastapi_cache.backends.redis import RedisCacheBackend
 from app.organisations import Organisation
 from app.users import User
 from app.routers.helper import get_current_user
@@ -17,6 +18,8 @@ from app.notifications import Notification
 from app.workflows.triggers.trigger import TrackingEventTrigger
 from app.events import Event, TrackingEvent, SessionEvent
 from app.workflows.actions.action import Action
+from app.cache import redis_cache, DATABASE_ENTITIES_CACHE_KEY
+
 
 router = APIRouter()
 
@@ -49,28 +52,25 @@ async def dashboard(request: Request, domain: str, user: User = Depends(get_curr
 @view_request
 @domain_request
 async def events(request: Request, domain: str, user: User = Depends(get_current_user)):
+    return {'template': 'layout_content/events/list.html'}
+
+
+@router.post('/{domain}/events/calendar-data')
+@domain_request
+async def get_calendar_data(request: Request, domain: str, user: User = Depends(get_current_user)):
+    post_data = await request.json()
     org = Organisation.get_by_domain(domain)
 
-    # upcoming_session_events = []
-    # for event in org.get_upcoming_events():
-    #     upcoming_session_events.append(event.dict())
-    #
-    # past_session_events = []
-    # for event in org.get_past_events():
-    #     past_session_events.append(event.dict())
+    data = []
+    for event in org.get_event_sessions_in_time_interval(
+        start=post_data['start'],
+        end=post_data['end'],
+    ):
+        event_dict = event.dict()
+        event_dict['date'] = str(event_dict['date'])  # There should be better way to do this
+        data.append(event_dict)
 
-    all_events = []
-    for event in org.get_all_events():
-        event_ = event.dict()
-        event_['start_time'] = event.start_time.strftime('%H:%M')
-        event_['end_time'] = event.end_time.strftime('%H:%M')
-        event_['weekday'] = event.from_date.strftime("%A")
-        event_['monthly_date'] = event.from_date.day
-        all_events.append(event_)
-
-    return {'template': 'layout_content/events/list.html', 'data': {
-        'all_events': json.dumps(all_events, default=str),
-    }}
+    return JSONResponse(status_code=200, content=data)
 
 
 @router.get('/{domain}/events/new')
@@ -303,19 +303,27 @@ async def get_database_platform(request: Request, domain: str, user: User = Depe
         data['database'] = platform.fields.dict()
         # data['entities'] = platform.get_entities(as_dict=True)
 
-    return {'template': 'layout_content/database.html', 'data': data}
+    return {'template': 'layout_content/database/database.html', 'data': data}
 
 
 @router.get('/{domain}/database/entities')
 @view_request
 @domain_request
-async def get_database_platform(request: Request, domain: str, user: User = Depends(get_current_user)):
+async def get_database_platform(
+        request: Request,
+        domain: str,
+        user: User = Depends(get_current_user),
+        cache: RedisCacheBackend = Depends(redis_cache),
+):
+    # entities = await cache.get(DATABASE_ENTITIES_CACHE_KEY, [])
+    # if not entities:
     organisation = Organisation.get_by_domain(domain)
     platform = organisation.get_linked_database_platform()
 
     data = {'database': None, 'entities': []}
     if platform:
         data['entities'] = platform.get_entities(as_dict=True)
+            # await cache.set(DATABASE_ENTITIES_CACHE_KEY, entities)
 
     return {'template': 'layout_content/database/database_entities_list.html', 'data': data}
 

@@ -13,15 +13,16 @@ from app.organisations.organisation_schema import (
     OrganisationUserViewSchema,
 )
 from app.utils import (
-    send_invite_email
+    send_invite_email,
+    timezoned_time,
+    create_scheduler_actions,
+    offset_minutes,
 )
 from app.integrations.database.database_platform import PlatformModel, PlatformSchema, DATABASE_PLATFORM_TYPE
 from app.integrations.database.breeze_platform import BreezeDatabasePlatform, BreezePlatformSchema
 from app.integrations.messaging.messaging_platform import MESSAGING_PLATFORM_TYPE
 from app.integrations.messaging.respondio_platform import RespondIOMessagingPlatform
 from app.notifications import Notification, NotificationSchema
-from app.utils import create_scheduler_actions
-from app.utils import offset_minutes
 from typing import List
 import pytz
 
@@ -172,56 +173,56 @@ class Organisation(DatabaseInterfaceWrapper):
 
         event = Event.create(data=event_detail)
 
-        tracker_triggers = attendance_tracking_detail.pop('triggers')
-        attendance_tracking_detail['event_id'] = event.fields.id
+        # # tracker_triggers = attendance_tracking_detail.pop('triggers')
+        # attendance_tracking_detail['event_id'] = event.fields.id
+        #
+        # attendance_tracking_detail['start_time'] = offset_minutes(
+        #     event_detail['start_time'],
+        #     -1*int(attendance_tracking_detail['start_before']),
+        # )
+        # attendance_tracking_detail['end_time'] = offset_minutes(
+        #     event_detail['end_time'],
+        #     int(attendance_tracking_detail['stop_after']),
+        # )
+        #
+        # attendance_tracking_detail['from_date'] = event_detail['from_date']
+        # attendance_tracking_detail['to_date'] = event_detail['to_date']
+        # attendance_tracking_detail['type'] = event_detail['type']
+        # attendance_tracking_detail['interval'] = event_detail['interval']
+        #
+        # tracking_event = TrackingEvent.set_up_tracking_event(
+        #     data=attendance_tracking_detail,
+        #     triggers=[],
+        # )
 
-        attendance_tracking_detail['start_time'] = offset_minutes(
-            event_detail['start_time'],
-            -1*int(attendance_tracking_detail['start_before']),
-        )
-        attendance_tracking_detail['end_time'] = offset_minutes(
-            event_detail['end_time'],
-            int(attendance_tracking_detail['stop_after']),
-        )
-
-        attendance_tracking_detail['from_date'] = event_detail['from_date']
-        attendance_tracking_detail['to_date'] = event_detail['to_date']
-        attendance_tracking_detail['type'] = event_detail['type']
-        attendance_tracking_detail['interval'] = event_detail['interval']
-
-        tracking_event = TrackingEvent.set_up_tracking_event(
-            data=attendance_tracking_detail,
-            triggers=tracker_triggers,
-        )
-
-        self._initialize_scheduled_sessions(
-            start_time=event.fields.start_time,
-            date=event.fields.from_date,
-            interval=event.fields.interval,
-            action_data={
-                'method': 'execute_trigger_event',
-                'args': [
-                    'Event.create_event_session',
-                    event.fields.id,
-                    'from app.events.event import Event'
-                ],
-            },
-        )
+        # self._initialize_scheduled_sessions(
+        #     start_time=event.fields.start_time,
+        #     date=event.fields.from_date,
+        #     interval=event.fields.interval,
+        #     action_data={
+        #         'method': 'execute_trigger_event',
+        #         'args': [
+        #             'Event.create_event_session',
+        #             event.fields.id,
+        #             'from app.events.event import Event'
+        #         ],
+        #     },
+        # )
 
         # Create scheduled sessions for tracking event
-        self._initialize_scheduled_sessions(
-            start_time=tracking_event.fields.start_time,
-            date=tracking_event.fields.from_date,
-            interval=event.fields.interval,
-            action_data={
-                'method': 'execute_trigger_event',
-                'args': [
-                    'TrackingEvent.create_event_session',
-                    tracking_event.fields.id,
-                    'from app.events.event import TrackingEvent'
-                ],
-            },
-        )
+        # self._initialize_scheduled_sessions(
+        #     start_time=tracking_event.fields.start_time,
+        #     date=tracking_event.fields.from_date,
+        #     interval=event.fields.interval,
+        #     action_data={
+        #         'method': 'execute_trigger_event',
+        #         'args': [
+        #             'TrackingEvent.create_event_session',
+        #             tracking_event.fields.id,
+        #             'from app.events.event import TrackingEvent'
+        #         ],
+        #     },
+        # )
 
     def get_users(self) -> List[OrganisationUserViewSchema]:
         from app.users import User
@@ -354,3 +355,38 @@ class Organisation(DatabaseInterfaceWrapper):
 
                 exec(import_statement)
                 exec(f'{method}(model_id, calculate_session_date=True)')
+
+    def get_event_sessions_in_time_interval(self, start, end):
+        from app.events import Event
+
+        criteria = {
+            'organisation_id': self.fields.id,
+            'from_date': {
+                'operator': '<=',
+                'value': datetime.strptime(end.split("T")[0], '%Y-%m-%d'),
+            }
+        }
+
+        events = [Event(event=event) for event in Event.get_all_by(criteria=criteria)]
+        timeframe_events_with_interval = [
+            event
+            for event in events
+            if (
+                    event.fields.interval is not None and
+                    (
+                            event.fields.to_date is None or
+                            event.fields.to_date.date() >= datetime.strptime(start.split("T")[0], '%Y-%m-%d').date()
+                    )
+            )
+        ]
+
+        timeframe_events_onetime = [event for event in events if event.fields.interval is None]
+
+        timeframe_events = timeframe_events_with_interval + timeframe_events_onetime
+
+        event_sessions = []
+        for event in timeframe_events:
+            # Determine sessions within timeframe
+            event_sessions = event_sessions + event.get_sessions_in_timeframe(start, end)
+
+        return event_sessions

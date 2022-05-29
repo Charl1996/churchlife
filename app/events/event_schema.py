@@ -38,6 +38,7 @@ class Event(EventBase):
     name: str
     type: str
     interval: str
+    event_data: Optional[Any]
 
     class Config:
         orm_mode = True
@@ -68,7 +69,6 @@ class TrackingEvent(TrackingEventBase):
 
 
 class SessionEventCreate(BaseModel):
-    active: bool
     start_time: str
     end_time: str
     date: Datetime
@@ -93,9 +93,12 @@ class EventListItem(BaseModel):
 
 
 class SessionEventDetails(BaseModel):
-    start_time: Time
-    end_time: Time
+    start_time: str
+    end_time: str
     name: str
-    active: bool
+    active: Optional[bool]
     date: Datetime
     event_data: Optional[Any]
+    event_id: str
+    id: Optional[str]
+

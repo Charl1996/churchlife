@@ -21,6 +21,7 @@ from app.workflows.triggers.trigger import TrackingEventTrigger
 from app.workflows.actions.action import Action
 
 TIMEZONE = 'Africa/Johannesburg'
+SECONDS_IN_ONE_DAY = 24*3600
 
 
 class BaseEvent(DatabaseInterfaceWrapper):
@@ -53,6 +54,7 @@ class BaseEvent(DatabaseInterfaceWrapper):
         raise NotImplemented
 
     def create_new_session(self, calculate_session_date=False):
+        # This method should probably not exist anymore
         if calculate_session_date:
             # self.fields.from_date.weekday()
             session_date = self._get_closets_date_after_today_with_interval(
@@ -62,7 +64,8 @@ class BaseEvent(DatabaseInterfaceWrapper):
             session_date = datetime.datetime.now(tz=pytz.timezone(TIMEZONE)) + self.interval_delta()
 
         if type(self.fields) == EventSchema:
-            event_type_id = 'event_id'
+            # event_type_id = 'event_id'
+            return
         if type(self.fields) == TrackingEventSchema:
             event_type_id = 'tracking_event_id'
 
@@ -209,6 +212,116 @@ class Event(BaseEvent):
         session_event = SessionEvent.get(event_session_id)
         return SessionEvent(session_event=session_event)
 
+    def get_sessions_in_timeframe(self, start, end):
+
+        def pseudo_session_event(date):
+            return SessionEventDetailsSchema(
+                start_time=self.fields.start_time.strftime("%H:%M"),
+                end_time=self.fields.end_time.strftime("%H:%M"),
+                date=date,
+                event_data=self.fields.event_data,
+                event_id=self.fields.id,
+                name=self.fields.name,
+                active=False,
+            )
+
+        start_date = datetime.datetime.strptime(start.split("T")[0], '%Y-%m-%d')
+        end_date = datetime.datetime.strptime(end.split("T")[0], '%Y-%m-%d')
+
+        if not self.fields.interval:
+            existing_session_instance = SessionEvent.get_all_by(criteria={'event_id': self.fields.id})
+            if existing_session_instance:
+                existing_session_instance = SessionEvent(session_event=existing_session_instance)
+                return [SessionEventDetailsSchema(
+                    start_time=existing_session_instance.fields.start_time,
+                    end_time=existing_session_instance.fields.end_time,
+                    date=existing_session_instance.fields.date,
+                    event_data=existing_session_instance.fields.event_data,
+                    event_id=self.fields.id,
+                    name=self.fields.name,
+                    id=existing_session_instance.fields.id,
+                )]
+            else:
+
+                return [pseudo_session_event(self.fields.from_date)]
+
+        criteria = {
+            'event_id': self.fields.id,
+            'date': {
+                'logic': 'AND',
+                'criteria': [
+                    {'operator': '<', 'value': end_date},
+                    {'operator': '>', 'value': start_date}
+                ]
+            },
+        }
+
+        existing_session_events = SessionEvent.get_all_by(criteria=criteria)
+        sessions_dates = self._determine_session_dates_in_frame(start_date, end_date)
+
+        sessions = []
+        for psuedo_sessions_date in sessions_dates:
+            existing_session_instance = None
+            for existing_session in existing_session_events:
+                if existing_session.date.date() == psuedo_sessions_date.date():
+                    existing_session_instance = SessionEvent(session_event=existing_session)
+                    break
+
+            if existing_session_instance:
+                sessions.append(SessionEventDetailsSchema(
+                    start_time=existing_session_instance.fields.start_time,
+                    end_time=existing_session_instance.fields.end_time,
+                    date=existing_session_instance.fields.date,
+                    event_data=existing_session_instance.fields.event_data,
+                    event_id=self.fields.id,
+                    name=self.fields.name,
+                    id=existing_session_instance.fields.id,
+                ))
+            else:
+                sessions.append(pseudo_session_event(psuedo_sessions_date))
+
+        return sessions
+
+    def _determine_session_dates_in_frame(self, start_datetime, end_datetime):
+        interval = self.fields.interval
+
+        m = 0
+        if interval == 'daily':
+            m = 1
+        if interval == 'weekly':
+            m = 7
+        if interval == 'monthly':
+            # Do not handle right now
+            return []
+        if not interval:
+            return [start_datetime]
+
+        start_date_y = datetime.datetime.timestamp(start_datetime) / SECONDS_IN_ONE_DAY
+        end_date_y = datetime.datetime.timestamp(end_datetime) / SECONDS_IN_ONE_DAY
+
+        c = datetime.datetime.timestamp(self.fields.from_date) / SECONDS_IN_ONE_DAY
+
+        start_time_x = int((start_date_y - c)/m) + 1
+        end_time_x = int((end_date_y - c) / m)
+
+        if end_time_x < 0:
+            return []
+        if start_time_x < 0:
+            start_time_x = 0
+
+        if self.fields.to_date:
+            end_date_limit_days_since_epoch = datetime.datetime.timestamp(self.fields.to_date) / SECONDS_IN_ONE_DAY
+            upper_x_limit = int((end_date_limit_days_since_epoch - c)/m)
+            if start_time_x > upper_x_limit:
+                return []
+            if end_time_x > upper_x_limit:
+                end_time_x = upper_x_limit
+
+        return [
+            datetime.datetime.fromtimestamp((m*x + c)*SECONDS_IN_ONE_DAY)
+            for x in range(start_time_x, end_time_x+1)
+        ]
+
 
 class TrackingEvent(BaseEvent):
     event: TrackingEventSchema
@@ -238,7 +351,7 @@ class TrackingEvent(BaseEvent):
         )
 
     @classmethod
-    def set_up_tracking_event(cls, data: dict, triggers: dict):
+    def set_up_tracking_event(cls, data: dict, triggers=[]):
         tracking_event = cls.create(data=data)
 
         for trigger in triggers:
@@ -302,7 +415,6 @@ class SessionEvent(DatabaseInterfaceWrapper):
     def create_model(cls, create_schema: SessionEventCreateSchema):
         # Why create_schema.date offset with 2h?
         return cls.database_model()(
-            active=create_schema.active,
             event_id=create_schema.event_id or None,
             tracking_event_id=create_schema.tracking_event_id or None,
             start_time=create_schema.start_time,
@@ -333,6 +445,14 @@ class SessionEvent(DatabaseInterfaceWrapper):
     @property
     def fields(self) -> SessionEventSchema:
         return self.session_event
+
+    @property
+    def active(self):
+        #     now = datetime.datetime.now(tz=pytz.timezone(TIMEZONE))
+        #     return (self.fields.date.date() == now.date() and
+        #             self.fields.start_time >= now and
+        #             self.fields.end_time <= now)
+        return False
 
     def stats(self):
         """
